@@ -241,6 +241,7 @@ html{scroll-behavior:auto}
 <a href="#details">Разбор</a>
 <a href="#trash">Оверпрайс</a>
 <a href="#compare">Графики</a>
+<a href="#finder">🔍 Поиск</a>
 <a href="#media">📸 Фото+Видео</a>
 <a href="#upcoming">🔮 Ожидаемые</a>
 <a href="#prompts">💡 Промты</a>
@@ -1277,6 +1278,36 @@ html{scroll-behavior:auto}
 </div>
 </section>
 
+<section id="finder" class="section container" style="padding-top:10px">
+<h2 class="section-title">🔍 Поиск модели</h2>
+<p class="section-sub">Вбей название — покажем рейтинг, цены и сравнение с популярной моделью. Данные сверены с LMArena, Artificial Analysis и LLMStats, сен 2026.</p>
+<div class="tabs">
+<button class="tab active" data-ftab="text">💬 Текст</button>
+<button class="tab" data-ftab="video">🎬 Видео</button>
+<button class="tab" data-ftab="photo">🖼️ Фото</button>
+</div>
+<div class="chart-box">
+<h3>🔎 Найди модель</h3>
+<p>Пиши по-русски или по-английски: luna, opus, kimi, veo, banana…</p>
+<input id="findInput" placeholder="Например: luna" style="width:100%;padding:14px;border:2.5px solid var(--ink);font-weight:700;font-size:15px;background:var(--bg);font-family:'Manrope',sans-serif" autocomplete="off">
+<div id="findMatches" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+<div id="findCard" style="margin-top:14px"></div>
+</div>
+<div class="chart-box" style="margin-top:16px">
+<h3>⚔️ Сравнение лоб в лоб</h3>
+<p>Выбери двух бойцов — подсветим победителя по качеству</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+<select id="cmpA" style="flex:1;min-width:200px;padding:12px;border:2.5px solid var(--ink);font-weight:800;background:#fff"></select>
+<select id="cmpB" style="flex:1;min-width:200px;padding:12px;border:2.5px solid var(--ink);font-weight:800;background:#fff"></select>
+</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+<button class="tab" id="cmpGo">⚔️ Сравнить</button>
+<button class="tab" id="cmpPop">⭐ Сравнить с популярной</button>
+</div>
+<div id="cmpOut"></div>
+</div>
+</section>
+
 <section id="guide" class="section container">
 <h2 class="section-title">Как покупать API и пользоваться из России</h2>
 <p class="section-sub">Пошаговый гайд 2026 — без бана и переплат. Обновлено под новинки: GPT 6, Opus 5.5, Muse Spark.</p>
@@ -1434,6 +1465,76 @@ if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('in'));
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:0.05});
 els.forEach(el=>io.observe(el));
 })();
+// 🔍 поиск моделей + сравнение (текст / видео / фото)
+(function(){
+const DB={
+text:[
+{n:'GPT 6 Luna',a:'luna луна gpt openai дешевая быстрая',price:'$2 / $8',q:9.9,exl:'Контекст',ex:'512K',v:'🥇 Лучший дешевый',pop:'GPT 6 Sol'},
+{n:'DeepSeek V4.1 Flash',a:'deepseek дипсик flash 4.1 имба копейки',price:'~$0.10 / ~$0.25',q:9.8,exl:'Контекст',ex:'256K',v:'🥇 Новый имба-король',pop:'GPT 6 Luna'},
+{n:'Kimi K3',a:'kimi кими moonshot длинный',price:'$0.35 / $1.20',q:9.5,exl:'Контекст',ex:'2M',v:'2M контекст',pop:'GPT 6 Luna'},
+{n:'GLM-5.3 Flash',a:'glm глм zhipu open русский',price:'~$0.12 / ~$0.35',q:9.3,exl:'Контекст',ex:'200K',v:'Дешевый open',pop:'DeepSeek V4.1 Flash'},
+{n:'GPT 6 Sol',a:'sol gpt openai флагман агент',price:'$6 / $30',q:10,exl:'Контекст',ex:'1M',v:'🔥 Агент №1',pop:'Claude Opus 5.5'},
+{n:'Claude Opus 5.5',a:'opus опус anthropic claude король',price:'$8 / $35',q:10,exl:'Контекст',ex:'500K',v:'👑 Новый №1',pop:'GPT 6 Sol'},
+{n:'Claude Fable 5.1',a:'fable anthropic claude код',price:'$4 / $20',q:9.9,exl:'Контекст',ex:'300K',v:'✨ +15% к коду',pop:'Claude Opus 5.5'},
+{n:'Muse Spark 1.3',a:'muse spark meta спарк лошадка',price:'$1.2 / $3.5',q:9.7,exl:'Мультимодал',ex:'512K + голос',v:'✨ Темная лошадка',pop:'GPT 6 Sol'},
+{n:'DeepSeek V4 Flash',a:'deepseek дипсик v4 старый',price:'~$0.14 / ~$0.28',q:9.7,exl:'Контекст',ex:'128K',v:'🥇 Имба',pop:'DeepSeek V4.1 Flash'},
+{n:'Gemini 3.7 Flash',a:'gemini джемини google 3.7 универсал',price:'$0.75 / $3.00',q:9.4,exl:'Контекст',ex:'1M',v:'🥈 Универсал',pop:'GPT 6 Luna'},
+{n:'GPT-5 mini',a:'gpt mini openai 5 дешевый',price:'~$0.125 / ~$1.00',q:9.2,exl:'Контекст',ex:'400K',v:'🥉 Выгодно',pop:'GPT 6 Luna'},
+{n:'Qwen3-235B-A22B',a:'qwen квэн alibaba open хостинг',price:'~$0.09 / ~$0.30',q:9.0,exl:'Контекст',ex:'131K',v:'Самый дешевый',pop:'DeepSeek V4.1 Flash'},
+{n:'Claude Fable 5',a:'fable 5 anthropic старый',price:'Флагман',q:10,exl:'Контекст',ex:'200K',v:'👑 №1 качество',pop:'Claude Fable 5.1'},
+{n:'GPT-6 Astra',a:'astra openai gpt-6 старый',price:'Флагман',q:9.9,exl:'Контекст',ex:'1.1M',v:'Агент №1',pop:'GPT 6 Sol'},
+{n:'Claude Opus 5',a:'opus 5 anthropic старый',price:'Флагман',q:9.8,exl:'Контекст',ex:'1M',v:'Для сложного',pop:'Claude Opus 5.5'},
+{n:'Gemini 3.8 Flash',a:'gemini 3.8 google скорость мультимодал',price:'Флагман',q:9.6,exl:'Контекст',ex:'2M',v:'Скорость',pop:'Muse Spark 1.3'},
+{n:'Claude Opus 4.8',a:'opus 4.8 anthropic дорого',price:'$5 / $25',q:7.4,exl:'Контекст',ex:'1M',v:'Дорого',pop:'Claude Opus 5.5'},
+{n:'Claude Opus 4.7',a:'opus 4.7 anthropic дорого',price:'$5 / $25',q:7.3,exl:'Контекст',ex:'1M',v:'Дорого',pop:'Claude Fable 5.1'},
+{n:'GPT-5.5',a:'gpt 5.5 openai reasoning',price:'$5 / $30',q:7.5,exl:'Контекст',ex:'1M',v:'Только reasoning',pop:'GPT 6 Luna'},
+{n:'GPT-5.5 Pro',a:'pro openai дорого оверпрайс',price:'$30 / $180',q:7.1,exl:'Контекст',ex:'400K',v:'💸 Оверпрайс',pop:'GPT 6 Sol'}
+],
+video:[
+{n:'Omni Flash 1.1',a:'omni google flash video интерактив',price:'API Google',q:10,exl:'Макс',ex:'8с интерактив',v:'🥇 Новый №1',pop:'Veo 3.1 (Standart)'},
+{n:'Seedance 2.5',a:'seedance bytedance дубль универсал',price:'~$0.51',q:10,exl:'Макс',ex:'30с со звуком',v:'🥈 Дубль 30с',pop:'Veo 3.1 (Standart)'},
+{n:'Seedance 2.0 / 1.5 / 1',a:'seedance моушн камера',price:'$0.97-1.21',q:9.9,exl:'Макс',ex:'15с / 2K',v:'🥉 Контроль камеры',pop:'Seedance 2.5'},
+{n:'Wan 3 / 2.7 / 2.2',a:'wan alibaba open selfhost',price:'$0.05-0.36',q:9.7,exl:'Макс',ex:'720p open',v:'Лучше Veo',pop:'Kling 3 / 2.5'},
+{n:'Kling 3 / 2.5',a:'kling kuaishou движение 4k люди',price:'$0.09-0.50',q:9.8,exl:'Макс',ex:'4K60 / 15с',v:'Люди, объем',pop:'Veo 3.1 (Standart)'},
+{n:'Veo 3.1 (Standart)',a:'veo google 3.1 кино звук',price:'~$0.40',q:9.5,exl:'Макс',ex:'4K / 60с ext',v:'Реализм+звук',pop:'Omni Flash 1.1'},
+{n:'Veo 3.1 Lite / Fast',a:'veo lite fast basic дешево поток',price:'$0.29-0.40',q:9.3,exl:'Макс',ex:'720p / 8с',v:'Поток',pop:'Veo 3.1 (Standart)'},
+{n:'Veo 3',a:'veo 3 google база',price:'$0.40-1.30',q:9.0,exl:'Макс',ex:'1080p / 60с',v:'База',pop:'Veo 3.1 (Standart)'},
+{n:'Hailuo 02 / MiniMax H3',a:'hailuo minimax 4k дешево',price:'$0.08/сек',q:9.0,exl:'Макс',ex:'4K / 15с',v:'Дешевый 4K',pop:'Kling 3 / 2.5'},
+{n:'Collart 2 / 1',a:'collart ниша соцклипы',price:'подписка',q:7.5,exl:'Макс',ex:'соцклипы',v:'Ниша',pop:'Kling 3 / 2.5'},
+{n:'Sora 2 / 1',a:'sora openai закат физика',price:'$0.85',q:6.0,exl:'Макс',ex:'25с / 1080p',v:'⚠️ Закат',pop:'Seedance 2.5'}
+],
+photo:[
+{n:'GPT Image 2.5 Sunburst',a:'sunburst openai image фото текст постер',price:'~$0.15-0.30',q:10,exl:'Фишка',ex:'Текст №1',v:'🥇 Постеры',pop:'Nano Banana Pro'},
+{n:'GPT Image 2.5 Flare',a:'flare поток соцсети мокапы',price:'~$0.05-0.12',q:9.7,exl:'Фишка',ex:'Поток',v:'Соцсети',pop:'GPT Image 2.5 Sunburst'},
+{n:'GPT Image 2',a:'gpt image 2 классика форматы',price:'$0.006-0.21',q:9.5,exl:'Фишка',ex:'16 форматов',v:'Классика',pop:'GPT Image 2.5 Flare'},
+{n:'Nano Banana Pro',a:'banana nano google pro фотореализм товары',price:'$0.15 / 4K $0.30',q:9.8,exl:'Фишка',ex:'Фотореализм',v:'🎨 Фото',pop:'GPT Image 2.5 Sunburst'},
+{n:'Nano Banana 2',a:'banana 2 баланс',price:'~$0.067',q:9.5,exl:'Фишка',ex:'Баланс',v:'Выгодно',pop:'Nano Banana Pro'},
+{n:'Nano Banana 2 Lite',a:'lite banana черновики дешево',price:'~$0.034',q:9.0,exl:'Фишка',ex:'4 сек',v:'Черновики',pop:'Nano Banana 2'},
+{n:'Flux 2 / Ideogram 3',a:'flux ideogram open альтернатива',price:'~$0.02-0.05',q:8.8,exl:'Фишка',ex:'Open',v:'Альтернатива',pop:'Nano Banana 2 Lite'},
+{n:'Midjourney V7',a:'midjourney миджорни арт стилизация',price:'подписка',q:8.7,exl:'Фишка',ex:'Арт',v:'Для арта',pop:'Nano Banana Pro'}
+]};
+let ftab='text';
+const DEF={text:['GPT 6 Luna','DeepSeek V4.1 Flash'],video:['Omni Flash 1.1','Veo 3.1 (Standart)'],photo:['GPT Image 2.5 Sunburst','Nano Banana Pro']};
+const $id=id=>document.getElementById(id);
+function fdata(){return DB[ftab];}
+function ffind(n){return fdata().find(m=>m.n===n);}
+function fbar(q){return '<div style="background:#eee;border:2px solid #0F0F0F;height:16px;margin:8px 0"><div style="width:'+(q*10)+'%;height:100%;background:'+(q>=9.5?'#6C5CFF':(q>=9?'#00C950':'#FF3D00'))+'"></div></div>';}
+function fcard(m){return '<div style="border:2.5px solid #0F0F0F;background:#fff;padding:14px;box-shadow:4px 4px 0 #0F0F0F"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-size:16px">'+m.n+'</b><span class="stars">★ '+m.q+'/10</span></div>'+fbar(m.q)+'<div style="font-size:13px;font-weight:600">💰 Цена: '+m.price+'<br>📦 '+m.exl+': '+m.ex+'<br>🏁 '+m.v+'</div><div style="margin-top:10px"><button class="tab" data-pop="'+m.n+'">⭐ Сравнить с популярной: '+m.pop+'</button></div></div>';}
+function fshow(name){const m=ffind(name);if(m){$id('findCard').innerHTML=fcard(m);$id('cmpA').value=name;fbindPop();}}
+function fbindPop(){document.querySelectorAll('[data-pop]').forEach(b=>{b.onclick=()=>{const m=ffind(b.getAttribute('data-pop'));if(m){$id('cmpB').value=m.pop;fcompare();}};});}
+function fmatches(q){q=(q||'').trim().toLowerCase();if(!q)return fdata().slice(0,6);return fdata().filter(m=>(m.n+' '+m.a).toLowerCase().includes(q)).slice(0,6);}
+function fmeta(m,act){return '<button class="tab'+(act?' active':'')+'" data-m="'+m.n+'">'+m.n+'</button>';}
+function frenderMatches(){const ms=fmatches($id('findInput').value);$id('findMatches').innerHTML=ms.length?ms.map((m,i)=>fmeta(m,i===0)).join(''):'<small>Ничего не найдено — попробуй короче: luna, veo, banana</small>';document.querySelectorAll('#findMatches [data-m]').forEach(b=>{b.onclick=()=>{fshow(b.getAttribute('data-m'));document.querySelectorAll('#findMatches .tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');};});}
+function frow(l,a,b,win){return '<tr><td><b>'+l+'</b></td><td'+(win===0?' style="background:#E9FFD8;font-weight:800"':'')+'>'+a+'</td><td'+(win===1?' style="background:#E9FFD8;font-weight:800"':'')+'>'+b+'</td></tr>';}
+function fcompare(){const A=ffind($id('cmpA').value),B=ffind($id('cmpB').value);if(!A||!B)return;let w=-1,txt='';if(A.q>B.q){w=0;txt='🏆 Побеждает <b>'+A.n+'</b> — качество выше ('+A.q+' vs '+B.q+')';}else if(B.q>A.q){w=1;txt='🏆 Побеждает <b>'+B.n+'</b> — качество выше ('+B.q+' vs '+A.q+')';}else{txt='🤝 Ничья по качеству — бери дешевле: <b>'+A.n+'</b> ('+A.price+') vs <b>'+B.n+'</b> ('+B.price+')';}$id('cmpOut').innerHTML='<div class="alert" style="margin:0 0 12px"><span style="font-size:20px">⚔️</span><div>'+txt+'</div></div><div class="table-wrap" style="margin-top:0"><table style="min-width:0"><thead><tr><th>ПАРАМЕТР</th><th>'+A.n+'</th><th>'+B.n+'</th></tr></thead><tbody>'+frow('💰 Цена',A.price,B.price,-1)+frow('⭐ Качество',A.q+'/10',B.q+'/10',w)+frow('📦 '+A.exl,A.ex,B.ex,-1)+frow('🏁 Вердикт',A.v,B.v,-1)+'</tbody></table></div>';}
+function ffill(){const o=fdata().map(m=>'<option>'+m.n+'</option>').join('');$id('cmpA').innerHTML=o;$id('cmpB').innerHTML=o;}
+document.querySelectorAll('[data-ftab]').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('[data-ftab]').forEach(x=>x.classList.remove('active'));b.classList.add('active');ftab=b.getAttribute('data-ftab');$id('findInput').value='';ffill();$id('cmpA').value=DEF[ftab][0];$id('cmpB').value=DEF[ftab][1];frenderMatches();fshow(DEF[ftab][0]);fcompare();});});
+$id('findInput').addEventListener('input',()=>{frenderMatches();const ms=fmatches($id('findInput').value);if(ms.length)fshow(ms[0].n);});
+$id('cmpA').addEventListener('change',fcompare);
+$id('cmpB').addEventListener('change',fcompare);
+$id('cmpGo').addEventListener('click',fcompare);
+$id('cmpPop').addEventListener('click',()=>{const A=ffind($id('cmpA').value);if(A){$id('cmpB').value=A.pop;fcompare();}});
+ffill();$id('cmpA').value=DEF.text[0];$id('cmpB').value=DEF.text[1];frenderMatches();fshow(DEF.text[0]);fcompare();})();
 if('IntersectionObserver' in window){
 const sec=document.getElementById('compare');
 if(sec){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){initCharts();io.disconnect();}});},{rootMargin:'300px'});io.observe(sec);}
