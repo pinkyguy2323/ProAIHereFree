@@ -23,6 +23,9 @@ a{text-decoration:none;color:inherit;cursor:none}
 .cursor-ring.hover{width:86px;height:86px;background:var(--ink);border-color:var(--ink)}
 .cursor-ring.hover::after{content:'→';color:#fff;font-size:20px;font-weight:800}
 @media(pointer:coarse){.cursor-dot,.cursor-ring{display:none} body,*,a{cursor:auto !important} *{cursor:auto !important}}
+/* FIX: пока открыт select — кастомный курсор прячем, системный возвращаем */
+html.select-open .cursor-dot,html.select-open .cursor-ring{display:none !important}
+html.select-open,html.select-open *{cursor:auto !important}
 /* NAV - без блюра для скорости */
 nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:2.5px solid var(--ink)}
 @supports((backdrop-filter:blur(1px)) and (pointer:fine)){
@@ -579,7 +582,7 @@ html{scroll-behavior:auto}
 <details class="detail">
 <summary>🤖 GPT-5 mini + Qwen3 — бюджетная классика <span class="open-btn">+</span></summary>
 <div class="detail-body">
-<div class="spec-row"><span class="spec">$0.09-0.125</span><span class="spec">128-256K</span><span class="spec">9.0-9.2/10</span><span class="spec">VPN: mini-да / Qwen-нет</span></div>
+<div class="spec-row"><span class="spec">$0.09-0.125</span><span class="spec">128-256K</span><span class="spec">8.6-9.0/10</span><span class="spec">VPN: mini-да / Qwen-нет</span></div>
 <p><b>Что это:</b> проверенная база 2025, актуальна и в 2026. GPT-5 mini — дешевый GPT для продакшена (нужен VPN). Qwen3-235B — самый дешевый open ($0.09), хостится локально, без VPN.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: копейки, проверены временем, Qwen — open и без VPN</div><div class="cons">❌ Минусы: уже слабее DeepSeek 4.1 и GLM-5.3, GPT mini нужен VPN</div></div>
 <p><b>Кому брать:</b> если уже все настроено — оставляй. Новые проекты — стартуй с DeepSeek 4.1.</p>
@@ -600,46 +603,46 @@ html{scroll-behavior:auto}
 <div class="card" style="background:#FFF0F0">
 <div class="card-top"><span class="tag tag-red">💰💰💰💰💰</span><span class="price">$30 / $180</span></div>
 <h3>GPT-5.5 Pro</h3>
-<p>Самый дорогой API. Для 99% задач разницы с GPT 6 Sol не заметишь вообще.</p>
+<p>По качеству почти топ, но цена х15 к GPT 6 Sol за +2% качества. Дорого ≠ плохо — просто неразумно.</p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> $30 input / $180 output</li>
-<li><span class="dot" style="color:var(--orange)"></span> Только для хардкора</li>
+<li><span class="dot" style="color:var(--orange)"></span> Качество 9.6, а не 7</li>
 <li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: GPT 6 Sol / Luna</li>
 </ul>
-<div class="card-foot"><span class="stars">★★★☆☆ 7.1/10</span><span class="verdict" style="color:var(--orange)">НЕ БРАТЬ</span></div>
+<div class="card-foot"><span class="stars">★★★★★ 9.6/10</span><span class="verdict" style="color:var(--orange)">НЕ БРАТЬ</span></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-red">💰💰💰💰</span><span class="price">$5 / $25</span></div>
 <h3>Claude Opus 4.8</h3>
-<p>Съеден собственными наследниками: Fable 5.1 дешевле и умнее, Opus 5.5 — сильнее за те же деньги.</p>
+<p>По качеству зверь (GPQA 92, топ бенчмарков), но наследники 5.x дешевле и не хуже. Платишь за прошлое поколение.</p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> $5 / $25 за 1M</li>
-<li><span class="dot" style="color:var(--orange)"></span> Устарел выходом 5.x</li>
+<li><span class="dot" style="color:var(--orange)"></span> Качество 9.6 — реально силен</li>
 <li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: Fable 5.1 / Opus 5.5</li>
 </ul>
-<div class="card-foot"><span class="stars">★★★☆☆ 7.4/10</span><span class="verdict" style="color:var(--orange)">ДОРОГО</span></div>
+<div class="card-foot"><span class="stars">★★★★★ 9.6/10</span><span class="verdict" style="color:var(--orange)">ДОРОГО</span></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-red">💰💰💰💰</span><span class="price">$5 / $25</span></div>
 <h3>Claude Opus 4.7</h3>
-<p>Та же история: цена флагмана, ум — прошлого поколения. Fable 5.1 закрывает те же задачи дешевле.</p>
+<p>Качество 9.5 — заметно сильнее бюджетных моделей (Qwen и ко). Но цена флагмана при живых Fable 5.1/Opus 5.5.</p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> $5 / $25 за 1M</li>
-<li><span class="dot" style="color:var(--orange)"></span> Устарел по цене</li>
+<li><span class="dot" style="color:var(--orange)"></span> Качество 9.5, не бюджет</li>
 <li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: Fable 5.1</li>
 </ul>
-<div class="card-foot"><span class="stars">★★★☆☆ 7.3/10</span><span class="verdict" style="color:var(--orange)">ПЕРЕПЛАТА</span></div>
+<div class="card-foot"><span class="stars">★★★★★ 9.5/10</span><span class="verdict" style="color:var(--orange)">ПЕРЕПЛАТА</span></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-red">💰💰💰</span><span class="price">$5 / $30</span></div>
 <h3>GPT-5.5</h3>
-<p>Хорош только в сверхсложном reasoning. Все остальное GPT 6 Luna делает в 2.5x дешевле.</p>
+<p>Качество 9.4 — сильная модель, и в reasoning одна из лучших. Но все остальное GPT 6 Luna делает в 2.5x дешевле.</p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> $5 / $30 за 1M</li>
-<li><span class="dot" style="color:var(--orange)"></span> Только для reasoning</li>
+<li><span class="dot" style="color:var(--orange)"></span> Reasoning топ, остальное — нет</li>
 <li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: GPT 6 Luna</li>
 </ul>
-<div class="card-foot"><span class="stars">★★★☆☆ 7.5/10</span><span class="verdict" style="color:var(--orange)">ДУМАЙ</span></div>
+<div class="card-foot"><span class="stars">★★★★★ 9.4/10</span><span class="verdict" style="color:var(--orange)">ДУМАЙ</span></div>
 </div>
 </div>
 </section>
@@ -1363,6 +1366,13 @@ document.querySelectorAll('a,button,.card,.tab,.btn-primary,.btn-secondary').for
 el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
 el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
 });
+// FIX: открытый select роняет кастомный курсор — прячем его, возвращаем системный
+document.querySelectorAll('select').forEach(s=>{
+s.addEventListener('pointerdown',()=>document.documentElement.classList.add('select-open'));
+s.addEventListener('keydown',e=>{if(e.key==='Escape')document.documentElement.classList.remove('select-open');});
+s.addEventListener('change',()=>document.documentElement.classList.remove('select-open'));
+s.addEventListener('blur',()=>document.documentElement.classList.remove('select-open'));
+});
 
 // charts - только 2 легких, без анимаций чтобы не лагало
 function initCharts(){
@@ -1480,15 +1490,15 @@ text:[
 {n:'DeepSeek V4 Flash',a:'deepseek дипсик v4 старый',price:'~$0.14 / ~$0.28',q:9.7,exl:'Контекст',ex:'128K',v:'🥇 Имба',pop:'DeepSeek V4.1 Flash'},
 {n:'Gemini 3.7 Flash',a:'gemini джемини google 3.7 универсал',price:'$0.75 / $3.00',q:9.4,exl:'Контекст',ex:'1M',v:'🥈 Универсал',pop:'GPT 6 Luna'},
 {n:'GPT-5 mini',a:'gpt mini openai 5 дешевый',price:'~$0.125 / ~$1.00',q:9.2,exl:'Контекст',ex:'400K',v:'🥉 Выгодно',pop:'GPT 6 Luna'},
-{n:'Qwen3-235B-A22B',a:'qwen квэн alibaba open хостинг',price:'~$0.09 / ~$0.30',q:9.0,exl:'Контекст',ex:'131K',v:'Самый дешевый',pop:'DeepSeek V4.1 Flash'},
+{n:'Qwen3-235B-A22B',a:'qwen квэн alibaba open хостинг',price:'~$0.09 / ~$0.30',q:8.6,exl:'Контекст',ex:'131K',v:'Самый дешевый',pop:'DeepSeek V4.1 Flash'},
 {n:'Claude Fable 5',a:'fable 5 anthropic старый',price:'Флагман',q:10,exl:'Контекст',ex:'200K',v:'👑 №1 качество',pop:'Claude Fable 5.1'},
 {n:'GPT-6 Astra',a:'astra openai gpt-6 старый',price:'Флагман',q:9.9,exl:'Контекст',ex:'1.1M',v:'Агент №1',pop:'GPT 6 Sol'},
 {n:'Claude Opus 5',a:'opus 5 anthropic старый',price:'Флагман',q:9.8,exl:'Контекст',ex:'1M',v:'Для сложного',pop:'Claude Opus 5.5'},
 {n:'Gemini 3.8 Flash',a:'gemini 3.8 google скорость мультимодал',price:'Флагман',q:9.6,exl:'Контекст',ex:'2M',v:'Скорость',pop:'Muse Spark 1.3'},
-{n:'Claude Opus 4.8',a:'opus 4.8 anthropic дорого',price:'$5 / $25',q:7.4,exl:'Контекст',ex:'1M',v:'Дорого',pop:'Claude Opus 5.5'},
-{n:'Claude Opus 4.7',a:'opus 4.7 anthropic дорого',price:'$5 / $25',q:7.3,exl:'Контекст',ex:'1M',v:'Дорого',pop:'Claude Fable 5.1'},
-{n:'GPT-5.5',a:'gpt 5.5 openai reasoning',price:'$5 / $30',q:7.5,exl:'Контекст',ex:'1M',v:'Только reasoning',pop:'GPT 6 Luna'},
-{n:'GPT-5.5 Pro',a:'pro openai дорого оверпрайс',price:'$30 / $180',q:7.1,exl:'Контекст',ex:'400K',v:'💸 Оверпрайс',pop:'GPT 6 Sol'}
+{n:'Claude Opus 4.8',a:'opus 4.8 anthropic дорого',price:'$5 / $25',q:9.6,exl:'Контекст',ex:'1M',v:'Дорого, но силен',pop:'Claude Opus 5.5'},
+{n:'Claude Opus 4.7',a:'opus 4.7 anthropic дорого',price:'$5 / $25',q:9.5,exl:'Контекст',ex:'1M',v:'Дорого, но силен',pop:'Claude Fable 5.1'},
+{n:'GPT-5.5',a:'gpt 5.5 openai reasoning',price:'$5 / $30',q:9.4,exl:'Контекст',ex:'1M',v:'Силен, но дорог',pop:'GPT 6 Luna'},
+{n:'GPT-5.5 Pro',a:'pro openai дорого оверпрайс',price:'$30 / $180',q:9.6,exl:'Контекст',ex:'400K',v:'💸 Топ, но оверпрайс',pop:'GPT 6 Sol'}
 ],
 video:[
 {n:'Omni Flash 1.1',a:'omni google flash video интерактив',price:'API Google',q:10,exl:'Макс',ex:'8с интерактив',v:'🥇 Новый №1',pop:'Veo 3.1 (Standart)'},
