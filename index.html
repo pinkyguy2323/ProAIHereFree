@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFFBF0">
+<title>ПРО.ИИ — Честный гид по нейросетям</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FFFBF0;--paper:#FFFFFF;--ink:#0F0F0F;--lime:#E6FF00;--violet:#6C5CFF;--orange:#FF3D00;--muted:#6B6B7A;--line:#0F0F0F}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.6;cursor:none}
+a{text-decoration:none;color:inherit;cursor:none}
+.container{max-width:1220px;margin:0 auto;padding:0 20px}
+*{cursor:none !important}
+/* CURSOR */
+.cursor-dot{width:8px;height:8px;background:var(--orange);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
+.cursor-ring{width:42px;height:42px;border:1.8px solid var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);display:grid;place-items:center;transition:width .2s,height .2s,background .2s,border-color .2s}
+.cursor-ring.hover{width:86px;height:86px;background:var(--ink);border-color:var(--ink)}
+.cursor-ring.hover::after{content:'→';color:#fff;font-size:20px;font-weight:800}
+@media(pointer:coarse){.cursor-dot,.cursor-ring{display:none} body,*,a{cursor:auto !important} *{cursor:auto !important}}
+/* NAV - без блюра для скорости */
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:2.5px solid var(--ink)}
+@supports((backdrop-filter:blur(1px)) and (pointer:fine)){
+nav{background:rgba(255,251,240,0.92)}
+}
+/* Отключаем тяжелые анимации если юзер просил */
+@media(prefers-reduced-motion:reduce){
+*,*::before,*::after{animation:none !important;transition:none !important}
+.cursor-dot,.cursor-ring{display:none !important}
+}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:26px;letter-spacing:-1.5px;font-family:'Space Grotesk',sans-serif}
+.logo-mark{width:42px;height:42px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-weight:800;border:2.5px solid var(--ink);transform:rotate(-2deg);font-size:20px}
+.logo span{color:var(--violet)}
+.nav-links{display:flex;gap:26px;font-size:12px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase}
+.nav-links a{position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2.5px;background:var(--orange);transition:.2s}
+.nav-links a:hover::after{width:100%}
+.btn-tg{background:var(--orange);color:#fff;padding:12px 18px;border:2.5px solid var(--ink);font-weight:800;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:4px 4px 0 var(--ink);transition:.15s;text-transform:uppercase;letter-spacing:0.4px;white-space:nowrap}
+.btn-tg:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+/* HERO */
+.hero{padding:44px 0 10px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:32px;align-items:start}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--lime);border:2.5px solid var(--ink);padding:7px 12px;font-size:11px;font-weight:800;letter-spacing:0.7px;box-shadow:3px 3px 0 var(--ink);font-family:'JetBrains Mono',monospace}
+.hero h1{font-size:68px;line-height:0.88;letter-spacing:-3.5px;margin:18px 0 14px;font-weight:800;font-family:'Space Grotesk',sans-serif}
+.hero h1 i{font-style:normal;background:var(--violet);color:#fff;padding:2px 10px;border:2.5px solid var(--ink);transform:rotate(-1deg);display:inline-block}
+.hero h1 em{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-2px;font-style:italic}
+.hero p{color:var(--muted);font-size:17px;max-width:560px;font-weight:500}
+.hero-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.btn-primary{background:var(--ink);color:#fff;padding:16px 24px;border:2.5px solid var(--ink);font-weight:800;display:inline-flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--orange);transition:.15s}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--orange)}
+.btn-secondary{background:#fff;border:2.5px solid var(--ink);color:var(--ink);padding:16px 20px;font-weight:800;box-shadow:4px 4px 0 var(--ink)}
+.hero-card{background:#fff;border:2.5px solid var(--ink);padding:22px;box-shadow:6px 6px 0 var(--ink);position:relative}
+.hero-card::before{content:"СВОДКА • СЕНТЯБРЬ 2026";position:absolute;top:-12px;left:18px;background:var(--lime);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:1px;padding:5px 10px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.mini{background:var(--bg);border:2px solid var(--ink);padding:12px}
+.mini span{font-size:10px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+.mini b{font-size:14px;display:block;line-height:1.15;margin:4px 0}
+.mini small{font-size:11px;font-weight:700}
+.tg-banner{margin-top:14px;background:var(--orange);border:2.5px solid var(--ink);padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--ink);color:#fff}
+.tg-banner strong{font-size:14px;line-height:1.1;display:block}
+.tg-banner a{background:#fff;color:var(--ink);padding:10px 14px;border:2px solid var(--ink);font-weight:800;font-size:12px;white-space:nowrap;box-shadow:2px 2px 0 var(--ink)}
+/* SECTIONS */
+.section{padding:46px 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.section-title{font-size:42px;font-weight:800;letter-spacing:-1.8px;font-family:'Space Grotesk',sans-serif;line-height:0.95}
+.section-sub{color:var(--muted);margin:10px 0 22px;font-weight:500;max-width:760px}
+.tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.tab{padding:10px 16px;background:#fff;border:2.5px solid var(--ink);font-weight:800;font-size:12px;color:var(--ink);box-shadow:3px 3px 0 var(--ink);transition:.15s;text-transform:uppercase;letter-spacing:0.4px}
+.tab.active{background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--violet)}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#fff;border:2.5px solid var(--ink);padding:18px;position:relative;transition:.15s;box-shadow:4px 4px 0 var(--ink);display:flex;flex-direction:column}
+.card:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 var(--ink)}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.tag{font-size:10px;font-weight:800;padding:5px 8px;letter-spacing:0.6px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
+.tag-green{background:var(--lime);color:#000}
+.tag-violet{background:var(--violet);color:#fff}
+.tag-red{background:var(--orange);color:#fff}
+.tag-black{background:var(--ink);color:#fff}
+.price{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--bg);border:2px solid var(--ink);padding:4px 7px;font-weight:700;white-space:nowrap}
+.card h3{font-size:17px;margin-bottom:6px;letter-spacing:-0.4px;line-height:1.1}
+.card p{font-size:12.5px;color:var(--muted);min-height:38px;font-weight:500}
+.card ul{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px}
+.card li{font-size:12.5px;display:flex;gap:8px;align-items:center;font-weight:600}
+.dot{width:8px;height:8px;border:1.5px solid var(--ink);background:currentColor}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:2px dashed var(--ink);gap:8px}
+.stars{font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.verdict{font-size:10px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase}
+.charts-grid{display:grid;grid-template-columns:1.25fr 0.75fr;gap:16px}
+.chart-box{background:#fff;border:2.5px solid var(--ink);padding:18px;box-shadow:4px 4px 0 var(--ink)}
+.chart-box h3{font-size:15px;margin-bottom:4px;font-family:'Space Grotesk',sans-serif}
+.chart-box p{font-size:11px;color:var(--muted);margin-bottom:12px;font-weight:600}
+.table-wrap{overflow:auto;border:2.5px solid var(--ink);margin-top:16px;background:#fff;box-shadow:4px 4px 0 var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}
+th{background:var(--ink);color:#fff;text-align:left;padding:11px 12px;font-size:10px;letter-spacing:0.8px;font-family:'JetBrains Mono',monospace}
+td{padding:12px;border-top:2px solid var(--ink);font-weight:600}
+.model{display:flex;align-items:center;gap:10px;font-weight:800}
+.model i{width:34px;height:34px;border:2px solid var(--ink);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:#fff}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{background:#fff;border:2.5px solid var(--ink);padding:18px;box-shadow:4px 4px 0 var(--ink)}
+.step-num{width:38px;height:38px;background:var(--lime);border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;margin-bottom:12px;box-shadow:2px 2px 0 var(--ink)}
+.alert{background:#FFF7CC;border:2.5px solid var(--ink);padding:14px;display:flex;gap:12px;align-items:flex-start;margin-top:16px;box-shadow:4px 4px 0 var(--ink)}
+.cta-big{background:var(--ink);color:#fff;border:2.5px solid var(--ink);padding:26px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;box-shadow:6px 6px 0 var(--violet);margin-top:18px}
+.cta-big h2{font-size:28px;letter-spacing:-1px;font-family:'Space Grotesk',sans-serif;line-height:1}
+.cta-big p{color:#B8BCCB}
+.btn-big-tg{background:var(--lime);color:var(--ink);padding:14px 20px;border:2.5px solid var(--ink);font-weight:800;display:inline-flex;align-items:center;gap:10px;box-shadow:4px 4px 0 #fff}
+footer{padding:26px 0;border-top:2.5px solid var(--ink);color:var(--muted);font-size:11px;text-align:center;background:#fff;margin-top:36px;font-family:'JetBrains Mono',monospace}
+/* DETAILS - подробные разборы */
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.detail{background:#fff;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.detail summary{list-style:none;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:800;font-size:15px;letter-spacing:-0.3px;cursor:pointer;font-family:'Space Grotesk',sans-serif}
+.detail summary::-webkit-details-marker{display:none}
+.detail summary .open-btn{flex-shrink:0;width:30px;height:30px;border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;background:var(--lime)}
+.detail[open] summary .open-btn{background:var(--ink);color:#fff}
+.detail-body{padding:0 18px 18px;border-top:2px dashed var(--ink);padding-top:14px}
+.spec-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.spec{font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace;background:var(--bg);border:2px solid var(--ink);padding:5px 8px}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pros,.cons{font-size:12.5px;padding:10px;border:2px solid var(--ink);font-weight:600;line-height:1.45}
+.pros{background:#EFFFf0}.cons{background:#FFF0F0}
+.detail-body p{font-size:13px;color:#333;margin:8px 0;font-weight:500}
+.vpn-box{background:#FFE9E4;border:2.5px solid var(--ink);padding:14px;margin-top:12px;box-shadow:4px 4px 0 var(--ink);font-size:13px}
+.vpn-box b{color:var(--orange)}
+/* TABLET */
+@media(max-width:1100px){.grid4{grid-template-columns:1fr 1fr} .charts-grid,.grid3,.guide-grid,.details-grid,.pros-cons{grid-template-columns:1fr} .hero-grid{grid-template-columns:1fr} .hero h1{font-size:52px} .nav-links{display:none} .section-title{font-size:36px}}
+/* PHONE LARGE - планшеты портрет / большие телефоны */
+@media(max-width:768px){
+.container{padding:0 14px}
+.hero{padding:28px 0 6px}
+.hero h1{font-size:40px;letter-spacing:-2px;line-height:0.95}
+.hero p{font-size:15px}
+.hero-actions .btn-primary,.hero-actions .btn-secondary{width:100%;justify-content:center;padding:14px}
+.mini-grid{grid-template-columns:1fr 1fr}
+.grid4{grid-template-columns:1fr}
+.section{padding:32px 0}
+.section-title{font-size:30px;letter-spacing:-1px}
+.chart-box{padding:14px}
+.chart-box canvas{max-height:300px}
+.table-wrap{margin-left:-14px;margin-right:-14px;border-left:none;border-right:none}
+.cta-big{padding:20px}
+.cta-big h2{font-size:22px}
+.btn-big-tg{width:100%;justify-content:center}
+.tg-banner{flex-direction:column;align-items:stretch;text-align:center}
+.tg-banner a{text-align:center}
+.nav-inner{flex-wrap:wrap}
+.btn-tg{width:100%;justify-content:center}
+.detail summary{font-size:14px;padding:14px}
+/* PERF mobile: меньше теней = меньше лагов */
+.card,.chart-box,.step,.detail,.hero-card{box-shadow:3px 3px 0 var(--ink)}
+.card:hover{transform:none;box-shadow:3px 3px 0 var(--ink)}
+.btn-primary:hover,.btn-tg:hover{transform:none}
+}
+/* PHONE SMALL */
+@media(max-width:480px){
+.hero h1{font-size:33px}
+.eyebrow{font-size:10px;padding:6px 9px}
+.mini-grid{grid-template-columns:1fr}
+.mini b{font-size:15px}
+.section-title{font-size:26px}
+.card{padding:14px}
+.card p{min-height:0}
+.stars{font-size:10px}
+.verdict{font-size:9px}
+.spec{font-size:10px}
+.pros,.cons{font-size:12px}
+table{font-size:12px;min-width:760px}
+td{padding:9px}
+.step{padding:14px}
+footer{font-size:10px}
+}
+/* BEAUTY: только GPU-анимации (transform/opacity), без лагов */
+html{scroll-behavior:smooth}
+body{background-image:radial-gradient(rgba(15,15,15,0.055) 1.2px,transparent 1.2px);background-size:22px 22px}
+.reveal{opacity:0;transform:translateY(16px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+@media(pointer:fine){
+.card{transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translate(-3px,-5px)}
+.btn-primary,.btn-tg,.btn-big-tg,.btn-secondary{position:relative;overflow:hidden}
+.btn-primary::after,.btn-tg::after,.btn-big-tg::after{content:"";position:absolute;top:0;left:-80%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.45),transparent);transform:skewX(-20deg);transition:left .5s ease}
+.btn-primary:hover::after,.btn-tg:hover::after,.btn-big-tg:hover::after{left:130%}
+}
+.logo-mark{animation:floaty 3.2s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-4px)}}
+.hero h1 i{background:linear-gradient(110deg,var(--violet) 20%,#9D8FFF 40%,var(--violet) 60%);background-size:220% 100%;animation:sheen 4s ease infinite}
+@keyframes sheen{0%{background-position:0% 0}50%{background-position:100% 0}100%{background-position:0% 0}}
+.section-title{position:relative;display:inline-block}
+.section-title::after{content:"";position:absolute;left:0;bottom:-6px;height:4px;width:100%;background:var(--lime);border:2px solid var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .6s ease}
+.reveal.in .section-title::after,.section-title.reveal.in::after{transform:scaleX(1)}
+.ticker{overflow:hidden;background:var(--ink);color:var(--lime);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.6px;white-space:nowrap}
+.ticker-track{display:inline-block;padding:9px 0;animation:tick 32s linear infinite;will-change:transform}
+.ticker:hover .ticker-track{animation-play-state:paused}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+*,*::before,*::after{animation:none !important;transition:none !important}
+.reveal{opacity:1;transform:none}
+.ticker-track{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+<div class="container nav-inner">
+<div class="logo"><div class="logo-mark">П</div> ПРО<span>.ИИ</span></div>
+<div class="nav-links">
+<a href="#cheap">Цена/качество</a>
+<a href="#absolute">Абсолютный топ</a>
+<a href="#new">Новинки 2026</a>
+<a href="#details">Разбор</a>
+<a href="#trash">Оверпрайс</a>
+<a href="#compare">Графики</a>
+<a href="#media">📸 Фото+Видео</a>
+<a href="#upcoming">🔮 Ожидаемые</a>
+<a href="#prompts">💡 Промты</a>
+<a href="#guide">Гайд РФ</a>
+</div>
+<a href="https://t.me/ProAIHere" target="_blank" class="btn-tg">✈️ БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ</a>
+</div>
+</nav>
+
+<section class="hero container">
+<div class="hero-grid">
+<div>
+<div class="eyebrow">● ТОЧНЫЙ РЕЙТИНГ • ОБНОВЛЕНО СЕНТЯБРЬ 2026 • 38 МОДЕЛЕЙ + 12 ОЖИДАЕМЫХ</div>
+<h1>Честный гид<br>по <i>нейросетям</i><br><em>без воды</em></h1>
+<p>Разложили все по полочкам: какие ИИ — <b>имба за копейки</b>, какие — <b>дорогие но идеальные</b>, а за какие ты просто переплачиваешь. Добавили <b>8 горячих новинок 2026</b> + отдельную вкладку <b>📸 Фото+Видео</b>: GPT Image 2.5 / 2, Nano Banana Pro / 2 / 2 Lite, Veo 3.1, Seedance, Kling, Wan, Sora, Omni Flash. С цифрами, графиками и гайдом для России.</p>
+<div class="hero-actions">
+<a href="#cheap" class="btn-primary">Смотреть рейтинг →</a>
+<a href="#media" class="btn-secondary">🎨 Фото и видео топ</a>
+</div>
+</div>
+<div class="hero-card">
+<div class="mini-grid">
+<div class="mini"><span>🥇 Цена/качество</span><b>GPT 6 Luna</b><small style="color:var(--violet)">$2 / 1M input — лучшая дешевая</small></div>
+<div class="mini"><span>👑 Абсолютный топ</span><b>Claude Opus 5.5</b><small>Новый №1 по качеству</small></div>
+<div class="mini"><span>⚡ Новинка OpenAI</span><b>GPT 6 Sol</b><small style="color:var(--orange)">Агент №1 2026</small></div>
+<div class="mini"><span>💎 Дешевый open</span><b>Kimi K3 + GLM 5.3</b><small>~$0.12-0.35 / 1M</small></div>
+</div>
+<div class="tg-banner">
+<div><strong>БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ</strong><br><small>Сливаем ключи, промпты и доступы каждый день</small></div>
+<a href="https://t.me/ProAIHere" target="_blank">Перейти →</a>
+</div>
+</div>
+</div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<section id="cheap" class="section container">
+<div class="section-head">
+<div>
+<h2 class="section-title">💚 Дешевые и топ</h2>
+<p class="section-sub">Пересобрано: <b>GPT 6 Luna — самая лучшая дешевая модель</b>. Дальше — копеечные убийцы, которые рвут флагманы за копейки.</p>
+</div>
+</div>
+<div class="grid4">
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-green">🥇 #1 ЦЕНА/КАЧЕСТВО</span><span class="price">$2 / 1M</span></div>
+<h3>GPT 6 Luna</h3>
+<p>Самая лучшая дешевая модель: почти GPT 6 Sol за треть цены. Тянет 95% задач флагмана.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Почти Sol за $2</li>
+<li><span class="dot" style="color:var(--violet)"></span> 512K контекст</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для продакшена</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.9/10</span><span class="verdict" style="color:var(--violet)">ЛУЧШАЯ ДЕШЕВАЯ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">🥈 #2 ЗА КОПЕЙКИ</span><span class="price">~$0.10 / 1M</span></div>
+<h3>DeepSeek V4.1 Flash</h3>
+<p>Имба за копейки: умнее прошлого V4, дешевле всех топов. Король API 2026.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> $0.10 за 1M</li>
+<li><span class="dot" style="color:var(--violet)"></span> Рвет модели в 20x дороже</li>
+<li><span class="dot" style="color:var(--violet)"></span> Без VPN</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.8/10</span><span class="verdict" style="color:var(--violet)">БРАТЬ СРОЧНО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">🥉 #3 ДЛИННЫЙ</span><span class="price">$0.35 / 1M</span></div>
+<h3>Kimi K3</h3>
+<p>2M контекста за копейки: целые репозитории и книги в одном запросе.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 2M контекст!</li>
+<li><span class="dot" style="color:var(--violet)"></span> Исследования</li>
+<li><span class="dot" style="color:var(--violet)"></span> Без VPN</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.5/10</span><span class="verdict" style="color:var(--violet)">ДЛЯ ДЛИННОГО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">#4 OPEN</span><span class="price">~$0.12 / 1M</span></div>
+<h3>GLM-5.3 Flash</h3>
+<p>Дешевый open-weight с топовым русским. Хостить у себя — вообще бесплатно.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Русский топ</li>
+<li><span class="dot" style="color:var(--violet)"></span> Open-weight</li>
+<li><span class="dot" style="color:var(--violet)"></span> Без VPN</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 9.3/10</span><span class="verdict" style="color:var(--violet)">ВЫГОДНО</span></div>
+</div>
+</div>
+</section>
+
+<section id="absolute" class="section container" style="padding-top:10px">
+<h2 class="section-title">👑 Топ ИИ без учета цены</h2>
+<p class="section-sub">Пересобрано: трон у <b>Opus 5.5</b>, рядом <b>GPT 6 Sol</b> и <b>Fable 5.1</b>. Деньги не важны — только максимум.</p>
+<div class="grid4">
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🥇 АБСОЛЮТ #1</span><span class="price">ФЛАГМАН</span></div>
+<h3>Claude Opus 5.5</h3>
+<p>Новый король качества: лучший код, математика и рассуждения 2026. Рвет все бенчмарки.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> №1 по коду 2026</li>
+<li><span class="dot" style="color:var(--violet)"></span> 500K контекст</li>
+<li><span class="dot" style="color:var(--violet)"></span> Рассуждения топ</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--violet)">КОРОЛЬ 2026</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">🥈 АГЕНТ №1</span><span class="price">ФЛАГМАН</span></div>
+<h3>GPT 6 Sol</h3>
+<p>Полный флагман OpenAI: computer use 2.0, агенты на 5+ часов автономной работы, исследования.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Computer use 2.0</li>
+<li><span class="dot" style="color:var(--violet)"></span> Агентные задачи</li>
+<li><span class="dot" style="color:var(--violet)"></span> 1M контекст</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--violet)">МОЩЬ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">🥉 КОД №1</span><span class="price">ФЛАГМАН</span></div>
+<h3>Claude Fable 5.1</h3>
+<p>Любимец разработчиков: +15% к коду против Fable 5, живой стиль, идеальные агенты.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> +15% к коду</li>
+<li><span class="dot" style="color:var(--violet)"></span> Живой стиль</li>
+<li><span class="dot" style="color:var(--violet)"></span> Агенты и инструменты</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.9/10</span><span class="verdict" style="color:var(--violet)">ИМБА</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">⚡ МУЛЬТИМОДАЛ</span><span class="price">ФЛАГМАН</span></div>
+<h3>Muse Spark 1.3</h3>
+<p>Темная лошадка Meta: код, голос и видео из коробки. Дешевле GPT/Claude при почти том же уме.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Код + голос + видео</li>
+<li><span class="dot" style="color:var(--ink)"></span> Open-версия Mini</li>
+<li><span class="dot" style="color:var(--ink)"></span> $1.2 / 1M</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.7/10</span><span class="verdict">ТЕМНАЯ ЛОШАДКА</span></div>
+</div>
+</div>
+</section>
+
+<section id="new" class="section container" style="padding-top:10px">
+<h2 class="section-title">⚡ Новинки 2026 — горячий дроп</h2>
+<p class="section-sub">8 свежих моделей, которые все меняют. GPT 6 Luna / Sol, Fable 5.1, Opus 5.5, DeepSeek 4.1 Flash, Muse Spark 1.3, GLM 5.3 Flash, Kimi K3. Только вышли — уже рвут чарты.</p>
+<div class="grid4">
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🔥 NEW • OPENAI</span><span class="price">$6 / $30</span></div>
+<h3>GPT 6 Sol</h3>
+<p>Полный флагман OpenAI 2026. Лучшие агенты, computer use 2.0, исследования на 5+ часов автономно.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Агент №1 2026</li>
+<li><span class="dot" style="color:var(--orange)"></span> Computer use 2.0</li>
+<li><span class="dot" style="color:var(--orange)"></span> 1M контекст</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--orange)">МОЩЬ 2026</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-green">🔥 NEW • БЫСТРАЯ</span><span class="price">$2 / $8</span></div>
+<h3>GPT 6 Luna</h3>
+<p>Облегченная GPT 6. На 3x быстрее Sol, почти тот же ум. Идеальна для чата, кода и продакшена.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 3x быстрее Sol</li>
+<li><span class="dot" style="color:var(--violet)"></span> Дешевле в 3 раза</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для продакшена</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.8/10</span><span class="verdict" style="color:var(--violet)">БРАТЬ</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">👑 NEW №1</span><span class="price">$8 / $35</span></div>
+<h3>Claude Opus 5.5</h3>
+<p>Новый король качества. Рвет все бенчмарки по коду, математике и рассуждениям. Замена Opus 5.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> №1 по коду 2026</li>
+<li><span class="dot" style="color:var(--violet)"></span> 500K контекст</li>
+<li><span class="dot" style="color:var(--violet)"></span> Рассуждения топ</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--violet)">КОРОЛЬ 2026</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">✨ NEW • ANTHROPIC</span><span class="price">$4 / $20</span></div>
+<h3>Claude Fable 5.1</h3>
+<p>Апдейт Fable 5: +15% к коду, лучше следует инструкциям, пишет как человек. Любимец разработчиков.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> +15% к коду</li>
+<li><span class="dot" style="color:var(--violet)"></span> Живой стиль</li>
+<li><span class="dot" style="color:var(--violet)"></span> Агенты и инструменты</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.9/10</span><span class="verdict" style="color:var(--violet)">ИМБА</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">🥇 NEW ЦЕНА/КАЧЕСТВО</span><span class="price">~$0.10 / 1M</span></div>
+<h3>DeepSeek V4.1 Flash</h3>
+<p>Новый убийца цен. Умнее V4 Flash, еще дешевле. Рвет модели в 20x дороже. Король API 2026.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Дешевле всех топов</li>
+<li><span class="dot" style="color:var(--violet)"></span> Умнее V4</li>
+<li><span class="dot" style="color:var(--violet)"></span> 256K контекст</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.8/10</span><span class="verdict" style="color:var(--violet)">БРАТЬ СРОЧНО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">✨ NEW • META</span><span class="price">$1.2 / $3.5</span></div>
+<h3>Muse Spark 1.3</h3>
+<p>Флагман Meta. Топ-код, мультимодал и голос из коробки. Открытые веса версии Mini. Главная темная лошадка 2026.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Код + голос + видео</li>
+<li><span class="dot" style="color:var(--ink)"></span> Open-версия Mini</li>
+<li><span class="dot" style="color:var(--ink)"></span> Дешевле GPT/Claude</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.7/10</span><span class="verdict">ТЕМНАЯ ЛОШАДКА</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green"># NEW OPEN</span><span class="price">~$0.12 / 1M</span></div>
+<h3>GLM-5.3 Flash</h3>
+<p>Китайская имба от Zhipu. Очень дешевый, быстрый, сильный в коде и на русском. Можно хостить у себя.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Русский топ</li>
+<li><span class="dot" style="color:var(--violet)"></span> Open-weight</li>
+<li><span class="dot" style="color:var(--violet)"></span> 200K контекст</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 9.3/10</span><span class="verdict" style="color:var(--violet)">ВЫГОДНО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green"># NEW LONG-CTX</span><span class="price">$0.35 / 1M</span></div>
+<h3>Kimi K3</h3>
+<p>Moonshot Kimi K3: 2M токенов контекста — читает целые репозитории и книги. Силен в исследованиях.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 2M контекст!</li>
+<li><span class="dot" style="color:var(--violet)"></span> Репозитории целиком</li>
+<li><span class="dot" style="color:var(--violet)"></span> Исследования</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.5/10</span><span class="verdict" style="color:var(--violet)">ДЛЯ ДЛИННОГО</span></div>
+</div>
+</div>
+</section>
+
+<section id="details" class="section container" style="padding-top:10px">
+<h2 class="section-title">🔍 Подробный разбор каждой модели</h2>
+<p class="section-sub">Нажми на модель, чтобы открыть полный разбор: что умеет, сколько стоит, кому брать, а кому нет. 12 главных моделей 2026.</p>
+<div class="details-grid">
+<details class="detail" open>
+<summary>👑 Claude Opus 5.5 — новый король <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$8 / $35 за 1M</span><span class="spec">500K контекст</span><span class="spec">10/10 качество</span><span class="spec">VPN: обычный</span></div>
+<p><b>Что это:</b> флагман Anthropic конца 2026. Лучший в коде, математике и сложных рассуждениях. Пишет большие проекты целиком, держит архитектуру, не галлюцинирует в API. Замена Opus 5 и 4.8.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: №1 код и reasoning, 500K контекст, идеальные агенты, следует инструкциям</div><div class="cons">❌ Минусы: дорого $8/$35, медленнее Flash-моделей, нужен VPN + не-РФ оплата</div></div>
+<p><b>Кому брать:</b> senior-разработчикам, для сложных SaaS, агентов, науки. <b>Не брать:</b> для простого чата — переплата, бери DeepSeek 4.1.</p>
+</div>
+</details>
+<details class="detail" open>
+<summary>🔥 GPT 6 Sol — агент №1 <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$6 / $30 за 1M</span><span class="spec">1M контекст</span><span class="spec">10/10 агенты</span><span class="spec">VPN: обычный</span></div>
+<p><b>Что это:</b> полный флагман OpenAI. Computer Use 2.0 — сам кликает, кодит, ищет, делает исследования по 5 часов без тебя. Лучший в мультизадачности.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: лучшие агенты 2026, computer use, 1M контекст, исследования</div><div class="cons">❌ Минусы: $6/$30 дорого, медленный в max-режиме, нужен VPN</div></div>
+<p><b>Кому брать:</b> для автономных агентов, deep research, автоматизации. <b>Не брать:</b> для переписки — бери Luna в 3 раза дешевле.</p>
+</div>
+</details>
+<details class="detail">
+<summary>🌙 GPT 6 Luna — быстрый флагман <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$2 / $8 за 1M</span><span class="spec">512K контекст</span><span class="spec">9.8/10</span><span class="spec">VPN: обычный</span></div>
+<p><b>Что это:</b> облегченная Sol. На 3x быстрее и в 3 раза дешевле, а ума почти столько же. Главный рабочий конь для продакшена 2026.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: скорость, цена $2, тянет 95% задач Sol, стабильный API</div><div class="cons">❌ Минусы: чуть слабее в super-сложном reasoning, все равно нужен VPN</div></div>
+<p><b>Кому брать:</b> всем в прод: чаты, код, боты. Лучший баланс OpenAI.</p>
+</div>
+</details>
+<details class="detail">
+<summary>✨ Claude Fable 5.1 — любимец кодеров <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$4 / $20 за 1M</span><span class="spec">300K контекст</span><span class="spec">9.9/10</span><span class="spec">VPN: обычный</span></div>
+<p><b>Что это:</b> апдейт Fable 5. +15% к коду, живой человеческий стиль, лучше работает с инструментами. Пишет как senior, а не как робот.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: лучший стиль кода, понятные объяснения, агенты, дешевле Opus 5.5</div><div class="cons">❌ Минусы: $4 все равно не копейки, лимиты Claude строже</div></div>
+<p><b>Кому брать:</b> разработчикам каждый день, для ревью, рефакторинга, документации.</p>
+</div>
+</details>
+<details class="detail">
+<summary>🥇 DeepSeek V4.1 Flash — имба за копейки <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">~$0.10 / $0.25</span><span class="spec">256K контекст</span><span class="spec">9.8/10</span><span class="spec">VPN: НЕ нужен</span></div>
+<p><b>Что это:</b> убийца всех. Умнее прошлого V4, а цена упала до $0.10. Рвет модели в 20x дороже. Работает из РФ без VPN через OpenRouter.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: цена, скорость, русский хороший, без VPN, идеален для API</div><div class="cons">❌ Минусы: чуть слабее Opus 5.5 в сверхсложном коде, цензура в чате</div></div>
+<p><b>Кому брать:</b> всем. База для 90% задач, ботов, массового API. Брать срочно.</p>
+</div>
+</details>
+<details class="detail">
+<summary>💙 Muse Spark 1.3 — темная лошадка Meta <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$1.2 / $3.5</span><span class="spec">512K + голос/видео</span><span class="spec">9.7/10</span><span class="spec">VPN: обычный</span></div>
+<p><b>Что это:</b> флагман Meta. Из коробки код + голос + видео + мультимодал. Есть open-версия Mini, которую можно хостить. Дешевле GPT/Claude при почти том же уме.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: мультимодал топ, голос, open Mini, цена $1.2</div><div class="cons">❌ Минусы: экосистема меньше, доки хуже, нужен VPN</div></div>
+<p><b>Кому брать:</b> для голосовых, видео, приложений Meta, тем кто хочет open.</p>
+</div>
+</details>
+<details class="detail">
+<summary>⚡ Gemini 3.8 Flash — скорость + мультимодал <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">Флагман ~$1-2</span><span class="spec">2M контекст</span><span class="spec">9.6/10</span><span class="spec">VPN: СПЕЦИАЛЬНЫЙ!</span></div>
+<p><b>Что это:</b> самый быстрый флагман Google. 2M контекст, YouTube / Docs / Drive из коробки, лучший в скорости и инструментах.</p>
+<div class="vpn-box">⚠️ <b>Gemini — только спец-VPN:</b> нужен чистый IP США/ЕС (не shared, не РФ), Google-аккаунт с регионом НЕ Россия, без +7 номера. Обычный VPN с РФ-аккаунтом = бан / «недоступно в вашем регионе». Без танцев: используй через OpenRouter / ProxyAPI — тогда VPN не нужен вообще.</div>
+<div class="pros-cons"><div class="pros">✅ Плюсы: скорость, 2M контекст, интеграция Google, мультимодал</div><div class="cons">❌ Минусы: спец-VPN напрямую, капризный аккаунт, слабее в коде чем Opus</div></div>
+<p><b>Кому брать:</b> для Google-экосистемы, длинных PDF/видео, быстрых задач. Через посредника — всем.</p>
+</div>
+</details>
+<details class="detail">
+<summary>💚 Gemini 3.7 Flash — дешевый универсал <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$0.75 / $3.00</span><span class="spec">1M контекст</span><span class="spec">9.4/10</span><span class="spec">VPN: СПЕЦИАЛЬНЫЙ!</span></div>
+<p><b>Что это:</b> младший брат 3.8. Дешевле, чуть проще, но все еще универсал для кода и длинных задач. Та же проблема с доступом.</p>
+<div class="vpn-box">⚠️ Тот же <b>спец-VPN для Gemini</b>: чистый US/EU IP + не-РФ Google-аккаунт. Или бери через OpenRouter без VPN.</div>
+<div class="pros-cons"><div class="pros">✅ Плюсы: $0.75 дешево, длинный контекст, стабильный</div><div class="cons">❌ Минусы: спец-VPN напрямую, слабее новинок 2026</div></div>
+<p><b>Кому брать:</b> как дешевая замена 3.8, если нужен Google-стек.</p>
+</div>
+</details>
+<details class="detail">
+<summary>📚 Kimi K3 — 2M контекста <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$0.35 / $1.20</span><span class="spec">2M контекст!</span><span class="spec">9.5/10</span><span class="spec">VPN: НЕ нужен</span></div>
+<p><b>Что это:</b> Moonshot AI. Читает целые репозитории, книги, 1000 PDF сразу. Лучший для исследований, когда надо «скормить всё».</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: 2M контекст, дешево, без VPN через OpenRouter, исследования</div><div class="cons">❌ Минусы: код слабее Opus/Fable, китайские серверы иногда лагают</div></div>
+<p><b>Кому брать:</b> аналитикам, ученым, тем кто работает с огромными текстами.</p>
+</div>
+</details>
+<details class="detail">
+<summary>🐉 GLM-5.3 Flash — дешевый open <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">~$0.12 / $0.35</span><span class="spec">200K контекст</span><span class="spec">9.3/10</span><span class="spec">VPN: НЕ нужен</span></div>
+<p><b>Что это:</b> Zhipu AI. Очень дешевый open-weight, можно хостить у себя. Отлично знает русский, хорош в коде.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: $0.12, open-weight, русский топ, без VPN</div><div class="cons">❌ Минусы: рассуждения проще флагманов, доки на китайском частично</div></div>
+<p><b>Кому брать:</b> экономным, для self-host, русских задач и ботов.</p>
+</div>
+</details>
+<details class="detail">
+<summary>🤖 GPT-5 mini + Qwen3 — бюджетная классика <span class="open-btn">+</span></summary>
+<div class="detail-body">
+<div class="spec-row"><span class="spec">$0.09-0.125</span><span class="spec">128-256K</span><span class="spec">9.0-9.2/10</span><span class="spec">VPN: mini-да / Qwen-нет</span></div>
+<p><b>Что это:</b> проверенная база 2025, актуальна и в 2026. GPT-5 mini — дешевый GPT для продакшена (нужен VPN). Qwen3-235B — самый дешевый open ($0.09), хостится локально, без VPN.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: копейки, проверены временем, Qwen — open и без VPN</div><div class="cons">❌ Минусы: уже слабее DeepSeek 4.1 и GLM-5.3, GPT mini нужен VPN</div></div>
+<p><b>Кому брать:</b> если уже все настроено — оставляй. Новые проекты — стартуй с DeepSeek 4.1.</p>
+</div>
+</details>
+<div class="detail">
+<div class="detail-body" style="border:none;padding-top:16px">
+<b>Итог 2026:</b> хочешь максимум — бери Opus 5.5 или GPT 6 Sol. Хочешь дешево и почти так же — DeepSeek 4.1 Flash + Kimi K3. Сидишь в Google — помни про спец-VPN для Gemini, проще через OpenRouter.<br><a href="https://t.me/ProAIHere" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Все ключи и гайды — t.me/ProAIHere</a>
+</div>
+</div>
+</div>
+</section>
+
+<section id="trash" class="section container" style="padding-top:10px">
+<h2 class="section-title">💸 Дорогие и плохие <span style="font-size:14px;background:var(--orange);color:#fff;padding:4px 8px;border:2px solid var(--ink);vertical-align:middle">ОВЕРПРАЙС</span></h2>
+<p class="section-sub">Переработано: у каждой переплаты теперь есть <b>дешевая замена</b>. Платишь в 10x больше — получаешь +5% качества.</p>
+<div class="grid4">
+<div class="card" style="background:#FFF0F0">
+<div class="card-top"><span class="tag tag-red">💰💰💰💰💰</span><span class="price">$30 / $180</span></div>
+<h3>GPT-5.5 Pro</h3>
+<p>Самый дорогой API. Для 99% задач разницы с GPT 6 Sol не заметишь вообще.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> $30 input / $180 output</li>
+<li><span class="dot" style="color:var(--orange)"></span> Только для хардкора</li>
+<li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: GPT 6 Sol / Luna</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★☆☆ 7.1/10</span><span class="verdict" style="color:var(--orange)">НЕ БРАТЬ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-red">💰💰💰💰</span><span class="price">$5 / $25</span></div>
+<h3>Claude Opus 4.8</h3>
+<p>Съеден собственными наследниками: Fable 5.1 дешевле и умнее, Opus 5.5 — сильнее за те же деньги.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> $5 / $25 за 1M</li>
+<li><span class="dot" style="color:var(--orange)"></span> Устарел выходом 5.x</li>
+<li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: Fable 5.1 / Opus 5.5</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★☆☆ 7.4/10</span><span class="verdict" style="color:var(--orange)">ДОРОГО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-red">💰💰💰💰</span><span class="price">$5 / $25</span></div>
+<h3>Claude Opus 4.7</h3>
+<p>Та же история: цена флагмана, ум — прошлого поколения. Fable 5.1 закрывает те же задачи дешевле.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> $5 / $25 за 1M</li>
+<li><span class="dot" style="color:var(--orange)"></span> Устарел по цене</li>
+<li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: Fable 5.1</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★☆☆ 7.3/10</span><span class="verdict" style="color:var(--orange)">ПЕРЕПЛАТА</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-red">💰💰💰</span><span class="price">$5 / $30</span></div>
+<h3>GPT-5.5</h3>
+<p>Хорош только в сверхсложном reasoning. Все остальное GPT 6 Luna делает в 2.5x дешевле.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> $5 / $30 за 1M</li>
+<li><span class="dot" style="color:var(--orange)"></span> Только для reasoning</li>
+<li><span class="dot" style="color:var(--orange)"></span> ✅ Вместо: GPT 6 Luna</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★☆☆ 7.5/10</span><span class="verdict" style="color:var(--orange)">ДУМАЙ</span></div>
+</div>
+</div>
+</section>
+
+<section id="compare" class="section container">
+<h2 class="section-title">Графики сравнения</h2>
+<p class="section-sub">Тесты именно с этими нейросетями. 20 моделей. Цена — за 1M input токенов. Листай на телефоне горизонтально.</p>
+<div class="charts-grid">
+<div class="chart-box">
+<h3>💰 Цена vs Качество (логарифм. шкала)</h3>
+<p>Чем выше и левее — тем выгоднее. Пузырь = качество</p>
+<canvas id="barChart" height="280"></canvas>
+</div>
+<div class="chart-box">
+<h3>🧠 Способности абсолютного топа</h3>
+<p>Радар по 5 навыкам: код, рассуждения, агенты, мультимодал, скорость</p>
+<canvas id="radarChart" height="280"></canvas>
+</div>
+</div>
+<div class="charts-grid" style="margin-top:16px">
+<div class="chart-box">
+<h3>🏆 Топ-10 по качеству (0-10)</h3>
+<p>Независимый композит: код + reasoning + агенты. Без анимаций — не лагает</p>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Opus 5.5</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#6C5CFF"></div></div><b>10</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GPT 6 Sol</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#FF3D00"></div></div><b>10</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Fable 5.1</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:99%;height:100%;background:#0F0F0F"></div></div><b>9.9</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GPT 6 Luna</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:98%;height:100%;background:#FF9900"></div></div><b>9.8</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">DeepSeek 4.1</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:98%;height:100%;background:#0F0F0F"></div></div><b>9.8</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Muse Spark 1.3</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:97%;height:100%;background:#2563EB"></div></div><b>9.7</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Gemini 3.8</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:96%;height:100%;background:#00C950"></div></div><b>9.6</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Kimi K3</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:95%;height:100%;background:#000"></div></div><b>9.5</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Gemini 3.7</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:94%;height:100%;background:#4285F4"></div></div><b>9.4</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GLM-5.3</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:93%;height:100%;background:#7C3AED"></div></div><b>9.3</b></div>
+</div>
+</div>
+<div class="chart-box">
+<h3>💎 Выгода: качество за копейки</h3>
+<p>Чем дешевле и качественнее — тем выше. Статика, ноль нагрузки</p>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;font-size:12px;font-weight:800">
+<div>🥇 DeepSeek 4.1 — $0.10 / 9.8</div>
+<div>🥈 Qwen3 — $0.09 / 9.0</div>
+<div>🥉 GLM-5.3 — $0.12 / 9.3</div>
+<div>4. Kimi K3 — $0.35 / 9.5</div>
+<div>5. Muse Spark — $1.2 / 9.7</div>
+<div>6. GPT 6 Luna — $2 / 9.8</div>
+<div style="color:#FF3D00">💸 GPT-5.5 Pro — $30 / 7.1 — оверпрайс</div>
+</div>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>МОДЕЛЬ</th><th>ЦЕНА INPUT / 1M</th><th>ЦЕНА OUTPUT / 1M</th><th>КАТЕГОРИЯ</th><th>ВЕРДИКТ</th></tr></thead>
+<tbody>
+<tr><td><div class="model"><i style="background:#0F0F0F">DS</i> DeepSeek V4 Flash</div></td><td style="color:var(--violet);font-weight:800">~$0.14</td><td>~$0.28</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥇 Имба</td></tr>
+<tr><td><div class="model"><i style="background:#4285F4">Ge</i> Gemini 3.7 Flash</div></td><td style="font-weight:800">$0.75</td><td>$3.00</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥈 Универсал</td></tr>
+<tr><td><div class="model"><i style="background:#10A37F">5m</i> GPT-5 mini</div></td><td style="color:var(--violet);font-weight:800">~$0.125</td><td>~$1.00</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥉 Выгодно</td></tr>
+<tr><td><div class="model"><i style="background:#000">Q3</i> Qwen3-235B-A22B</div></td><td style="color:#00C950;font-weight:800">~$0.09</td><td>~$0.30</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>Самый дешевый</td></tr>
+<tr><td><div class="model"><i style="background:#6C5CFF">F5</i> Claude Fable 5</div></td><td>Флагман</td><td>Флагман</td><td><span class="tag tag-violet">АБСОЛЮТ ТОП</span></td><td>👑 №1 качество</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">6A</i> GPT-6 Astra</div></td><td>Флагман</td><td>Флагман</td><td><span class="tag tag-violet">АБСОЛЮТ ТОП</span></td><td>Агент №1</td></tr>
+<tr><td><div class="model"><i style="background:#7C3AED">O5</i> Claude Opus 5</div></td><td>Флагман</td><td>Флагман</td><td><span class="tag tag-violet">АБСОЛЮТ ТОП</span></td><td>Для сложного</td></tr>
+<tr><td><div class="model"><i style="background:#00C950">G8</i> Gemini 3.8 Flash</div></td><td>Флагман</td><td>Флагман</td><td><span class="tag tag-black">АБСОЛЮТ ТОП</span></td><td>Скорость</td></tr>
+<tr><td><div class="model"><i style="background:#FF5500">SL</i> GPT 6 Sol</div></td><td style="font-weight:800">$6</td><td>$30</td><td><span class="tag tag-red">НОВИНКА 2026</span></td><td>🔥 Агент №1</td></tr>
+<tr><td><div class="model"><i style="background:#FF9900">LU</i> GPT 6 Luna</div></td><td style="font-weight:800">$2</td><td>$8</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥇 Лучший дешевый</td></tr>
+<tr><td><div class="model"><i style="background:#D97706">O5</i> Claude Opus 5.5</div></td><td style="font-weight:800">$8</td><td>$35</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>👑 Новый №1</td></tr>
+<tr><td><div class="model"><i style="background:#8B5CF6">F1</i> Claude Fable 5.1</div></td><td style="font-weight:800">$4</td><td>$20</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>✨ +15% к коду</td></tr>
+<tr><td><div class="model"><i style="background:#0F0F0F">D4</i> DeepSeek V4.1 Flash</div></td><td style="color:var(--violet);font-weight:800">~$0.10</td><td>~$0.25</td><td><span class="tag tag-green">НОВИНКА 2026</span></td><td>🥇 Новый имба-король</td></tr>
+<tr><td><div class="model"><i style="background:#2563EB">MS</i> Muse Spark 1.3</div></td><td style="font-weight:800">$1.2</td><td>$3.5</td><td><span class="tag tag-black">НОВИНКА 2026</span></td><td>✨ Темная лошадка</td></tr>
+<tr><td><div class="model"><i style="background:#7C3AED">GL</i> GLM-5.3 Flash</div></td><td style="color:#00C950;font-weight:800">~$0.12</td><td>~$0.35</td><td><span class="tag tag-green">НОВИНКА 2026</span></td><td>Дешевый open</td></tr>
+<tr><td><div class="model"><i style="background:#000">K3</i> Kimi K3</div></td><td style="font-weight:800">$0.35</td><td>$1.20</td><td><span class="tag tag-green">НОВИНКА 2026</span></td><td>2M контекст</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">P5</i> GPT-5.5 Pro</div></td><td style="color:var(--orange);font-weight:800">$30</td><td style="color:var(--orange);font-weight:800">$180</td><td><span class="tag tag-red">ДОРОГО И ПЛОХО</span></td><td>💸 Оверпрайс</td></tr>
+<tr><td><div class="model"><i style="background:#6C5CFF">48</i> Claude Opus 4.8</div></td><td>$5</td><td>$25</td><td><span class="tag tag-red">ДОРОГО И ПЛОХО</span></td><td>Дорого</td></tr>
+<tr><td><div class="model"><i style="background:#6C5CFF">47</i> Claude Opus 4.7</div></td><td>$5</td><td>$25</td><td><span class="tag tag-red">ДОРОГО И ПЛОХО</span></td><td>Дорого</td></tr>
+<tr><td><div class="model"><i style="background:#10A37F">55</i> GPT-5.5</div></td><td>$5</td><td>$30</td><td><span class="tag tag-red">ДОРОГО И ПЛОХО</span></td><td>Только reasoning</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="media" class="section container" style="padding-top:10px">
+<h2 class="section-title">📸 Генерация фото и видео</h2>
+<p class="section-sub">Отдельный топ по медиа 2026 — по свежим бенчмаркам и ценам API. Фото: GPT Image 2.5 / 2, Nano Banana Pro / 2 / 2 Lite. Видео: Veo 3.1 / Veo 3, Seedance 2.5–1, Kling 3 / 2.5, Wan 3–2.2, Sora 2 / 1, Omni Flash 1.1, Hailuo. Жми вкладку.</p>
+<div class="tabs">
+<button class="tab active" data-mtab="photo">🖼️ Фото-топ</button>
+<button class="tab" data-mtab="video">🎬 Видео-топ</button>
+</div>
+<div id="media-photo">
+<div class="grid4">
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🥇 ФОТО №1</span><span class="price">~$0.15-0.30</span></div>
+<h3>GPT Image 2.5 Sunburst</h3>
+<p>Релиз 8 сен 2026. №1 в text-to-image и editing (Elo ~1381+). Печатный текст, инфографика, точные правки.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Текст без каши</li>
+<li><span class="dot" style="color:var(--orange)"></span> Режимы xhigh / max</li>
+<li><span class="dot" style="color:var(--orange)"></span> Для рекламы и постеров</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--orange)">БРАТЬ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">⚡ БЫСТРЫЙ</span><span class="price">~$0.05-0.12</span></div>
+<h3>GPT Image 2.5 Flare</h3>
+<p>Тот же 2.5, но -50% задержки. Качество ≥ Image 2. Для соцсетей, мокапов, потока.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> -50% latency</li>
+<li><span class="dot" style="color:var(--violet)"></span> Elo ~1399</li>
+<li><span class="dot" style="color:var(--violet)"></span> Дешевле Sunburst</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.7/10</span><span class="verdict" style="color:var(--violet)">ПОТОК</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">ФЛАГМАН 04.2026</span><span class="price">$0.006-0.21</span></div>
+<h3>GPT Image 2</h3>
+<p>Прошлый флагман OpenAI. 16 ракурсов, до 8 картинок за раз, до 5 рефов. Все еще топ по тексту.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Low $0.006</li>
+<li><span class="dot" style="color:var(--ink)"></span> High $0.21</li>
+<li><span class="dot" style="color:var(--ink)"></span> 16 aspect ratios</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.5/10</span><span class="verdict">КЛАССИКА</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🎨 ФОТОРЕАЛИЗМ</span><span class="price">~$0.15 / $0.30 4K</span></div>
+<h3>Nano Banana Pro</h3>
+<p>Gemini 3 Pro Image. Кожа, свет, ткани как фото. 20-40 сек, 2-14 рефов, консистентность персонажа.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Фото как живое</li>
+<li><span class="dot" style="color:var(--violet)"></span> 4K $0.30</li>
+<li><span class="dot" style="color:var(--violet)"></span> Продуктовые фото</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.8/10</span><span class="verdict" style="color:var(--violet)">ТОП ФОТО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">БАЛАНС</span><span class="price">~$0.067</span></div>
+<h3>Nano Banana 2</h3>
+<p>Gemini 3.1 Flash Image. Качество почти Pro, скорость Flash (~20 сек). $0.5 in / $3 out за 1M.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Pro-качество</li>
+<li><span class="dot" style="color:var(--violet)"></span> Flash-скорость</li>
+<li><span class="dot" style="color:var(--violet)"></span> Rank #5 image</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.5/10</span><span class="verdict" style="color:var(--violet)">ВЫГОДНО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">ДЕШЕВО 4 СЕК</span><span class="price">~$0.034 / $0.017</span></div>
+<h3>Nano Banana 2 Lite</h3>
+<p>Gemini 3.1 Flash-Lite Image. 4 сек, фикс 1K, Elo 1251. Черновики и поток. Batch $0.017.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 4 сек генерация</li>
+<li><span class="dot" style="color:var(--violet)"></span> $0.034 картинка</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для прототипов</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 9.0/10</span><span class="verdict" style="color:var(--violet)">ЧЕРНОВИКИ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">OPEN</span><span class="price">~$0.02-0.05</span></div>
+<h3>Flux 2 / Ideogram 3</h3>
+<p>Альтернативы: Flux — open и дешево для пачек, Ideogram — вывески и логотипы с текстом.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Flux: пачки дешево</li>
+<li><span class="dot" style="color:var(--ink)"></span> Ideogram: текст-арт</li>
+<li><span class="dot" style="color:var(--ink)"></span> Без VPN via API</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 8.8/10</span><span class="verdict">АЛЬТЕРНАТИВА</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">АРТ</span><span class="price">подписка $10-30</span></div>
+<h3>Midjourney V7</h3>
+<p>Не API, а арт-король: стилизация, арты, обложки. Текст хуже GPT/Banana.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Стиль топ</li>
+<li><span class="dot" style="color:var(--ink)"></span> Не для текста</li>
+<li><span class="dot" style="color:var(--ink)"></span> Discord / web</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 8.7/10</span><span class="verdict">ДЛЯ АРТА</span></div>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ФОТОМОДЕЛЬ</th><th>ЦЕНА / КАРТИНКА</th><th>СКОРОСТЬ</th><th>СИЛА</th><th>ВЕРДИКТ</th></tr></thead>
+<tbody>
+<tr><td><div class="model"><i style="background:#FF3D00">S+</i> GPT Image 2.5 Sunburst</div></td><td style="font-weight:800">~$0.15-0.30</td><td>медленно, точно</td><td><span class="tag tag-red">ТЕКСТ №1</span></td><td>🥇 Постеры, реклама</td></tr>
+<tr><td><div class="model"><i style="background:#FF9900">FL</i> GPT Image 2.5 Flare</div></td><td>~$0.05-0.12</td><td>быстро</td><td><span class="tag tag-green">ПОТОК</span></td><td>Соцсети, мокапы</td></tr>
+<tr><td><div class="model"><i style="background:#10A37F">G2</i> GPT Image 2</div></td><td>$0.006-0.21</td><td>средне</td><td><span class="tag tag-black">16 ФОРМАТОВ</span></td><td>Классика</td></tr>
+<tr><td><div class="model"><i style="background:#6C5CFF">NB</i> Nano Banana Pro</div></td><td style="font-weight:800">$0.15 / 4K $0.30</td><td>29 сек</td><td><span class="tag tag-violet">ФОТОРЕАЛИЗМ</span></td><td>🎨 Фото, товары</td></tr>
+<tr><td><div class="model"><i style="background:#4285F4">N2</i> Nano Banana 2</div></td><td style="color:var(--violet);font-weight:800">~$0.067</td><td>~20 сек</td><td><span class="tag tag-green">БАЛАНС</span></td><td>Выгодно</td></tr>
+<tr><td><div class="model"><i style="background:#00C950">NL</i> Nano Banana 2 Lite</div></td><td style="color:#00C950;font-weight:800">~$0.034 / batch $0.017</td><td>~4 сек</td><td><span class="tag tag-green">ДЕШЕВО</span></td><td>Черновики</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="media-video" style="display:none">
+<div class="grid4">
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🥇 ВИДЕО №1</span><span class="price">~API Google</span></div>
+<h3>Omni Flash 1.1</h3>
+<p>Новый №1 видеотопа: интерактивное видео за секунды, качество кадра выше Veo 3.1. Монтаж текстом, связка с Nano Banana.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Лучше Veo 3.1</li>
+<li><span class="dot" style="color:var(--orange)"></span> Видео за секунды</li>
+<li><span class="dot" style="color:var(--orange)"></span> Edit промптом</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--orange)">НОВЫЙ №1</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🔥 УНИВЕРСАЛ</span><span class="price">~$0.51 / клип</span></div>
+<h3>Seedance 2.5</h3>
+<p>№1 по версии fal 09.2026. Один дубль 30 сек со звуком, держит лицо от кадра 1 до последнего. ~$0.473/сек.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> 30 сек одним дублем</li>
+<li><span class="dot" style="color:var(--orange)"></span> Image-to-video 94%</li>
+<li><span class="dot" style="color:var(--orange)"></span> Товары, e-com</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--orange)">ТОП</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-red">МОУШН</span><span class="price">~$0.97-1.21</span></div>
+<h3>Seedance 2.0 / 1.5 / 1</h3>
+<p>Линейка ByteDance: 2.0 Pro $1.21 / Fast $0.97 (~$0.125/сек), 4-15с, мультикадр, камера из промпта. 1.5/1 — дешевле и проще.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> 2.0 — эталон контроля</li>
+<li><span class="dot" style="color:var(--orange)"></span> 1.5/1 — бюджет</li>
+<li><span class="dot" style="color:var(--orange)"></span> Аудио+липсинг</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.9/10</span><span class="verdict" style="color:var(--orange)">МОУШН</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">4K 60FPS</span><span class="price">~$0.09-0.50</span></div>
+<h3>Kling 3 / 2.5</h3>
+<p>Kling 3: натив 4K 60fps, 3-15с, 2-6 связных планов, AI Director, липсинг 5 языков. Elo 1249. Ultra $0.09/видео.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 4K + мультикадр</li>
+<li><span class="dot" style="color:var(--violet)"></span> Люди и движение</li>
+<li><span class="dot" style="color:var(--violet)"></span> Дешевый объем</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.8/10</span><span class="verdict" style="color:var(--violet)">ДВИЖЕНИЕ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">OPEN БЕСПЛАТНО</span><span class="price">~$0.05-0.36</span></div>
+<h3>Wan 3 / 2.7 / 2.2</h3>
+<p>Лучший open-source (Apache 2.0). 2.7: Elo 1157, $0.20/видео. 2.2 — self-host 720p. 3.0 — локально без вотермарки.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Open, self-host</li>
+<li><span class="dot" style="color:var(--violet)"></span> Без подписки</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для ферм</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.7/10</span><span class="verdict" style="color:var(--violet)">ЛУЧШЕ VEO</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🎬 КИНО</span><span class="price">~$0.40 / 8с</span></div>
+<h3>Veo 3.1 (Standart)</h3>
+<p>Кинематографичность: свет, ткани, лица + нативный звук 48кГц. 8с клип, до 60с extension, 4K. Уступает Omni, Seedance и Wan.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Реализм + звук</li>
+<li><span class="dot" style="color:var(--violet)"></span> 4K, extension 60с</li>
+<li><span class="dot" style="color:var(--violet)"></span> Ниже Omni/Seedance/Wan</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.5/10</span><span class="verdict" style="color:var(--violet)">КИНО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">ДЕШЕВО</span><span class="price">~$0.29-0.40 / 8с</span></div>
+<h3>Veo 3.1 Lite / Fast</h3>
+<p>Те же 720p 8с со звуком, но быстрее и дешевле. Lite — только VO3, Fast — итерации. Premium 1080p ~$1.14.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Lite $0.29-0.40</li>
+<li><span class="dot" style="color:var(--violet)"></span> Fast для черновиков</li>
+<li><span class="dot" style="color:var(--violet)"></span> Basic $0.33</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 9.3/10</span><span class="verdict" style="color:var(--violet)">БРАТЬ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">БАЗА 2025</span><span class="price">~$0.40-1.30 / 8с</span></div>
+<h3>Veo 3</h3>
+<p>Предшественник 3.1: звук и фотореализм уже есть, но текстуры слабее. Ниже Omni, Seedance, Wan и Kling.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Звук из коробки</li>
+<li><span class="dot" style="color:var(--ink)"></span> Слабее конкурентов</li>
+<li><span class="dot" style="color:var(--ink)"></span> 30-60с coherence</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 9.0/10</span><span class="verdict">НОРМ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">ДЕШЕВО 4K</span><span class="price">~$0.08/сек</span></div>
+<h3>Hailuo 02 / MiniMax H3</h3>
+<p>Самый дешевый 4K: H3 $0.08/сек (768p/2K/4K). Hailuo 02 — бесплатно 15с 1080p без вотермарки. Клипы &lt;5 сек.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 4K дешевле всех</li>
+<li><span class="dot" style="color:var(--violet)"></span> Free 15с 1080p</li>
+<li><span class="dot" style="color:var(--violet)"></span> Быстрые клипы</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★☆ 9.0/10</span><span class="verdict" style="color:var(--violet)">ЭКОНОМ 4K</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">НИША</span><span class="price">подписка</span></div>
+<h3>Collart 2 / 1</h3>
+<p>Нишевый редактор коллажей/соцклипов. Для постов сойдет, для кино — нет. Данных мало, бери триал.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Соцформаты</li>
+<li><span class="dot" style="color:var(--ink)"></span> Шаблоны</li>
+<li><span class="dot" style="color:var(--ink)"></span> Не для кино</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★☆☆ 7.5/10</span><span class="verdict">НИША</span></div>
+</div>
+<div class="card" style="background:#FFF0F0">
+<div class="card-top"><span class="tag tag-red">⚠️ ЗАКАТ</span><span class="price">$0.85 / клип</span></div>
+<h3>Sora 2 / 1</h3>
+<p>Физика и камеры были топ, но приложение закрыто 26.04.2026, API гаснет 24.09.2026. Мигрируй на Veo 3.1 / Kling / Seedance.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Было: 20-25с</li>
+<li><span class="dot" style="color:var(--orange)"></span> API до 24.09.26</li>
+<li><span class="dot" style="color:var(--orange)"></span> Переезд на Omni/Seedance!</li>
+</ul>
+<div class="card-foot"><span class="stars">★★☆☆☆ 6.0/10</span><span class="verdict" style="color:var(--orange)">ЗАКАТ</span></div>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ВИДЕОМОДЕЛЬ</th><th>ЦЕНА / 8С</th><th>МАКС</th><th>СИЛА</th><th>ВЕРДИКТ</th></tr></thead>
+<tbody>
+<tr><td><div class="model"><i style="background:#2563EB">O1</i> Omni Flash 1.1</div></td><td>API Google</td><td>интерактив</td><td><span class="tag tag-red">ВИДЕО №1</span></td><td>🥇 Новый №1</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">S5</i> Seedance 2.5</div></td><td style="font-weight:800">~$0.51</td><td>30с / звук</td><td><span class="tag tag-red">УНИВЕРСАЛ</span></td><td>🥈 Дубль 30с</td></tr>
+<tr><td><div class="model"><i style="background:#FF9900">S2</i> Seedance 2/1.5/1</div></td><td>$0.97-1.21</td><td>15с / 2K</td><td><span class="tag tag-red">МОУШН</span></td><td>🥉 Контроль камеры</td></tr>
+<tr><td><div class="model"><i style="background:#7C3AED">W3</i> Wan 3 / 2.7 / 2.2</div></td><td style="color:#00C950;font-weight:800">$0.05-0.36</td><td>720p open</td><td><span class="tag tag-green">OPEN ТОП</span></td><td>Лучше Veo, self-host</td></tr>
+<tr><td><div class="model"><i style="background:#000">K3</i> Kling 3 / 2.5</div></td><td style="color:var(--violet);font-weight:800">$0.09-0.50</td><td>4K60 / 15с</td><td><span class="tag tag-green">ДВИЖЕНИЕ</span></td><td>Люди, объем</td></tr>
+<tr><td><div class="model"><i style="background:#6C5CFF">V1</i> Veo 3.1</div></td><td style="font-weight:800">~$0.40</td><td>4K / 60с ext</td><td><span class="tag tag-violet">КИНО</span></td><td>Реализм+звук</td></tr>
+<tr><td><div class="model"><i style="background:#00C950">VL</i> Veo 3.1 Lite/Fast/Basic</div></td><td>$0.29-0.40</td><td>720p / 8с</td><td><span class="tag tag-green">ДЕШЕВО</span></td><td>Поток, черновики</td></tr>
+<tr><td><div class="model"><i style="background:#4285F4">V3</i> Veo 3</div></td><td>$0.40-1.30</td><td>1080p / 60с</td><td><span class="tag tag-black">БАЗА</span></td><td>Если нет 3.1</td></tr>
+<tr><td><div class="model"><i style="background:#00C950">H2</i> Hailuo 02 / H3</div></td><td>$0.08/сек</td><td>4K / 15с</td><td><span class="tag tag-green">ЭКОНОМ 4K</span></td><td>Дешевый 4K</td></tr>
+<tr><td><div class="model"><i style="background:#6B6B7A">C2</i> Collart 2 / 1</div></td><td>подписка</td><td>соцклипы</td><td><span class="tag tag-black">НИША</span></td><td>Только посты</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">S2</i> Sora 2 / 1</div></td><td style="color:var(--orange);font-weight:800">$0.85</td><td>25с / 1080p</td><td><span class="tag tag-red">ЗАКАТ 24.09.26</span></td><td>⚠️ Мигрируй</td></tr>
+</tbody>
+</table>
+</div>
+<div class="alert">
+<span style="font-size:22px">🎬</span>
+<div><b>Итог медиа-топа 2026:</b> фото с текстом — <b>GPT Image 2.5 Sunburst</b>, фотореализм — <b>Nano Banana Pro</b>, поток — <b>Flare + Banana 2 Lite</b>. Видео №1 — <b>Omni Flash 1.1</b>, дальше <b>Seedance 2.5 / 2.0</b>, <b>Wan 3</b> и <b>Kling 3</b>, потом Veo 3.1. Дешевый 4K — <b>Hailuo</b>. Sora мертва (API до 24.09.26). Цены — API/агрегаторы сен 2026, проверяй перед продом.</div>
+</div>
+</div>
+</section>
+
+<section id="upcoming" class="section container" style="padding-top:10px">
+<h2 class="section-title">🔮 Ожидаемые модели</h2>
+<p class="section-sub">Что на подходе: тексты, видео и фото. Это НЕ вышедшие модели — статусы честно подписаны (анонс / слухи / утечки). Цены и сроки — предварительно, проверяй перед продом.</p>
+<div class="grid4">
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA</span></div>
+<h3>Gemini 3.5 Pro</h3>
+<p>Следующий Pro-флагман Google после 3.8 Flash-линейки. Ждем: длиннее контекст, сильнее reasoning и агенты из коробки.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для: код + агенты</li>
+<li><span class="dot" style="color:var(--violet)"></span> VPN: likely спец, как у Gemini</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--violet)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-black">🔮 СЛУХИ • ТЕКСТ</span><span class="price">TBA</span></div>
+<h3>Gemini 4 Pro</h3>
+<p>Дальний флагман следующего поколения. Пока только слухи: новый уровень мультимодала и рассуждений. Не планируй прод под него.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Статус: слухи</li>
+<li><span class="dot" style="color:var(--ink)"></span> Для: все сложное</li>
+<li><span class="dot" style="color:var(--ink)"></span> Риск: сроки плывут</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict">СЛУХИ</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-green">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA ~дешево</span></div>
+<h3>DeepSeek 4.1 Pro</h3>
+<p>Старший брат V4.1 Flash: тот же фокус на цену, но глубина ближе к флагманам. Потенциально новый король цена/качество.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для: API и прод</li>
+<li><span class="dot" style="color:var(--violet)"></span> VPN: likely не нужен</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--violet)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA</span></div>
+<h3>Claude Fable 5.5</h3>
+<p>Следующий шаг после Fable 5.1: ждем еще живее код и стиль, лучше агенты и инструменты. Главный кандидат в любимцы кодеров.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для: код каждый день</li>
+<li><span class="dot" style="color:var(--violet)"></span> VPN: likely обычный</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--violet)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA дорогой</span></div>
+<h3>Claude Opus 6</h3>
+<p>Преемник Opus 5.5: борьба за трон с GPT 6.5 Sol. Ждем топ reasoning, математику и код. Цена likely $8+.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для: самое сложное</li>
+<li><span class="dot" style="color:var(--violet)"></span> VPN: likely обычный</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--violet)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA дорогой</span></div>
+<h3>GPT 6.5 Sol</h3>
+<p>Полный флагман OpenAI нового поколения: агенты, computer use, исследования. Ответ Opus 6.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--orange)"></span> Для: агенты, research</li>
+<li><span class="dot" style="color:var(--orange)"></span> VPN: likely обычный</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--orange)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-green">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA</span></div>
+<h3>GPT 6.5 Luna</h3>
+<p>Быстрая версия 6.5: почти ум Sol, но в разы быстрее и дешевле. Будущий рабочий конь продакшена.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для: прод, чаты, код</li>
+<li><span class="dot" style="color:var(--violet)"></span> VPN: likely обычный</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--violet)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🔮 СКОРО • ВИДЕО</span><span class="price">TBA</span></div>
+<h3>Sora 3</h3>
+<p>Возможный перезапуск после заката Sora 2 (API гаснет 24.09.26). Логично ждать только если OpenAI покажет новую архитектуру — пока слухов мало.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Статус: слухи / надежда</li>
+<li><span class="dot" style="color:var(--orange)"></span> Для: кино, физика</li>
+<li><span class="dot" style="color:var(--orange)"></span> Риск: могут не выпустить</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--orange)">ПОД ВОПРОСОМ</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🔮 СКОРО • ВИДЕО</span><span class="price">TBA</span></div>
+<h3>Seedance 3</h3>
+<p>Продолжение линейки 2.5/2.0 от ByteDance. Ждем: длиннее дубли, лучше звук и контроль камеры. Главный кандидат в следующий топ.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--orange)"></span> Для: универсал, e-com</li>
+<li><span class="dot" style="color:var(--orange)"></span> Конкурент Veo/Kling</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--orange)">ЖДЕМ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">🔮 СКОРО • ВИДЕО</span><span class="price">TBA</span></div>
+<h3>Omni Flash 1.2</h3>
+<p>Апдейт скоростного видео-брата Nano Banana 2 Lite. Ждем: быстрее монтаж текстом и связка фото→видео в один клик.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--ink)"></span> Для: прототипы, поток</li>
+<li><span class="dot" style="color:var(--ink)"></span> Связка с Banana</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict">ЖДЕМ</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">🔮 СКОРО • ФОТО</span><span class="price">TBA</span></div>
+<h3>Nano Banana 2.5</h3>
+<p>Промежуточное фото между 2 и Pro: ждем баланс цены Lite и качества Pro. Для потока и товаров.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--violet)"></span> Для: поток, товары</li>
+<li><span class="dot" style="color:var(--violet)"></span> VPN: likely спец, как у Gemini</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--violet)">ЖДЕМ</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">🔮 СКОРО • ФОТО</span><span class="price">TBA</span></div>
+<h3>GPT Image 3</h3>
+<p>Следующее поколение после 2.5 Sunburst/Flare. Ждем: еще точнее текст и правки, больше рефов и форматов.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Статус: ожидается</li>
+<li><span class="dot" style="color:var(--orange)"></span> Для: постеры, реклама</li>
+<li><span class="dot" style="color:var(--orange)"></span> Конкурент Banana</li>
+</ul>
+<div class="card-foot"><span class="stars">☆☆☆☆☆ ?/10</span><span class="verdict" style="color:var(--orange)">ЖДЕМ</span></div>
+</div>
+</div>
+<div class="chart-box" style="margin-top:16px">
+<h3>📊 Примерное сравнение текстов (прогноз, не замеры)</h3>
+<p>Ориентир по анонсам и утечкам: кто кого должен обогнать. Точные цифры будут после релиза</p>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Opus 6 ~10</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#6C5CFF"></div></div><b>флагман</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">GPT 6.5 Sol ~10</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#FF3D00"></div></div><b>флагман</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Fable 5.5 ~9.9</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:99%;height:100%;background:#0F0F0F"></div></div><b>код</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Gemini 4 Pro ~9.9</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:99%;height:100%;background:#4285F4"></div></div><b>слухи</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">GPT 6.5 Luna ~9.7</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:97%;height:100%;background:#FF9900"></div></div><b>прод</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Gemini 3.5 Pro ~9.6</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:96%;height:100%;background:#00C950"></div></div><b>баланс</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">DeepSeek 4.1 Pro ~9.6</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:96%;height:100%;background:#000"></div></div><b>дешево</b></div>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>МОДЕЛЬ</th><th>ТИП</th><th>СТАТУС</th><th>ЧТО ЖДЕМ</th></tr></thead>
+<tbody>
+<tr><td><div class="model"><i style="background:#4285F4">G5</i> Gemini 3.5 Pro</div></td><td>Текст</td><td><span class="tag tag-violet">ОЖИДАЕТСЯ</span></td><td>Pro-флагман: контекст + reasoning</td></tr>
+<tr><td><div class="model"><i style="background:#0F0F0F">G4</i> Gemini 4 Pro</div></td><td>Текст</td><td><span class="tag tag-black">СЛУХИ</span></td><td>Следующее поколение, сроки неизвестны</td></tr>
+<tr><td><div class="model"><i style="background:#0F0F0F">D4</i> DeepSeek 4.1 Pro</div></td><td>Текст</td><td><span class="tag tag-green">ОЖИДАЕТСЯ</span></td><td>Глубина флагмана за копейки</td></tr>
+<tr><td><div class="model"><i style="background:#8B5CF6">F5</i> Claude Fable 5.5</div></td><td>Текст</td><td><span class="tag tag-violet">ОЖИДАЕТСЯ</span></td><td>Живее код и агенты после 5.1</td></tr>
+<tr><td><div class="model"><i style="background:#6C5CFF">O6</i> Claude Opus 6</div></td><td>Текст</td><td><span class="tag tag-violet">ОЖИДАЕТСЯ</span></td><td>Трон: бой с GPT 6.5 Sol</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">S6</i> GPT 6.5 Sol</div></td><td>Текст</td><td><span class="tag tag-red">ОЖИДАЕТСЯ</span></td><td>Флагман: агенты и research</td></tr>
+<tr><td><div class="model"><i style="background:#FF9900">L6</i> GPT 6.5 Luna</div></td><td>Текст</td><td><span class="tag tag-green">ОЖИДАЕТСЯ</span></td><td>Быстрый прод-конь</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">S3</i> Sora 3</div></td><td>Видео</td><td><span class="tag tag-red">ПОД ВОПРОСОМ</span></td><td>Перезапуск после заката Sora 2</td></tr>
+<tr><td><div class="model"><i style="background:#FF9900">S3</i> Seedance 3</div></td><td>Видео</td><td><span class="tag tag-red">ОЖИДАЕТСЯ</span></td><td>Длиннее дубли, лучше звук</td></tr>
+<tr><td><div class="model"><i style="background:#2563EB">O2</i> Omni Flash 1.2</div></td><td>Видео</td><td><span class="tag tag-black">ОЖИДАЕТСЯ</span></td><td>Скорость + монтаж текстом</td></tr>
+<tr><td><div class="model"><i style="background:#00C950">N5</i> Nano Banana 2.5</div></td><td>Фото</td><td><span class="tag tag-green">ОЖИДАЕТСЯ</span></td><td>Баланс Lite-цены и Pro-качества</td></tr>
+<tr><td><div class="model"><i style="background:#FF3D00">G3</i> GPT Image 3</div></td><td>Фото</td><td><span class="tag tag-red">ОЖИДАЕТСЯ</span></td><td>Точнее текст и правки</td></tr>
+</tbody>
+</table>
+</div>
+<div class="alert">
+<span style="font-size:22px">🔮</span>
+<div><b>Как читать раздел:</b> это ожидания, а не факты — оценки ?/10, цены TBA. Не строй прод под невышедшие модели. Как только выйдут — перенесем в основной топ с замерами.<br><a href="https://t.me/ProAIHere" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Анонсы выхода — t.me/ProAIHere</a></div>
+</div>
+</section>
+
+<section id="prompts" class="section container" style="padding-top:10px">
+<h2 class="section-title">💡 Промты, команды и плагины</h2>
+<p class="section-sub">Готовые промты для ChatGPT, Claude и Gemini — копируй кнопкой. Плюс формула фото-промтов, официальные плагины и расширения. Собрано из открытых библиотек 2026: Awesome ChatGPT Prompts, Anthropic Docs, OpenAI Cookbook.</p>
+<div class="tabs">
+<button class="tab active" data-ptab="text">✍️ Текст</button>
+<button class="tab" data-ptab="photo">🎨 Фото</button>
+<button class="tab" data-ptab="plugins">🧩 Плагины</button>
+</div>
+<div id="prompts-text">
+<div class="grid4">
+<div class="card">
+<div class="card-top"><span class="tag tag-green">№1 УНИВЕРСАЛ</span><span class="price">GPT/Claude/Gemini</span></div>
+<h3>Улучшатель любого ответа</h3>
+<pre id="pr1" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Ты — эксперт [область]. Задача: [что сделать]. Контекст: [для кого, зачем]. Формат: [список/таблица/по шагам]. Ограничения: [объем, тон]. Если не хватает данных — задай 3 уточняющих вопроса, потом отвечай.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr1">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">КОД</span><span class="price">Claude топ</span></div>
+<h3>Код-ревью</h3>
+<pre id="pr2" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Проверь код: 1) баги и уязвимости со строками, 2) узкие места — циклы, N+1, блокировки, 3) нейминг и читаемость, 4) перепиши самый критичный кусок. Оценка /10. Код: [вставь]</pre>
+<div class="card-foot"><button class="tab" data-copy="pr2">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">КОД</span><span class="price">любая</span></div>
+<h3>Дебаг за 2 шага</h3>
+<pre id="pr3" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Ошибка: [текст ошибки]. Код: [вставь]. Объясни причину простыми словами и дай 2 фикса: быстрый и правильный.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr3">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">ТЕКСТЫ</span><span class="price">GPT топ</span></div>
+<h3>SEO-статья без воды</h3>
+<pre id="pr4" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">План статьи [тема] для [аудитория]: заголовки H2 без слов «Введение/Заключение», по 3 тезиса на раздел, 1 факт со статистикой на раздел, CTA в конце.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr4">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">УЧЕБА</span><span class="price">Gemini топ</span></div>
+<h3>Объясни + проверь</h3>
+<pre id="pr5" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Объясни [тема] как для 12-летнего. Потом задай 5 вопросов с нарастающей сложностью и проверь мои ответы.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr5">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">БИЗНЕС</span><span class="price">любая</span></div>
+<h3>Холодное письмо</h3>
+<pre id="pr6" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Холодное письмо [кому], до 150 слов, живым тоном без шаблонов: боль → решение → 1 призыв к действию.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr6">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">CLAUDE XML</span><span class="price">Claude</span></div>
+<h3>Разбор документа</h3>
+<pre id="pr7" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">&lt;документ&gt;[вставь текст]&lt;/документ&gt; Выдели: 3 главных тезиса, все цифры, что автор умалчивает. Формат — bullets, без предисловий.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr7">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-black">АНАЛИТИКА</span><span class="price">любая</span></div>
+<h3>Сравнение в таблицу</h3>
+<pre id="pr8" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Сравни [A] vs [B] по критериям [перечисли]: таблица + вердикт кому что брать. Без общих фраз.</pre>
+<div class="card-foot"><button class="tab" data-copy="pr8">📋 Копировать</button></div>
+</div>
+</div>
+<div class="alert">
+<span style="font-size:22px">📌</span>
+<div><b>Приемы, которые реально работают (Anthropic + OpenAI docs):</b> конкретика вместо «сделай хорошо»; примеры желаемого формата (few-shot); XML-теги для Claude (&lt;инструкции&gt;, &lt;контекст&gt;); JSON-структура для GPT; разбивка сложной задачи на шаги; разрешение сказать «не знаю» против галлюцинаций.</div>
+</div>
+</div>
+<div id="prompts-photo" style="display:none">
+<div class="chart-box" style="margin-bottom:16px">
+<h3>📐 Формула фото-промта (40–80 слов)</h3>
+<p>Субъект → камера и объектив → свет → стиль/сцена → детали и запреты. Недобор (&lt;15 слов) дает generic, стена 100+ слов размывает фокус</p>
+<pre id="prf0" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">[субъект + действие], [камера: напр. 85mm f/1.8], [свет: soft window light], [стиль: photorealistic / watercolor / 3D render], [сцена и настроение], [no text / детали]</pre>
+<div style="margin-top:8px"><button class="tab" data-copy="prf0">📋 Копировать формулу</button></div>
+</div>
+<div class="grid4">
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">ПОРТРЕТ</span><span class="price">Nano Banana</span></div>
+<h3>Живое фото лица</h3>
+<pre id="prf1" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">photorealistic portrait, soft window light, 85mm f/1.8, natural skin texture with freckles, neutral background, shallow depth of field</pre>
+<div class="card-foot"><button class="tab" data-copy="prf1">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-violet">ТОВАРКА</span><span class="price">любая</span></div>
+<h3>Продуктовое фото</h3>
+<pre id="prf2" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">studio product photo of matte ceramic mug on polished concrete, three-point soft lighting, macro texture, minimalist, centered, no text</pre>
+<div class="card-foot"><button class="tab" data-copy="prf2">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-red">ТЕКСТ НА КАРТИНКЕ</span><span class="price">GPT Image</span></div>
+<h3>Постер с надписью</h3>
+<pre id="prf3" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Poster 4:5, headline «ЗАПУСК ЛЕТА» in large readable letters on top, minimal product scene below, soft yellow background, modern style</pre>
+<div class="card-foot"><button class="tab" data-copy="prf3">📋 Копировать</button></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">ПРАВКА</span><span class="price">GPT/Banana</span></div>
+<h3>Точечная правка фото</h3>
+<pre id="prf4" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Keep everything the same, change only [что] to [на что], match light and shadows. What must stay: [перечисли].</pre>
+<div class="card-foot"><button class="tab" data-copy="prf4">📋 Копировать</button></div>
+</div>
+</div>
+</div>
+<div id="prompts-plugins" style="display:none">
+<div class="grid3">
+<div class="step">
+<div class="step-num">1</div>
+<h4>🔌 Официальные плагины ChatGPT</h4>
+<p>Ставятся во вкладке Plugins, работают в Chat/Work/Codex:<br>• <b>Gmail</b> — черновики и разбор почты<br>• <b>Google Drive</b> — Docs/Sheets/Slides<br>• <b>Slack</b> — саммари каналов<br>• <b>Codex Security</b> — скан уязвимостей<br>• <b>Computer Use</b> — управление приложениями<br>• <b>Hugging Face</b> — модели и датасеты</p>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<h4>🌐 Расширения для браузера</h4>
+<p>• <b>Sider</b> — все модели в сайдбаре, 6M+ юзеров<br>• <b>Monica</b> — мультиассистент на любой странице<br>• <b>Merlin AI</b> — ответы с поиском везде<br>• <b>ChatGPTBox</b> — open-source, вызов по Ctrl+B<br>• <b>StylerGPT</b> — темы + менеджер промтов<br>• <b>Perplexity</b> — исследования с цитатами</p>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<h4>⌨️ Команды-приемы</h4>
+<p>• <b>Claude:</b> XML-теги + прямой стиль без воды<br>• <b>GPT:</b> JSON-структура и формат на входе<br>• <b>Цепочка:</b> саммари → проверка → улучшение<br>• <b>Смена модели</b> под задачу, а не одна на все<br>• <b>Стоп-слова:</b> «без предисловий, сразу к делу»</p>
+</div>
+</div>
+<div class="alert">
+<span style="font-size:22px">⚠️</span>
+<div><b>Про лимиты честно:</b> джейлбрейков тут нет — они убивают аккаунт. Легальные пути, если модель отказывает: разбей задачу на разрешенные подзадачи, добавь контекст и формат, смени модель (open-сборки Qwen / GLM / Wan через API и self-host живут по другим правилам).</div>
+</div>
+</div>
+</section>
+
+<section id="guide" class="section container">
+<h2 class="section-title">Как покупать API и пользоваться из России</h2>
+<p class="section-sub">Пошаговый гайд 2026 — без бана и переплат. Обновлено под новинки: GPT 6, Opus 5.5, Muse Spark.</p>
+<div class="guide-grid">
+<div class="step">
+<div class="step-num">1</div>
+<h4>🔑 Где брать API</h4>
+<p><b>Дешево и без VPN:</b> DeepSeek V4.1 Flash, GLM-5.3 Flash, Kimi K3, Qwen3 через OpenRouter, ProxyAPI.ru<br><b>Топ:</b> Claude Opus 5.5 / Fable 5.1, GPT 6 Sol / Luna, Muse Spark 1.3, Gemini 3.8 — через OpenRouter или напрямую с VPN.<br><b>Фото/видео:</b> GPT Image, Nano Banana, Veo, Kling, Seedance, Wan — через fal.ai / Replicate / OpenRouter, VPN обычно не нужен.<br>Не бери GPT-5.5 Pro — переплата. Sora не бери — закрывается 24.09.26.</p>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<h4>💳 Как оплатить из РФ</h4>
+<p>Карты РФ не работают. Рабочие варианты:<br>• Виртуалка Pyypl / Oplatym<br>• Сервисы WantToPay, Oplatym.ru<br>• Крипта через OpenRouter<br>• Баланс через посредников</p>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<h4>🛡️ VPN и доступ</h4>
+<p><b>Claude / GPT / Muse Spark:</b> нужен обычный VPN (любой не-РФ IP). Подойдет VLESS / Amnezia, сервер NL / DE / FI.<br><b>DeepSeek / Qwen / GLM / Kimi:</b> VPN не нужен, если берешь через OpenRouter или ProxyAPI.ru.<br><b>Gemini 3.7 / 3.8 Flash — ВНИМАНИЕ:</b> нужен <b>специальный VPN</b>, обычный российский VPN не подойдет.</p>
+<div class="vpn-box">⚠️ <b>Gemini — специальный VPN:</b> только чистый IP США / ЕС / Сингапур (не РФ, не shared-прокси), Google-аккаунт с регионом НЕ Россия, отдельный Chrome-профиль без RU-номера. AI Studio и приложение Gemini банят за RU IP и +7 номер. Обход без танцев: бери Gemini через <b>OpenRouter / ProxyAPI.ru / API-ключ</b> — там VPN вообще не нужен.</div>
+</div>
+</div>
+<div class="alert">
+<span style="font-size:22px">⚠️</span>
+<div><b>Лайфхак от ПРО.ИИ:</b> Не хочешь париться с картами? В нашем телеграме мы каждый день выкладываем <b>бесплатные ключи API, аккаунты и промпты</b> + прокси для РФ. Просто забирай и пользуйся.<br><a href="https://t.me/ProAIHere" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">→ БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ — t.me/ProAIHere</a></div>
+</div>
+<div class="cta-big">
+<div>
+<h2>Хочешь халяву? Тебе сюда 👇</h2>
+<p>Все сливы, промпты и гайды по обходу блокировок — только у нас.</p>
+</div>
+<a href="https://t.me/ProAIHere" target="_blank" class="btn-big-tg">✈️ БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ — t.me/ProAIHere</a>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<p>© 2026 ПРО.ИИ — независимый проект. Не связаны с OpenAI, Anthropic, Google, Meta. Цены актуальны на сентябрь 2026.</p>
+<p style="margin-top:6px">Сделано с ❤️ для тех, кто не хочет переплачивать. <a href="https://t.me/ProAIHere" target="_blank" style="color:var(--orange);font-weight:800">Подпишись: t.me/ProAIHere — БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ</a></p>
+</div>
+</footer>
+
+<script>
+// smooth cursor - как было
+const dot=document.getElementById('cursorDot'), ring=document.getElementById('cursorRing');
+let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'});
+function loop(){rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop)} loop();
+document.querySelectorAll('a,button,.card,.tab,.btn-primary,.btn-secondary').forEach(el=>{
+el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+});
+
+// charts - только 2 легких, без анимаций чтобы не лагало
+function initCharts(){
+if(window.__chartsDone) return;
+if(typeof Chart==='undefined'){setTimeout(initCharts,300);return;}
+window.__chartsDone=true;
+Chart.defaults.animation = false;
+Chart.defaults.responsive = true;
+Chart.defaults.devicePixelRatio = 1;
+const barCtx=document.getElementById('barChart');
+if(barCtx) new Chart(barCtx,{
+type:'bar',
+data:{
+labels:['Qwen3-235B','DeepSeek V4.1 Flash','GLM-5.3 Flash','GPT-5 mini','Kimi K3','Gemini 3.7 Flash','Muse Spark 1.3','GPT 6 Luna','GPT 6 Sol / Opus 5.5','GPT-5.5 Pro'],
+datasets:[{
+label:'Цена $ / 1M input',
+data:[0.09,0.10,0.12,0.125,0.35,0.75,1.2,2,7,30],
+backgroundColor:['#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#6C5CFF','#FF3D00','#FF3D00','#0F0F0F'],
+borderColor:'#0F0F0F',
+borderWidth:2,
+borderRadius:6,
+barThickness:18
+}]
+},
+options:{
+indexAxis:'y',
+plugins:{legend:{display:false}},
+scales:{
+x:{type:'logarithmic',grid:{color:'rgba(15,15,15,0.08)'},ticks:{color:'#0F0F0F',callback:v=>[0.09,0.1,0.35,0.75,1.2,2,7,30].includes(v)?'$'+v:''}},
+y:{grid:{display:false},ticks:{color:'#0F0F0F',font:{weight:700,size:11}}}
+}
+}
+});
+const radarCtx=document.getElementById('radarChart');
+new Chart(radarCtx,{
+type:'radar',
+data:{
+labels:['Код','Рассуждения','Агенты','Мультимодал','Скорость'],
+datasets:[
+{label:'Claude Opus 5.5',data:[10,10,9,8,7],borderColor:'#6C5CFF',backgroundColor:'rgba(108,92,255,0.18)',pointBackgroundColor:'#6C5CFF',borderWidth:2},
+{label:'GPT 6 Sol',data:[10,9,10,9,8],borderColor:'#FF3D00',backgroundColor:'rgba(255,61,0,0.14)',pointBackgroundColor:'#FF3D00',borderWidth:2},
+{label:'Claude Fable 5.1',data:[10,9,9,8,8],borderColor:'#0F0F0F',backgroundColor:'rgba(15,15,15,0.08)',pointBackgroundColor:'#0F0F0F',borderWidth:2},
+{label:'Muse Spark 1.3',data:[9,8,9,10,9],borderColor:'#2563EB',backgroundColor:'rgba(37,99,235,0.14)',pointBackgroundColor:'#2563EB',borderWidth:2},
+{label:'Gemini 3.8 Flash',data:[8,8,8,10,10],borderColor:'#00C950',backgroundColor:'rgba(0,201,80,0.14)',pointBackgroundColor:'#00C950',borderWidth:2}
+]
+},
+options:{
+scales:{r:{min:0,max:10,ticks:{display:false,stepSize:2},grid:{color:'rgba(15,15,15,0.12)'},angleLines:{color:'rgba(15,15,15,0.12)'},pointLabels:{color:'#0F0F0F',font:{size:11,weight:700}}}},
+plugins:{legend:{labels:{color:'#0F0F0F',boxWidth:12,font:{weight:700}}}}
+}
+});
+// топ-10 и выгода теперь статика в HTML - Chart.js не трогаем, лагов нет
+}
+// медиа-вкладки фото/видео
+document.querySelectorAll('[data-mtab]').forEach(btn=>{
+btn.addEventListener('click',()=>{
+document.querySelectorAll('[data-mtab]').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+const v=btn.getAttribute('data-mtab');
+document.getElementById('media-photo').style.display=v==='photo'?'block':'none';
+document.getElementById('media-video').style.display=v==='video'?'block':'none';
+});
+});
+// вкладки промтов
+document.querySelectorAll('[data-ptab]').forEach(btn=>{
+btn.addEventListener('click',()=>{
+document.querySelectorAll('[data-ptab]').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+const v=btn.getAttribute('data-ptab');
+document.getElementById('prompts-text').style.display=v==='text'?'block':'none';
+document.getElementById('prompts-photo').style.display=v==='photo'?'block':'none';
+document.getElementById('prompts-plugins').style.display=v==='plugins'?'block':'none';
+});
+});
+// копирование промтов
+document.querySelectorAll('[data-copy]').forEach(btn=>{
+btn.addEventListener('click',()=>{
+const el=document.getElementById(btn.getAttribute('data-copy'));
+if(!el) return;
+const txt=el.innerText;
+if(navigator.clipboard) navigator.clipboard.writeText(txt);
+btn.textContent='✅ Скопировано';
+setTimeout(()=>{btn.textContent='📋 Копировать';},1500);
+});
+});
+// бегущая строка топа (чистый transform, без лагов)
+(function(){
+const t=document.getElementById('tickerTrack');
+if(!t) return;
+const items=['GPT 6 LUNA — ЛУЧШАЯ ДЕШЕВАЯ','OPUS 5.5 — КОРОЛЬ','GPT 6 SOL — МОЩЬ','FABLE 5.1 — ИМБА','DEEPSEEK 4.1 — $0.10','MUSE SPARK 1.3','KIMI K3 — 2M','GLM-5.3 — OPEN','OMNI FLASH — ВИДЕО №1','SEEDANCE 2.5'];
+const half=items.map(s=>'<span style="padding:0 18px">✦ '+s+'</span>').join('');
+t.innerHTML=half+half;
+})();
+// появление при скролле (только opacity/transform, один раз)
+(function(){
+if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+const els=document.querySelectorAll('.section-title,.card,.chart-box,.step,.detail,.hero-card,.cta-big,.alert,.table-wrap');
+els.forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=Math.min((i%4)*70,210)+'ms';});
+if(!('IntersectionObserver' in window)){els.forEach(el=>el.classList.add('in'));return;}
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:0.05});
+els.forEach(el=>io.observe(el));
+})();
+if('IntersectionObserver' in window){
+const sec=document.getElementById('compare');
+if(sec){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){initCharts();io.disconnect();}});},{rootMargin:'300px'});io.observe(sec);}
+else initCharts();
+setTimeout(()=>{if(!window.__chartsDone) initCharts();},4000);
+}else{window.addEventListener('load',initCharts,{once:true});}
+
+</script>
+</body>
+</html>
