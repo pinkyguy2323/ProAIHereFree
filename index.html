@@ -258,7 +258,7 @@ html{scroll-behavior:auto}
 <section class="hero container">
 <div class="hero-grid">
 <div>
-<div class="eyebrow">● ТОЧНЫЙ РЕЙТИНГ • ОБНОВЛЕНО СЕНТЯБРЬ 2026 • 38 МОДЕЛЕЙ + 12 ОЖИДАЕМЫХ + АРХИВ</div>
+<div class="eyebrow">● ТОЧНЫЙ РЕЙТИНГ • ОБНОВЛЕНО СЕНТЯБРЬ 2026 • 39 МОДЕЛЕЙ + 12 ОЖИДАЕМЫХ + АРХИВ</div>
 <h1>Честный гид<br>по <i>нейросетям</i><br><em>без воды</em></h1>
 <p>Разложили все по полочкам: какие ИИ — <b>имба за копейки</b>, какие — <b>дорогие но идеальные</b>, а за какие ты просто переплачиваешь. Добавили <b>8 горячих новинок 2026</b> + отдельную вкладку <b>📸 Фото+Видео</b>: GPT Image 2.5 / 2, Nano Banana Pro / 2 / 2 Lite, Veo 3.1, Seedance, Kling, Wan, Sora, Omni Flash. С цифрами, графиками и гайдом для России.</p>
 <div class="hero-actions">
@@ -334,6 +334,17 @@ html{scroll-behavior:auto}
 <li><span class="dot" style="color:var(--violet)"></span> Без VPN</li>
 </ul>
 <div class="card-foot"><span class="stars">★★★★☆ 9.3/10</span><span class="verdict" style="color:var(--violet)">ВЫГОДНО</span></div>
+</div>
+<div class="card">
+<div class="card-top"><span class="tag tag-green">🆕 КАК LUNA</span><span class="price">~$0.45 / 1M</span></div>
+<h3>MiMo V2.6</h3>
+<p>Новинка Xiaomi: в тестах идет на уровне GPT 6 Luna, а стоит копейки. Open-weight.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Уровень Luna в тестах</li>
+<li><span class="dot" style="color:var(--violet)"></span> Open-weight</li>
+<li><span class="dot" style="color:var(--violet)"></span> 1M контекст</li>
+</ul>
+<div class="card-foot"><span class="stars">★★★★★ 9.8/10</span><span class="verdict" style="color:var(--violet)">КАК LUNA</span></div>
 </div>
 </div>
 </section>
@@ -913,6 +924,7 @@ html{scroll-behavior:auto}
 <tr><td><div class="model"><i style="background:#00C950">G8</i> Gemini 3.8 Flash</div></td><td>Флагман</td><td>Флагман</td><td><span class="tag tag-black">АБСОЛЮТ ТОП</span></td><td>Скорость</td></tr>
 <tr><td><div class="model"><i style="background:#FF5500">SL</i> GPT 6 Sol</div></td><td style="font-weight:800">$6</td><td>$30</td><td><span class="tag tag-red">НОВИНКА 2026</span></td><td>🔥 Агент №1</td></tr>
 <tr><td><div class="model"><i style="background:#FF9900">LU</i> GPT 6 Luna</div></td><td style="font-weight:800">$2</td><td>$8</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥇 Лучший дешевый</td></tr>
+<tr><td><div class="model"><i style="background:#FF6B00">M2</i> MiMo V2.6</div></td><td style="color:var(--violet);font-weight:800">~$0.45</td><td>~$0.90</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥈 Как Luna</td></tr>
 <tr><td><div class="model"><i style="background:#D97706">O5</i> Claude Opus 5.5</div></td><td style="font-weight:800">$8</td><td>$35</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>👑 Новый №1</td></tr>
 <tr><td><div class="model"><i style="background:#8B5CF6">F1</i> Claude Fable 5.1</div></td><td style="font-weight:800">$4</td><td>$20</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>✨ +15% к коду</td></tr>
 <tr><td><div class="model"><i style="background:#0F0F0F">D4</i> DeepSeek V4.1 Flash</div></td><td style="color:var(--violet);font-weight:800">~$0.10</td><td>~$0.25</td><td><span class="tag tag-green">НОВИНКА 2026</span></td><td>🥇 Новый имба-король</td></tr>
@@ -1568,11 +1580,11 @@ const barCtx=document.getElementById('barChart');
 if(barCtx) new Chart(barCtx,{
 type:'bar',
 data:{
-labels:['Qwen3-235B','DeepSeek V4.1 Flash','GLM-5.3 Flash','GPT-5 mini','Kimi K3','Gemini 3.7 Flash','Muse Spark 1.3','GPT 6 Luna','GPT 6 Sol / Opus 5.5','GPT-5.5 Pro'],
+labels:['Qwen3-235B','DeepSeek V4.1 Flash','GLM-5.3 Flash','GPT-5 mini','Kimi K3','MiMo V2.6','Gemini 3.7 Flash','Muse Spark 1.3','GPT 6 Luna','GPT 6 Sol / Opus 5.5','GPT-5.5 Pro'],
 datasets:[{
 label:'Цена $ / 1M input',
-data:[0.09,0.10,0.12,0.125,0.35,0.75,1.2,2,7,30],
-backgroundColor:['#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#6C5CFF','#FF3D00','#FF3D00','#0F0F0F'],
+data:[0.09,0.10,0.12,0.125,0.35,0.45,0.75,1.2,2,7,30],
+backgroundColor:['#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#6C5CFF','#FF3D00','#FF3D00','#0F0F0F'],
 borderColor:'#0F0F0F',
 borderWidth:2,
 borderRadius:6,
@@ -1583,7 +1595,7 @@ options:{
 indexAxis:'y',
 plugins:{legend:{display:false}},
 scales:{
-x:{type:'logarithmic',grid:{color:'rgba(15,15,15,0.08)'},ticks:{color:'#0F0F0F',callback:v=>[0.09,0.1,0.35,0.75,1.2,2,7,30].includes(v)?'$'+v:''}},
+x:{type:'logarithmic',grid:{color:'rgba(15,15,15,0.08)'},ticks:{color:'#0F0F0F',callback:v=>[0.09,0.1,0.35,0.45,0.75,1.2,2,7,30].includes(v)?'$'+v:''}},
 y:{grid:{display:false},ticks:{color:'#0F0F0F',font:{weight:700,size:11}}}
 }
 }
@@ -1662,6 +1674,7 @@ els.forEach(el=>io.observe(el));
 const DB={
 text:[
 {n:'GPT 6 Luna',a:'luna луна gpt openai дешевая быстрая',price:'$2 / $8',q:9.9,exl:'Контекст',ex:'512K',v:'🥇 Лучший дешевый',pop:'GPT 6 Sol'},
+{n:'MiMo V2.6',a:'mimo мимо xiaomi open тесты luna',price:'~$0.45 / ~$0.90',q:9.8,exl:'Контекст',ex:'1M',v:'🥈 Как Luna',pop:'GPT 6 Luna'},
 {n:'DeepSeek V4.1 Flash',a:'deepseek дипсик flash 4.1 имба копейки',price:'~$0.10 / ~$0.25',q:9.8,exl:'Контекст',ex:'256K',v:'🥇 Новый имба-король',pop:'GPT 6 Luna'},
 {n:'Kimi K3',a:'kimi кими moonshot длинный',price:'$0.35 / $1.20',q:9.5,exl:'Контекст',ex:'2M',v:'2M контекст',pop:'GPT 6 Luna'},
 {n:'GLM-5.3 Flash',a:'glm глм zhipu open русский',price:'~$0.12 / ~$0.35',q:9.3,exl:'Контекст',ex:'200K',v:'Дешевый open',pop:'DeepSeek V4.1 Flash'},
@@ -1731,7 +1744,7 @@ const DEF={text:['GPT 6 Luna','DeepSeek V4.1 Flash'],video:['Omni Flash 1.1','Ve
 const $id=id=>document.getElementById(id);
 function fdata(){return DB[ftab];}
 function ffind(n){return fdata().find(m=>m.n===n);}
-const PIN={'GPT 6 Luna':2,'DeepSeek V4.1 Flash':0.10,'Kimi K3':0.35,'GLM-5.3 Flash':0.12,'GPT 6 Sol':6,'Claude Opus 5.5':8,'Claude Fable 5.1':10,'Muse Spark 1.3':1.2,'DeepSeek V4 Flash':0.14,'Gemini 3.7 Flash':0.75,'GPT-5 mini':0.125,'Qwen3-235B-A22B':0.09,'Claude Fable 5':10,'GPT-6 Astra':11.9,'Claude Opus 5':5,'Gemini 3.8 Flash':2,'Claude Opus 4.8':5,'Claude Opus 4.7':5,'GPT-5.5':5,'GPT-5.5 Pro':30,'GPT-5.2':5,'Claude Sonnet 4.6':3,'DeepSeek V3.1':0.55,'GPT-4o':2.5,'Claude 3.5 Sonnet':3,'DeepSeek V3':0.32,'Omni Flash 1.1':null,'Seedance 2.5':0.51,'Seedance 2.0':1.1,'Kling 1.0':0.3,'Runway Gen-2':null,'Pika 1.0':null,'Luma Dream Machine':null,'Stable Video Diffusion':0,'Wan 3 / 2.7':0.2,'Wan 2.2':0,'Kling 3 / 2.5':0.3,'Veo 3.1 (Standart)':0.4,'Veo 3.1 Lite / Fast':0.35,'Veo 3':0.85,'Hailuo 02 / MiniMax H3':0.64,'Collart 2':null,'Collart 1':null,'Sora 2':0.85,'Sora 1':0.85,'GPT Image 2.5 Sunburst':0.22,'GPT Image 2.5 Flare':0.085,'GPT Image 2':0.1,'Nano Banana Pro':0.15,'Nano Banana 2':0.067,'Nano Banana 2 Lite':0.034,'Flux 2 / Ideogram 3':0.035,'Midjourney V7':null,'DALL-E 3':0.04,'Midjourney V6':null,'Stable Diffusion XL':0,'Nano Banana 1':0.067,'DALL-E 2':0.02,'Midjourney V5':null,'Stable Diffusion 1.5':0};
+const PIN={'GPT 6 Luna':2,'DeepSeek V4.1 Flash':0.10,'Kimi K3':0.35,'GLM-5.3 Flash':0.12,'MiMo V2.6':0.45,'GPT 6 Sol':6,'Claude Opus 5.5':8,'Claude Fable 5.1':10,'Muse Spark 1.3':1.2,'DeepSeek V4 Flash':0.14,'Gemini 3.7 Flash':0.75,'GPT-5 mini':0.125,'Qwen3-235B-A22B':0.09,'Claude Fable 5':10,'GPT-6 Astra':11.9,'Claude Opus 5':5,'Gemini 3.8 Flash':2,'Claude Opus 4.8':5,'Claude Opus 4.7':5,'GPT-5.5':5,'GPT-5.5 Pro':30,'GPT-5.2':5,'Claude Sonnet 4.6':3,'DeepSeek V3.1':0.55,'GPT-4o':2.5,'Claude 3.5 Sonnet':3,'DeepSeek V3':0.32,'Omni Flash 1.1':null,'Seedance 2.5':0.51,'Seedance 2.0':1.1,'Kling 1.0':0.3,'Runway Gen-2':null,'Pika 1.0':null,'Luma Dream Machine':null,'Stable Video Diffusion':0,'Wan 3 / 2.7':0.2,'Wan 2.2':0,'Kling 3 / 2.5':0.3,'Veo 3.1 (Standart)':0.4,'Veo 3.1 Lite / Fast':0.35,'Veo 3':0.85,'Hailuo 02 / MiniMax H3':0.64,'Collart 2':null,'Collart 1':null,'Sora 2':0.85,'Sora 1':0.85,'GPT Image 2.5 Sunburst':0.22,'GPT Image 2.5 Flare':0.085,'GPT Image 2':0.1,'Nano Banana Pro':0.15,'Nano Banana 2':0.067,'Nano Banana 2 Lite':0.034,'Flux 2 / Ideogram 3':0.035,'Midjourney V7':null,'DALL-E 3':0.04,'Midjourney V6':null,'Stable Diffusion XL':0,'Nano Banana 1':0.067,'DALL-E 2':0.02,'Midjourney V5':null,'Stable Diffusion 1.5':0};
 function fpin(n){return (n in PIN)?PIN[n]:null;}
 function fsame(m){const p=fpin(m.n);if(p===null)return [];const arr=fdata().filter(x=>x.n!==m.n&&fpin(x.n)!==null&&fpin(x.n)>=p*0.33&&fpin(x.n)<=p*3);arr.sort((a,b)=>b.q-a.q);return arr.slice(0,3);}
 function fbar(q){return '<div style="background:#eee;border:2px solid #0F0F0F;height:16px;margin:8px 0"><div style="width:'+(q*10)+'%;height:100%;background:'+(q>=9.5?'#6C5CFF':(q>=9?'#00C950':'#FF3D00'))+'"></div></div>';}
