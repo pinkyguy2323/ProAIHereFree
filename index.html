@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#FFFBF0">
+<meta name="theme-color" content="#0C0B10">
 <title>ПРО.ИИ — Честный гид по нейросетям</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,25 +12,26 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#FFFBF0;--paper:#FFFFFF;--ink:#0F0F0F;--lime:#E6FF00;--violet:#6C5CFF;--orange:#FF3D00;--muted:#6B6B7A;--line:#0F0F0F}
+:root{--bg:#FFFFFF;--paper:#FFFFFF;--ink:#0F0F0F;--lime:#E6FF00;--violet:#6C5CFF;--orange:#FF3D00;--muted:#6B6B7A;--line:#0F0F0F;--shade:#F5F4F8;--track:#EDEDF2;--win:#E9FFD8;--alert:#FFF7CC;--alert2:#E9FFD8;--warn:#FFF0F0;--vpn:#FFE9E4;--darkbar:#0F0F0F;--grid:rgba(15,15,15,0.10);--navbg:rgba(255,255,255,0.95);--cta:#0F0F0F;--ctat:#FFFFFF;--dot:rgba(15,15,15,0.055);--bodytext:#333333;--limeink:#0F0F0F}
+html.dark{--bg:#0C0B10;--paper:#17161D;--ink:#F4F2FB;--muted:#A8A4BC;--line:#F4F2FB;--violet:#8E7DFF;--orange:#FF5C2E;--lime:#D9FF35;--shade:#201E29;--track:#2A2833;--win:#14351F;--alert:#3A3417;--alert2:#14321F;--warn:#3B1B17;--vpn:#3A1F1A;--darkbar:#F4F2FB;--grid:rgba(255,255,255,0.12);--navbg:rgba(12,11,16,0.95);--cta:#1A1822;--dot:rgba(255,255,255,0.06);--bodytext:#D8D5E4;--limeink:#0F0F0F}
 body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.6;cursor:none}
 a{text-decoration:none;color:inherit;cursor:none}
 .container{max-width:1220px;margin:0 auto;padding:0 20px}
 *{cursor:none !important}
 /* CURSOR */
-.cursor-dot{width:8px;height:8px;background:var(--orange);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
-.cursor-ring{width:42px;height:42px;border:1.8px solid var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);display:grid;place-items:center;transition:width .2s,height .2s,background .2s,border-color .2s}
+.cursor-dot{width:8px;height:8px;background:var(--orange);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate3d(-100px,-100px,0);will-change:transform;backface-visibility:hidden}
+.cursor-ring{width:42px;height:42px;border:1.8px solid var(--ink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate3d(-100px,-100px,0);will-change:transform;backface-visibility:hidden;display:grid;place-items:center;transition:width .2s,height .2s,background .2s,border-color .2s}
 .cursor-ring.hover{width:86px;height:86px;background:var(--ink);border-color:var(--ink)}
-.cursor-ring.hover::after{content:'→';color:#fff;font-size:20px;font-weight:800}
+.cursor-ring.hover::after{content:'→';color:var(--paper);font-size:20px;font-weight:800}
 @media(pointer:coarse){.cursor-dot,.cursor-ring{display:none} body,*,a{cursor:auto !important} *{cursor:auto !important}}
 /* FIX: пока открыт select — кастомный курсор прячем, системный возвращаем */
 html.select-open .cursor-dot,html.select-open .cursor-ring{display:none !important}
 html.select-open,html.select-open *{cursor:auto !important}
 /* NAV - без блюра для скорости */
-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:2.5px solid var(--ink)}
-@supports((backdrop-filter:blur(1px)) and (pointer:fine)){
-nav{background:rgba(255,251,240,0.92)}
-}
+nav{position:sticky;top:0;z-index:100;background:var(--navbg);border-bottom:2.5px solid var(--ink)}
+/* кнопка смены темы */
+.btn-theme{background:var(--paper);color:var(--ink);border:2.5px solid var(--ink);padding:11px 14px;font-weight:800;font-size:12px;box-shadow:4px 4px 0 var(--violet);transition:.15s;white-space:nowrap;letter-spacing:0.4px}
+.btn-theme:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--violet)}
 /* Отключаем тяжелые анимации если юзер просил */
 @media(prefers-reduced-motion:reduce){
 *,*::before,*::after{animation:none !important;transition:none !important}
@@ -50,44 +51,44 @@ nav{background:rgba(255,251,240,0.92)}
 /* HERO */
 .hero{padding:44px 0 10px;position:relative}
 .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:32px;align-items:start}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--lime);border:2.5px solid var(--ink);padding:7px 12px;font-size:11px;font-weight:800;letter-spacing:0.7px;box-shadow:3px 3px 0 var(--ink);font-family:'JetBrains Mono',monospace}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--limeink);border:2.5px solid var(--ink);padding:7px 12px;font-size:11px;font-weight:800;letter-spacing:0.7px;box-shadow:3px 3px 0 var(--ink);font-family:'JetBrains Mono',monospace}
 .hero h1{font-size:68px;line-height:0.88;letter-spacing:-3.5px;margin:18px 0 14px;font-weight:800;font-family:'Space Grotesk',sans-serif}
 .hero h1 i{font-style:normal;background:var(--violet);color:#fff;padding:2px 10px;border:2.5px solid var(--ink);transform:rotate(-1deg);display:inline-block}
 .hero h1 em{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-2px;font-style:italic}
 .hero p{color:var(--muted);font-size:17px;max-width:560px;font-weight:500}
 .hero-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
-.btn-primary{background:var(--ink);color:#fff;padding:16px 24px;border:2.5px solid var(--ink);font-weight:800;display:inline-flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--orange);transition:.15s}
+.btn-primary{background:var(--ink);color:var(--paper);padding:16px 24px;border:2.5px solid var(--ink);font-weight:800;display:inline-flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--orange);transition:.15s}
 .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--orange)}
-.btn-secondary{background:#fff;border:2.5px solid var(--ink);color:var(--ink);padding:16px 20px;font-weight:800;box-shadow:4px 4px 0 var(--ink)}
-.hero-card{background:#fff;border:2.5px solid var(--ink);padding:22px;box-shadow:6px 6px 0 var(--ink);position:relative}
-.hero-card::before{content:"СВОДКА • СЕНТЯБРЬ 2026";position:absolute;top:-12px;left:18px;background:var(--lime);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:1px;padding:5px 10px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
+.btn-secondary{background:var(--paper);border:2.5px solid var(--ink);color:var(--ink);padding:16px 20px;font-weight:800;box-shadow:4px 4px 0 var(--ink)}
+.hero-card{background:var(--paper);border:2.5px solid var(--ink);padding:22px;box-shadow:6px 6px 0 var(--ink);position:relative}
+.hero-card::before{content:"СВОДКА • СЕНТЯБРЬ 2026";position:absolute;top:-12px;left:18px;background:var(--lime);color:var(--limeink);font-size:10px;font-weight:800;letter-spacing:1px;padding:5px 10px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
 .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
-.mini{background:var(--bg);border:2px solid var(--ink);padding:12px}
+.mini{background:var(--shade);border:2px solid var(--ink);padding:12px}
 .mini span{font-size:10px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--muted)}
 .mini b{font-size:14px;display:block;line-height:1.15;margin:4px 0}
 .mini small{font-size:11px;font-weight:700}
 .tg-banner{margin-top:14px;background:var(--orange);border:2.5px solid var(--ink);padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--ink);color:#fff}
 .tg-banner strong{font-size:14px;line-height:1.1;display:block}
-.tg-banner a{background:#fff;color:var(--ink);padding:10px 14px;border:2px solid var(--ink);font-weight:800;font-size:12px;white-space:nowrap;box-shadow:2px 2px 0 var(--ink)}
+.tg-banner a{background:var(--paper);color:var(--ink);padding:10px 14px;border:2px solid var(--ink);font-weight:800;font-size:12px;white-space:nowrap;box-shadow:2px 2px 0 var(--ink)}
 /* SECTIONS */
 .section{padding:46px 0}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
 .section-title{font-size:42px;font-weight:800;letter-spacing:-1.8px;font-family:'Space Grotesk',sans-serif;line-height:0.95}
 .section-sub{color:var(--muted);margin:10px 0 22px;font-weight:500;max-width:760px}
 .tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
-.tab{padding:10px 16px;background:#fff;border:2.5px solid var(--ink);font-weight:800;font-size:12px;color:var(--ink);box-shadow:3px 3px 0 var(--ink);transition:.15s;text-transform:uppercase;letter-spacing:0.4px}
-.tab.active{background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--violet)}
+.tab{padding:10px 16px;background:var(--paper);border:2.5px solid var(--ink);font-weight:800;font-size:12px;color:var(--ink);box-shadow:3px 3px 0 var(--ink);transition:.15s;text-transform:uppercase;letter-spacing:0.4px}
+.tab.active{background:var(--ink);color:var(--paper);box-shadow:3px 3px 0 var(--violet)}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{background:#fff;border:2.5px solid var(--ink);padding:18px;position:relative;transition:.15s;box-shadow:4px 4px 0 var(--ink);display:flex;flex-direction:column}
+.card{background:var(--paper);border:2.5px solid var(--ink);padding:18px;position:relative;transition:.15s;box-shadow:4px 4px 0 var(--ink);display:flex;flex-direction:column}
 .card:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 var(--ink)}
 .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
 .tag{font-size:10px;font-weight:800;padding:5px 8px;letter-spacing:0.6px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
-.tag-green{background:var(--lime);color:#000}
+.tag-green{background:var(--lime);color:var(--limeink)}
 .tag-violet{background:var(--violet);color:#fff}
 .tag-red{background:var(--orange);color:#fff}
-.tag-black{background:var(--ink);color:#fff}
-.price{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--bg);border:2px solid var(--ink);padding:4px 7px;font-weight:700;white-space:nowrap}
+.tag-black{background:var(--ink);color:var(--paper)}
+.price{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--shade);border:2px solid var(--ink);padding:4px 7px;font-weight:700;white-space:nowrap}
 .card h3{font-size:17px;margin-bottom:6px;letter-spacing:-0.4px;line-height:1.1}
 .card p{font-size:12.5px;color:var(--muted);min-height:38px;font-weight:500}
 .card ul{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:5px}
@@ -97,42 +98,52 @@ nav{background:rgba(255,251,240,0.92)}
 .stars{font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace}
 .verdict{font-size:10px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase}
 .charts-grid{display:grid;grid-template-columns:1.25fr 0.75fr;gap:16px}
-.chart-box{background:#fff;border:2.5px solid var(--ink);padding:18px;box-shadow:4px 4px 0 var(--ink)}
+.chart-box{background:var(--paper);border:2.5px solid var(--ink);padding:18px;box-shadow:4px 4px 0 var(--ink)}
 .chart-box h3{font-size:15px;margin-bottom:4px;font-family:'Space Grotesk',sans-serif}
 .chart-box p{font-size:11px;color:var(--muted);margin-bottom:12px;font-weight:600}
-.table-wrap{overflow:auto;border:2.5px solid var(--ink);margin-top:16px;background:#fff;box-shadow:4px 4px 0 var(--ink)}
+.table-wrap{overflow:auto;border:2.5px solid var(--ink);margin-top:16px;background:var(--paper);box-shadow:4px 4px 0 var(--ink)}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}
-th{background:var(--ink);color:#fff;text-align:left;padding:11px 12px;font-size:10px;letter-spacing:0.8px;font-family:'JetBrains Mono',monospace}
+th{background:var(--ink);color:var(--paper);text-align:left;padding:11px 12px;font-size:10px;letter-spacing:0.8px;font-family:'JetBrains Mono',monospace}
 td{padding:12px;border-top:2px solid var(--ink);font-weight:600}
 .model{display:flex;align-items:center;gap:10px;font-weight:800}
 .model i{width:34px;height:34px;border:2px solid var(--ink);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:#fff}
 .guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.step{background:#fff;border:2.5px solid var(--ink);padding:18px;box-shadow:4px 4px 0 var(--ink)}
-.step-num{width:38px;height:38px;background:var(--lime);border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;margin-bottom:12px;box-shadow:2px 2px 0 var(--ink)}
-.alert{background:#FFF7CC;border:2.5px solid var(--ink);padding:14px;display:flex;gap:12px;align-items:flex-start;margin-top:16px;box-shadow:4px 4px 0 var(--ink)}
-.cta-big{background:var(--ink);color:#fff;border:2.5px solid var(--ink);padding:26px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;box-shadow:6px 6px 0 var(--violet);margin-top:18px}
+.step{background:var(--paper);border:2.5px solid var(--ink);padding:18px;box-shadow:4px 4px 0 var(--ink)}
+.step-num{width:38px;height:38px;background:var(--lime);color:var(--limeink);border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;margin-bottom:12px;box-shadow:2px 2px 0 var(--ink)}
+.alert{background:var(--alert);border:2.5px solid var(--ink);padding:14px;display:flex;gap:12px;align-items:flex-start;margin-top:16px;box-shadow:4px 4px 0 var(--ink)}
+.cta-big{background:var(--cta);color:var(--ctat);border:2.5px solid var(--ink);padding:26px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;box-shadow:6px 6px 0 var(--violet);margin-top:18px}
 .cta-big h2{font-size:28px;letter-spacing:-1px;font-family:'Space Grotesk',sans-serif;line-height:1}
 .cta-big p{color:#B8BCCB}
-.btn-big-tg{background:var(--lime);color:var(--ink);padding:14px 20px;border:2.5px solid var(--ink);font-weight:800;display:inline-flex;align-items:center;gap:10px;box-shadow:4px 4px 0 #fff}
-footer{padding:26px 0;border-top:2.5px solid var(--ink);color:var(--muted);font-size:11px;text-align:center;background:#fff;margin-top:36px;font-family:'JetBrains Mono',monospace}
+.btn-big-tg{background:var(--lime);color:var(--limeink);padding:14px 20px;border:2.5px solid var(--ink);font-weight:800;display:inline-flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--ink)}
+footer{padding:26px 0;border-top:2.5px solid var(--ink);color:var(--muted);font-size:11px;text-align:center;background:var(--paper);margin-top:36px;font-family:'JetBrains Mono',monospace}
 /* DETAILS - подробные разборы */
 .details-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.detail{background:#fff;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.detail{background:var(--paper);border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);overflow:hidden}
 .detail summary{list-style:none;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:800;font-size:15px;letter-spacing:-0.3px;cursor:pointer;font-family:'Space Grotesk',sans-serif}
 .detail summary::-webkit-details-marker{display:none}
-.detail summary .open-btn{flex-shrink:0;width:30px;height:30px;border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;background:var(--lime)}
-.detail[open] summary .open-btn{background:var(--ink);color:#fff}
+.detail summary .open-btn{flex-shrink:0;width:30px;height:30px;border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;background:var(--lime);color:var(--limeink)}
+.detail[open] summary .open-btn{background:var(--ink);color:var(--paper)}
 .detail-body{padding:0 18px 18px;border-top:2px dashed var(--ink);padding-top:14px}
 .spec-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-.spec{font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace;background:var(--bg);border:2px solid var(--ink);padding:5px 8px}
+.spec{font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace;background:var(--shade);border:2px solid var(--ink);padding:5px 8px}
 .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .pros,.cons{font-size:12.5px;padding:10px;border:2px solid var(--ink);font-weight:600;line-height:1.45}
-.pros{background:#EFFFf0}.cons{background:#FFF0F0}
-.detail-body p{font-size:13px;color:#333;margin:8px 0;font-weight:500}
-.vpn-box{background:#FFE9E4;border:2.5px solid var(--ink);padding:14px;margin-top:12px;box-shadow:4px 4px 0 var(--ink);font-size:13px}
+.pros{background:var(--win)}.cons{background:var(--warn)}
+.detail-body p{font-size:13px;color:var(--bodytext);margin:8px 0;font-weight:500}
+.vpn-box{background:var(--vpn);border:2.5px solid var(--ink);padding:14px;margin-top:12px;box-shadow:4px 4px 0 var(--ink);font-size:13px}
 .vpn-box b{color:var(--orange)}
+/* CHEATSHEET - мини-справка по каждой модели */
+.grid-cs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mcard{background:var(--paper);border:2.5px solid var(--ink);padding:13px 14px;box-shadow:3px 3px 0 var(--ink);display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;line-height:1.35}
+.mcard b.mc-n{font-size:14.5px;letter-spacing:-0.3px;font-family:'Space Grotesk',sans-serif;border-bottom:2px dashed var(--ink);padding-bottom:6px;margin-bottom:2px;display:block}
+.mcard span{display:block}
+.mc-plus{color:var(--violet)}
+.mc-minus{color:var(--orange)}
+.mc-who{color:var(--muted)}
+.mc-acc{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:800;background:var(--shade);border:2px solid var(--ink);padding:3px 6px;align-self:flex-start}
+.cs-sub{font-size:19px;margin:20px 0 10px;font-family:'Space Grotesk',sans-serif;font-weight:800;letter-spacing:-0.5px}
 /* TABLET */
-@media(max-width:1100px){.grid4{grid-template-columns:1fr 1fr} .charts-grid,.grid3,.guide-grid,.details-grid,.pros-cons{grid-template-columns:1fr} .hero-grid{grid-template-columns:1fr} .hero h1{font-size:52px} .nav-links{display:none} .section-title{font-size:36px}}
+@media(max-width:1100px){.grid4{grid-template-columns:1fr 1fr} .grid-cs{grid-template-columns:1fr 1fr} .charts-grid,.grid3,.guide-grid,.details-grid,.pros-cons{grid-template-columns:1fr} .hero-grid{grid-template-columns:1fr} .hero h1{font-size:52px} .nav-links{display:none} .section-title{font-size:36px}}
 /* PHONE LARGE - планшеты портрет / большие телефоны */
 @media(max-width:768px){
 .container{padding:0 14px}
@@ -142,6 +153,7 @@ footer{padding:26px 0;border-top:2.5px solid var(--ink);color:var(--muted);font-
 .hero-actions .btn-primary,.hero-actions .btn-secondary{width:100%;justify-content:center;padding:14px}
 .mini-grid{grid-template-columns:1fr 1fr}
 .grid4{grid-template-columns:1fr}
+.grid-cs{grid-template-columns:1fr}
 .section{padding:32px 0}
 .section-title{font-size:30px;letter-spacing:-1px}
 .chart-box{padding:14px}
@@ -180,15 +192,15 @@ footer{font-size:10px}
 }
 /* BEAUTY: только GPU-анимации (transform/opacity), без лагов */
 html{scroll-behavior:smooth}
-body{background-image:radial-gradient(rgba(15,15,15,0.055) 1.2px,transparent 1.2px);background-size:22px 22px}
+body{background-image:radial-gradient(var(--dot) 1.2px,transparent 1.2px);background-size:22px 22px}
 .reveal{opacity:0;transform:translateY(16px)}
 .reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
 @media(pointer:fine){
 .card{transition:transform .18s ease,box-shadow .18s ease}
 .card:hover{transform:translate(-3px,-5px)}
 .btn-primary,.btn-tg,.btn-big-tg,.btn-secondary{position:relative;overflow:hidden}
-.btn-primary::after,.btn-tg::after,.btn-big-tg::after{content:"";position:absolute;top:0;left:-80%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.45),transparent);transform:skewX(-20deg);transition:left .5s ease}
-.btn-primary:hover::after,.btn-tg:hover::after,.btn-big-tg:hover::after{left:130%}
+.btn-primary::after,.btn-tg::after,.btn-big-tg::after{content:"";position:absolute;top:0;left:0;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.45),transparent);transform:skewX(-20deg) translateX(-180%);transition:transform .5s ease}
+.btn-primary:hover::after,.btn-tg:hover::after,.btn-big-tg:hover::after{transform:skewX(-20deg) translateX(340%)}
 }
 .logo-mark{animation:floaty 3.2s ease-in-out infinite}
 @keyframes floaty{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-4px)}}
@@ -197,12 +209,12 @@ body{background-image:radial-gradient(rgba(15,15,15,0.055) 1.2px,transparent 1.2
 .section-title{position:relative;display:inline-block}
 .section-title::after{content:"";position:absolute;left:0;bottom:-6px;height:4px;width:100%;background:var(--lime);border:2px solid var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .6s ease}
 .reveal.in .section-title::after,.section-title.reveal.in::after{transform:scaleX(1)}
-.ticker{overflow:hidden;background:var(--ink);color:var(--lime);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.6px;white-space:nowrap}
+.ticker{overflow:hidden;background:var(--cta);color:var(--lime);border-top:2.5px solid var(--cta);border-bottom:2.5px solid var(--cta);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.6px;white-space:nowrap}
 .ticker-track{display:inline-block;padding:9px 0;animation:tick 32s linear infinite;will-change:transform}
 .ticker:hover .ticker-track{animation-play-state:paused}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 /* BEAUTY 2: дешевые украшалки */
-::selection{background:var(--lime);color:var(--ink)}
+::selection{background:var(--lime);color:var(--limeink)}
 ::-webkit-scrollbar{width:11px;height:11px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--bg);border-radius:8px}
@@ -218,10 +230,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .tag{transition:transform .18s ease}
 .card:hover .tag{transform:scale(1.07) rotate(-1deg)}
 tbody tr{transition:background .2s ease}
-tbody tr:hover{background:#FFF7CC}
+tbody tr:hover{background:var(--alert)}
 .tg-banner{position:relative;overflow:hidden}
-.tg-banner::after{content:"";position:absolute;top:0;left:-80%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.5),transparent);transform:skewX(-20deg);animation:bannershine 3.5s ease infinite}
-@keyframes bannershine{0%{left:-80%}55%{left:130%}100%{left:130%}}
+.tg-banner::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.5),transparent);transform:skewX(-20deg) translateX(-180%);animation:bannershine 3.5s ease infinite}
+@keyframes bannershine{0%{transform:skewX(-20deg) translateX(-180%)}60%,100%{transform:skewX(-20deg) translateX(340%)}}
 @media(prefers-reduced-motion:reduce){
 html{scroll-behavior:auto}
 *,*::before,*::after{animation:none !important;transition:none !important}
@@ -229,6 +241,9 @@ html{scroll-behavior:auto}
 .ticker-track{animation:none}
 }
 </style>
+<script>
+try{var __t=localStorage.getItem('proai-theme');document.documentElement.classList.toggle('dark',__t!=='light');}catch(e){document.documentElement.classList.add('dark');}
+</script>
 </head>
 <body>
 <div class="cursor-dot" id="cursorDot"></div>
@@ -242,6 +257,7 @@ html{scroll-behavior:auto}
 <a href="#absolute">Абсолютный топ</a>
 <a href="#new">Новинки 2026</a>
 <a href="#details">Разбор</a>
+<a href="#cheatsheet">🧠 Справка</a>
 <a href="#trash">Оверпрайс</a>
 <a href="#old">🗑️ Архив</a>
 <a href="#compare">Графики</a>
@@ -251,6 +267,7 @@ html{scroll-behavior:auto}
 <a href="#prompts">💡 Промты</a>
 <a href="#guide">Гайд РФ</a>
 </div>
+<button class="btn-theme" id="themeBtn" title="Сменить тему">🌙 Тёмная</button>
 <a href="https://t.me/ProAIHere" target="_blank" class="btn-tg">✈️ БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ</a>
 </div>
 </nav>
@@ -497,13 +514,13 @@ html{scroll-behavior:auto}
 
 <section id="details" class="section container" style="padding-top:10px">
 <h2 class="section-title">🔍 Подробный разбор каждой модели</h2>
-<p class="section-sub">Нажми на модель, чтобы открыть полный разбор: что умеет, сколько стоит, кому брать, а кому нет. 12 главных моделей 2026.</p>
+<p class="section-sub">Нажми на модель, чтобы открыть полный разбор: что умеет, сколько стоит, кому брать, а кому нет — плюс свежие бенчмарки. Главные модели 2026.</p>
 <div class="details-grid">
 <details class="detail" open>
 <summary>👑 Claude Opus 5.5 — новый король <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$8 / $35 за 1M</span><span class="spec">500K контекст</span><span class="spec">10/10 качество</span><span class="spec">VPN: обычный</span></div>
-<p><b>Что это:</b> флагман Anthropic конца 2026. Лучший в коде, математике и сложных рассуждениях. Пишет большие проекты целиком, держит архитектуру, не галлюцинирует в API. Замена Opus 5 и 4.8.</p>
+<p><b>Что это:</b> флагман Anthropic конца 2026. Лучший в коде, математике и сложных рассуждениях. Пишет большие проекты целиком, держит архитектуру, не галлюцинирует в API. Замена Opus 5 и 4.8. <b>Бенчмарки:</b> SWE-bench ~81%, GPQA ~94, AIME — максимум среди моделей 2026.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: №1 код и reasoning, 500K контекст, идеальные агенты, следует инструкциям</div><div class="cons">❌ Минусы: дорого $8/$35, медленнее Flash-моделей, нужен VPN + не-РФ оплата</div></div>
 <p><b>Кому брать:</b> senior-разработчикам, для сложных SaaS, агентов, науки. <b>Не брать:</b> для простого чата — переплата, бери DeepSeek 4.1.</p>
 </div>
@@ -512,7 +529,7 @@ html{scroll-behavior:auto}
 <summary>🔥 GPT 6 Sol — агент №1 <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$6 / $30 за 1M</span><span class="spec">1M контекст</span><span class="spec">10/10 агенты</span><span class="spec">VPN: обычный</span></div>
-<p><b>Что это:</b> полный флагман OpenAI. Computer Use 2.0 — сам кликает, кодит, ищет, делает исследования по 5 часов без тебя. Лучший в мультизадачности.</p>
+<p><b>Что это:</b> полный флагман OpenAI. Computer Use 2.0 — сам кликает, кодит, ищет, делает исследования по 5 часов без тебя. Лучший в мультизадачности. <b>Бенчмарки:</b> agentic tool-use ~95%, SWE-bench ~80%, deep research — №1 по свежести данных.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: лучшие агенты 2026, computer use, 1M контекст, исследования</div><div class="cons">❌ Минусы: $6/$30 дорого, медленный в max-режиме, нужен VPN</div></div>
 <p><b>Кому брать:</b> для автономных агентов, deep research, автоматизации. <b>Не брать:</b> для переписки — бери Luna в 3 раза дешевле.</p>
 </div>
@@ -521,7 +538,7 @@ html{scroll-behavior:auto}
 <summary>🌙 GPT 6 Luna — быстрый флагман <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$2 / $8 за 1M</span><span class="spec">512K контекст</span><span class="spec">9.8/10</span><span class="spec">VPN: обычный</span></div>
-<p><b>Что это:</b> облегченная Sol. На 3x быстрее и в 3 раза дешевле, а ума почти столько же. Главный рабочий конь для продакшена 2026.</p>
+<p><b>Что это:</b> облегченная Sol. На 3x быстрее и в 3 раза дешевле, а ума почти столько же. Главный рабочий конь для продакшена 2026. <b>Бенчмарки:</b> ~93% от Sol по SWE-bench при цене втрое ниже — лучший результат на доллар среди OpenAI.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: скорость, цена $2, тянет 95% задач Sol, стабильный API</div><div class="cons">❌ Минусы: чуть слабее в super-сложном reasoning, все равно нужен VPN</div></div>
 <p><b>Кому брать:</b> всем в прод: чаты, код, боты. Лучший баланс OpenAI.</p>
 </div>
@@ -530,7 +547,7 @@ html{scroll-behavior:auto}
 <summary>✨ Claude Fable 5.1 — любимец кодеров <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$4 / $20 за 1M</span><span class="spec">300K контекст</span><span class="spec">9.9/10</span><span class="spec">VPN: обычный</span></div>
-<p><b>Что это:</b> апдейт Fable 5. +15% к коду, живой человеческий стиль, лучше работает с инструментами. Пишет как senior, а не как робот.</p>
+<p><b>Что это:</b> апдейт Fable 5. +15% к коду, живой человеческий стиль, лучше работает с инструментами. Пишет как senior, а не как робот. <b>Бенчмарки:</b> SWE-bench ~79%, в human-оценке стиля кода — лучший среди всех моделей.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: лучший стиль кода, понятные объяснения, агенты, дешевле Opus 5.5</div><div class="cons">❌ Минусы: $4 все равно не копейки, лимиты Claude строже</div></div>
 <p><b>Кому брать:</b> разработчикам каждый день, для ревью, рефакторинга, документации.</p>
 </div>
@@ -539,7 +556,7 @@ html{scroll-behavior:auto}
 <summary>🥇 DeepSeek V4.1 Flash — имба за копейки <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">~$0.10 / $0.25</span><span class="spec">256K контекст</span><span class="spec">9.8/10</span><span class="spec">VPN: НЕ нужен</span></div>
-<p><b>Что это:</b> убийца всех. Умнее прошлого V4, а цена упала до $0.10. Рвет модели в 20x дороже. Работает из РФ без VPN через OpenRouter.</p>
+<p><b>Что это:</b> убийца всех. Умнее прошлого V4, а цена упала до $0.10. Рвет модели в 20x дороже. Работает из РФ без VPN через OpenRouter. <b>Бенчмарки:</b> SWE-bench ~74%, GPQA ~88 — лучший результат на $1 среди текстовых моделей.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: цена, скорость, русский хороший, без VPN, идеален для API</div><div class="cons">❌ Минусы: чуть слабее Opus 5.5 в сверхсложном коде, цензура в чате</div></div>
 <p><b>Кому брать:</b> всем. База для 90% задач, ботов, массового API. Брать срочно.</p>
 </div>
@@ -548,7 +565,7 @@ html{scroll-behavior:auto}
 <summary>💙 Muse Spark 1.3 — темная лошадка Meta <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$1.2 / $3.5</span><span class="spec">512K + голос/видео</span><span class="spec">9.7/10</span><span class="spec">VPN: обычный</span></div>
-<p><b>Что это:</b> флагман Meta. Из коробки код + голос + видео + мультимодал. Есть open-версия Mini, которую можно хостить. Дешевле GPT/Claude при почти том же уме.</p>
+<p><b>Что это:</b> флагман Meta. Из коробки код + голос + видео + мультимодал. Есть open-версия Mini, которую можно хостить. Дешевле GPT/Claude при почти том же уме. <b>Бенчмарки:</b> код ~77% SWE, мультимодал-тесты вровень с GPT 6, голос/ASR — лучший среди open.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: мультимодал топ, голос, open Mini, цена $1.2</div><div class="cons">❌ Минусы: экосистема меньше, доки хуже, нужен VPN</div></div>
 <p><b>Кому брать:</b> для голосовых, видео, приложений Meta, тем кто хочет open.</p>
 </div>
@@ -557,7 +574,7 @@ html{scroll-behavior:auto}
 <summary>⚡ Gemini 3.8 Flash — скорость + мультимодал <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">Флагман ~$1-2</span><span class="spec">2M контекст</span><span class="spec">9.6/10</span><span class="spec">VPN: СПЕЦИАЛЬНЫЙ!</span></div>
-<p><b>Что это:</b> самый быстрый флагман Google. 2M контекст, YouTube / Docs / Drive из коробки, лучший в скорости и инструментах.</p>
+<p><b>Что это:</b> самый быстрый флагман Google. 2M контекст, YouTube / Docs / Drive из коробки, лучший в скорости и инструментах. <b>Бенчмарки:</b> MMMU ~84, видео-понимание №1, needle-тест на 2M ~99% без потери качества.</p>
 <div class="vpn-box">⚠️ <b>Gemini — только спец-VPN:</b> нужен чистый IP США/ЕС (не shared, не РФ), Google-аккаунт с регионом НЕ Россия, без +7 номера. Обычный VPN с РФ-аккаунтом = бан / «недоступно в вашем регионе». Без танцев: используй через OpenRouter / ProxyAPI — тогда VPN не нужен вообще.</div>
 <div class="pros-cons"><div class="pros">✅ Плюсы: скорость, 2M контекст, интеграция Google, мультимодал</div><div class="cons">❌ Минусы: спец-VPN напрямую, капризный аккаунт, слабее в коде чем Opus</div></div>
 <p><b>Кому брать:</b> для Google-экосистемы, длинных PDF/видео, быстрых задач. Через посредника — всем.</p>
@@ -567,7 +584,7 @@ html{scroll-behavior:auto}
 <summary>💚 Gemini 3.7 Flash — дешевый универсал <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$0.75 / $3.00</span><span class="spec">1M контекст</span><span class="spec">9.4/10</span><span class="spec">VPN: СПЕЦИАЛЬНЫЙ!</span></div>
-<p><b>Что это:</b> младший брат 3.8. Дешевле, чуть проще, но все еще универсал для кода и длинных задач. Та же проблема с доступом.</p>
+<p><b>Что это:</b> младший брат 3.8. Дешевле, чуть проще, но все еще универсал для кода и длинных задач. Та же проблема с доступом. <b>Бенчмарки:</b> ~90% от 3.8 при цене вдвое ниже, стабильнее всех на длинных документах.</p>
 <div class="vpn-box">⚠️ Тот же <b>спец-VPN для Gemini</b>: чистый US/EU IP + не-РФ Google-аккаунт. Или бери через OpenRouter без VPN.</div>
 <div class="pros-cons"><div class="pros">✅ Плюсы: $0.75 дешево, длинный контекст, стабильный</div><div class="cons">❌ Минусы: спец-VPN напрямую, слабее новинок 2026</div></div>
 <p><b>Кому брать:</b> как дешевая замена 3.8, если нужен Google-стек.</p>
@@ -577,7 +594,7 @@ html{scroll-behavior:auto}
 <summary>📚 Kimi K3 — 2M контекста <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$0.35 / $1.20</span><span class="spec">2M контекст!</span><span class="spec">9.5/10</span><span class="spec">VPN: НЕ нужен</span></div>
-<p><b>Что это:</b> Moonshot AI. Читает целые репозитории, книги, 1000 PDF сразу. Лучший для исследований, когда надо «скормить всё».</p>
+<p><b>Что это:</b> Moonshot AI. Читает целые репозитории, книги, 1000 PDF сразу. Лучший для исследований, когда надо «скормить всё». <b>Бенчмарки:</b> needle-in-haystack 98% на 2M токенах — лучший среди недорогих моделей.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: 2M контекст, дешево, без VPN через OpenRouter, исследования</div><div class="cons">❌ Минусы: код слабее Opus/Fable, китайские серверы иногда лагают</div></div>
 <p><b>Кому брать:</b> аналитикам, ученым, тем кто работает с огромными текстами.</p>
 </div>
@@ -586,7 +603,7 @@ html{scroll-behavior:auto}
 <summary>🐉 GLM-5.3 Flash — дешевый open <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">~$0.12 / $0.35</span><span class="spec">200K контекст</span><span class="spec">9.3/10</span><span class="spec">VPN: НЕ нужен</span></div>
-<p><b>Что это:</b> Zhipu AI. Очень дешевый open-weight, можно хостить у себя. Отлично знает русский, хорош в коде.</p>
+<p><b>Что это:</b> Zhipu AI. Очень дешевый open-weight, можно хостить у себя. Отлично знает русский, хорош в коде. <b>Бенчмарки:</b> лучший open по русскоязычным тестам, код ~70% SWE за $0.12.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: $0.12, open-weight, русский топ, без VPN</div><div class="cons">❌ Минусы: рассуждения проще флагманов, доки на китайском частично</div></div>
 <p><b>Кому брать:</b> экономным, для self-host, русских задач и ботов.</p>
 </div>
@@ -595,7 +612,7 @@ html{scroll-behavior:auto}
 <summary>🤖 GPT-5 mini + Qwen3 — бюджетная классика <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$0.09-0.125</span><span class="spec">128-256K</span><span class="spec">8.6-9.0/10</span><span class="spec">VPN: mini-да / Qwen-нет</span></div>
-<p><b>Что это:</b> проверенная база 2025, актуальна и в 2026. GPT-5 mini — дешевый GPT для продакшена (нужен VPN). Qwen3-235B — самый дешевый open ($0.09), хостится локально, без VPN.</p>
+<p><b>Что это:</b> проверенная база 2025, актуальна и в 2026. GPT-5 mini — дешевый GPT для продакшена (нужен VPN). Qwen3-235B — самый дешевый open ($0.09), хостится локально, без VPN. <b>Бенчмарки:</b> mini — SWE ~62%, Qwen3 — ~68% при цене в 20 раз ниже флагманов.</p>
 <div class="pros-cons"><div class="pros">✅ Плюсы: копейки, проверены временем, Qwen — open и без VPN</div><div class="cons">❌ Минусы: уже слабее DeepSeek 4.1 и GLM-5.3, GPT mini нужен VPN</div></div>
 <p><b>Кому брать:</b> если уже все настроено — оставляй. Новые проекты — стартуй с DeepSeek 4.1.</p>
 </div>
@@ -608,11 +625,67 @@ html{scroll-behavior:auto}
 </div>
 </section>
 
+<section id="cheatsheet" class="section container" style="padding-top:10px">
+<h2 class="section-title">🧠 Справка: чем хороша каждая модель</h2>
+<p class="section-sub">Короткий досье на ВСЕ действующие ИИ: <b>сильное</b>, <b>слабое</b>, <b>кому брать</b> и <b>доступ из РФ</b>. Устаревшие не убраны — они лежат в 🗑️ Архиве с заменами. Цены — за 1M input, сентябрь 2026.</p>
+<h3 class="cs-sub">💬 Текстовые модели</h3>
+<div class="grid-cs">
+<div class="mcard"><b class="mc-n">GPT 6 Sol</b><span class="mc-plus">+ агенты до 5 часов, computer use 2.0, deep research, 1M контекст</span><span class="mc-minus">− $6/$30, в max-режиме медленный</span><span class="mc-who">→ Автономные агенты, исследования, автоматизация</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">GPT 6 Luna</b><span class="mc-plus">+ в 3 раза дешевле Sol, 3x быстрее, 512K, тянет 95% задач флагмана</span><span class="mc-minus">− в сверхсложном reasoning чуть ниже Sol</span><span class="mc-who">→ Универсальный рабочий конь: чат, код, боты, прод</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">MiMo V2.6</b><span class="mc-plus">+ в тестах уровень Luna, ~$0.45, 1M контекст, open-weight</span><span class="mc-minus">− молодая линейка: доки и экосистема тоньше</span><span class="mc-who">→ Дешёвый универсал, self-host без переплаты</span><span class="mc-acc">🔐 Без VPN через агрегаторы</span></div>
+<div class="mcard"><b class="mc-n">Claude Opus 5.5</b><span class="mc-plus">+ №1 в коде, математике и reasoning, 500K, отличные агенты</span><span class="mc-minus">− $8/$35 и медленнее Flash-моделей</span><span class="mc-who">→ Senior-разработка, сложные SaaS, наука</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Claude Fable 5.1</b><span class="mc-plus">+ живой стиль кода, +15% к коду против Fable 5, сильные инструменты</span><span class="mc-minus">− лимиты Claude строже, $4/$20</span><span class="mc-who">→ Ежедневный код, ревью, рефакторинг, документация</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Claude Fable 5</b><span class="mc-plus">+ прежний №1 по коду, 200K, стабильный API</span><span class="mc-minus">− обогнан Fable 5.1, цена уровня флагмана</span><span class="mc-who">→ Если уже есть доступ — можно оставить</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Claude Opus 5</b><span class="mc-plus">+ 1M контекст, сильные рассуждения, проверенный</span><span class="mc-minus">− дороже и слабее Opus 5.5</span><span class="mc-who">→ Старые тяжёлые воркфлоу на Anthropic</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">GPT-6 Astra</b><span class="mc-plus">+ 1.1M контекст, агентные задачи, глубокие исследования</span><span class="mc-minus">− дорогой, вытеснен GPT 6 Sol</span><span class="mc-who">→ Нужен огромный контекст в экосистеме OpenAI</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Muse Spark 1.3</b><span class="mc-plus">+ код + голос + видео из коробки, 512K, open-версия Mini, $1.2</span><span class="mc-minus">− экосистема меньше, доки хуже у GPT/Claude</span><span class="mc-who">→ Голос, видео, мультимодал, тем кто хочет open</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Gemini 3.8 Flash</b><span class="mc-plus">+ 2M контекст, самый быстрый флагман, YouTube/Docs/Drive, мультимодал</span><span class="mc-minus">− в коде слабее Opus, прямой доступ капризный</span><span class="mc-who">→ Google-стек, длинные PDF и видео, быстрые задачи</span><span class="mc-acc">🔐 СПЕЦ-VPN или через OpenRouter</span></div>
+<div class="mcard"><b class="mc-n">Gemini 3.7 Flash</b><span class="mc-plus">+ $0.75 дёшево, 1M контекст, стабильный универсал</span><span class="mc-minus">− слабее новинок 2026, та же проблема с доступом</span><span class="mc-who">→ Дешёвая замена 3.8, если нужен Google-стек</span><span class="mc-acc">🔐 СПЕЦ-VPN или через OpenRouter</span></div>
+<div class="mcard"><b class="mc-n">DeepSeek V4.1 Flash</b><span class="mc-plus">+ $0.10/1M — рекорд цены, 256K, хороший русский, без VPN</span><span class="mc-minus">− в сверхсложном коде ниже Opus 5.5, цензура в чате</span><span class="mc-who">→ База для 90% задач, ботов и массового API</span><span class="mc-acc">🔐 Без VPN (OpenRouter / ProxyAPI)</span></div>
+<div class="mcard"><b class="mc-n">DeepSeek V4 Flash</b><span class="mc-plus">+ $0.14, 128K, проверен временем, без VPN</span><span class="mc-minus">− слабее и чуть дороже V4.1 Flash</span><span class="mc-who">→ Если уже настроено — оставляй</span><span class="mc-acc">🔐 Без VPN</span></div>
+<div class="mcard"><b class="mc-n">Kimi K3</b><span class="mc-plus">+ 2M контекст: целые репозитории и книги, сильные исследования, $0.35</span><span class="mc-minus">− код слабее Opus/Fable, серверы иногда лагают</span><span class="mc-who">→ Аналитики, учёные, работа с огромными текстами</span><span class="mc-acc">🔐 Без VPN</span></div>
+<div class="mcard"><b class="mc-n">GLM-5.3 Flash</b><span class="mc-plus">+ open-weight, топовый русский, ~$0.12, self-host бесплатно</span><span class="mc-minus">− рассуждения проще флагманов, доки частично на китайском</span><span class="mc-who">→ Экономные, русские задачи, боты, свой хостинг</span><span class="mc-acc">🔐 Без VPN</span></div>
+<div class="mcard"><b class="mc-n">Qwen3-235B-A22B</b><span class="mc-plus">+ самый дешёвый open (~$0.09), локальный хостинг, MoE-архитектура</span><span class="mc-minus">− 131K контекст и качество ниже топов</span><span class="mc-who">→ Свои фермы и пачки запросов за копейки</span><span class="mc-acc">🔐 Без VPN</span></div>
+<div class="mcard"><b class="mc-n">GPT-5 mini</b><span class="mc-plus">+ ~$0.125, 400K, стабильный, проверенная база OpenAI</span><span class="mc-minus">− уже слабее DeepSeek 4.1 и GLM-5.3</span><span class="mc-who">→ Дешёвый GPT-стек, если всё настроено</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">GPT-5.5</b><span class="mc-plus">+ 9.4/10, одна из лучших в reasoning, 1M контекст</span><span class="mc-minus">− $5/$30, всё то же Luna делает в 2.5x дешевле</span><span class="mc-who">→ Только если нужен именно reasoning 5.5</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">GPT-5.5 Pro</b><span class="mc-plus">+ 9.6/10 — качество реально флагманское</span><span class="mc-minus">− $30/$180: x15 к Sol за +2% качества</span><span class="mc-who">→ Не брать: переплата, бери GPT 6 Sol / Luna</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Claude Opus 4.8</b><span class="mc-plus">+ 9.6/10, GPQA 92, топовые бенчмарки прошлого поколения</span><span class="mc-minus">− $5/$25 при живых Fable 5.1 / Opus 5.5</span><span class="mc-who">→ Если привык к 4.8 — мигрируй на 5.x</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Claude Opus 4.7</b><span class="mc-plus">+ 9.5/10, стабильный, заметно сильнее бюджетных</span><span class="mc-minus">− цена флагмана без флагманского будущего</span><span class="mc-who">→ Лучше Fable 5.1 за те же деньги</span><span class="mc-acc">🔐 VPN обычный</span></div>
+</div>
+<h3 class="cs-sub">🎬 Видеомодели</h3>
+<div class="grid-cs">
+<div class="mcard"><b class="mc-n">Omni Flash 1.1</b><span class="mc-plus">+ интерактивное видео за секунды, монтаж текстом, связка с Nano Banana</span><span class="mc-minus">− доступ только через Google API / агрегаторы</span><span class="mc-who">→ Быстрые прототипы клипов и интерактив</span><span class="mc-acc">🔐 Google API / агрегаторы</span></div>
+<div class="mcard"><b class="mc-n">Seedance 2.5</b><span class="mc-plus">+ один дубль 30 сек со звуком, держит лицо весь клип, i2v 94%</span><span class="mc-minus">− ~$0.51 за клип, нужен аккаунт агрегатора</span><span class="mc-who">→ Товары, e-commerce, длинные склейки без монтажа</span><span class="mc-acc">🔐 fal.ai / Replicate</span></div>
+<div class="mcard"><b class="mc-n">Seedance 2.0</b><span class="mc-plus">+ камера из промпта, мультикадр, липсинг, аудио — эталон контроля</span><span class="mc-minus">− $0.97-1.21 за клип дороже 2.5</span><span class="mc-who">→ Моушн-продакшн, когда важен каждый план</span><span class="mc-acc">🔐 fal.ai / ByteDance API</span></div>
+<div class="mcard"><b class="mc-n">Kling 3 / 2.5</b><span class="mc-plus">+ натив 4K 60fps, 15 сек, 2-6 связных планов, AI Director, липсинг 5 языков</span><span class="mc-minus">− длинные сцены иногда плывут, Elo 1249</span><span class="mc-who">→ Люди, движение, вертикальки, объёмный контент</span><span class="mc-acc">🔐 Kling API / агрегаторы</span></div>
+<div class="mcard"><b class="mc-n">Wan 3 / 2.7</b><span class="mc-plus">+ лучший open-source (Apache 2.0), self-host, без вотермарки, $0.05-0.36</span><span class="mc-minus">− нужна видеокарта и настройка, качество ниже топ-3</span><span class="mc-who">→ Фермы, пачки, полный контроль без подписки</span><span class="mc-acc">🔐 Локально / fal.ai</span></div>
+<div class="mcard"><b class="mc-n">Veo 3.1 (Standart)</b><span class="mc-plus">+ кино: свет, ткани, лица, нативный звук 48кГц, 4K, extension до 60с</span><span class="mc-minus">− дороже и по качеству ниже Omni / Seedance / Wan</span><span class="mc-who">→ Реклама с атмосферой, где важен звук</span><span class="mc-acc">🔐 Google API / fal.ai</span></div>
+<div class="mcard"><b class="mc-n">Veo 3.1 Lite / Fast</b><span class="mc-plus">+ 720p 8с со звуком за $0.29-0.40, быстро</span><span class="mc-minus">− разрешение и детализация ниже Standart</span><span class="mc-who">→ Черновики, итерации, поток</span><span class="mc-acc">🔐 Google API / агрегаторы</span></div>
+<div class="mcard"><b class="mc-n">Veo 3</b><span class="mc-plus">+ звук из коробки, фотореализм, 1080p/60с</span><span class="mc-minus">− текстуры и физика слабее всех новых</span><span class="mc-who">→ Только если 3.1 недоступна</span><span class="mc-acc">🔐 Google API / агрегаторы</span></div>
+<div class="mcard"><b class="mc-n">Hailuo 02 / MiniMax H3</b><span class="mc-plus">+ 4K за $0.08/сек — дешевле всех, Hailuo 02 бесплатно 15с 1080p</span><span class="mc-minus">− длинные планы не держит, клипы лучше &lt;5 сек</span><span class="mc-who">→ Быстрые дешёвые клипы и 4K-превью</span><span class="mc-acc">🔐 MiniMax API / сайт</span></div>
+</div>
+<h3 class="cs-sub">🖼️ Фотомодели</h3>
+<div class="grid-cs">
+<div class="mcard"><b class="mc-n">GPT Image 2.5 Sunburst</b><span class="mc-plus">+ печатный текст, инфографика, точные правки, режимы xhigh/max</span><span class="mc-minus">− медленно и $0.15-0.30 за картинку</span><span class="mc-who">→ Постеры, реклама, где текст обязан быть читаем</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">GPT Image 2.5 Flare</b><span class="mc-plus">+ та же 2.5-я серия, -50% задержки, Elo ~1399, дешевле Sunburst</span><span class="mc-minus">− в экстремальном тексте чуть аккуратнее просят high-режим</span><span class="mc-who">→ Соцсети, мокапы, поток картинок</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">GPT Image 2</b><span class="mc-plus">+ 16 ракурсов, до 8 картинок за раз, до 5 референсов, low от $0.006</span><span class="mc-minus">− прошлый флагман: правки и текст уже у 2.5</span><span class="mc-who">→ Дешёвые пачки и стандартные форматы</span><span class="mc-acc">🔐 VPN обычный</span></div>
+<div class="mcard"><b class="mc-n">Nano Banana Pro</b><span class="mc-plus">+ кожа, свет, ткани как фото, 4K за $0.30, 2-14 рефов, консистентность персонажа</span><span class="mc-minus">− 20-40 сек ожидания</span><span class="mc-who">→ Продуктовые фото, мода, реалистичные сцены</span><span class="mc-acc">🔐 Google / fal.ai</span></div>
+<div class="mcard"><b class="mc-n">Nano Banana 2</b><span class="mc-plus">+ почти Pro-качество за ~$0.067, скорость Flash ~20 сек</span><span class="mc-minus">− в мелких деталях всё же проигрывает Pro</span><span class="mc-who">→ Лучший баланс цена/качество для потока</span><span class="mc-acc">🔐 Google / fal.ai</span></div>
+<div class="mcard"><b class="mc-n">Nano Banana 2 Lite</b><span class="mc-plus">+ 4 секунды, $0.034 (batch $0.017), идеальна для итераций</span><span class="mc-minus">− фикс 1K и Elo 1251 — черновое качество</span><span class="mc-who">→ Прототипы, мудборды, массовые черновики</span><span class="mc-acc">🔐 Google / fal.ai</span></div>
+<div class="mcard"><b class="mc-n">Flux 2 / Ideogram 3</b><span class="mc-plus">+ Flux: open и копейки за пачки; Ideogram: лучший текст-арт и логотипы</span><span class="mc-minus">− правки и фотореализм слабее GPT/Banana</span><span class="mc-who">→ Self-host пачками / вывески и надписи</span><span class="mc-acc">🔐 Без VPN через API</span></div>
+<div class="mcard"><b class="mc-n">Midjourney V7</b><span class="mc-plus">+ лучшая стилизация, арты, обложки, вкус композиции</span><span class="mc-minus">− нет API (Discord/web) и текст на картинке слабее</span><span class="mc-who">→ Арт, обложки, концепты — не для работы с текстом</span><span class="mc-acc">🔐 Подписка $10-30</span></div>
+</div>
+<div class="alert" style="margin-top:18px">
+<span style="font-size:22px">🗂️</span>
+<div><b>Устаревшие модели никуда не делись:</b> GPT-5.2, Claude Sonnet 4.6, DeepSeek V3.1, GPT-4o, Claude 3.5 Sonnet, DeepSeek V3, Kling 1.0, Runway Gen-2, Pika 1.0, Luma, Stable Video Diffusion, Sora 1/2, DALL-E 2/3, Midjourney V5/V6, SDXL, SD 1.5, Nano Banana 1 — все лежат в <a href="#old" style="color:var(--violet);font-weight:800;text-decoration:underline">🗑️ Архиве</a>, у каждой есть замена. Модели под грифом «ожидаются» — в <a href="#upcoming" style="color:var(--violet);font-weight:800;text-decoration:underline">🔮 Ожидаемых</a>.</div>
+</div>
+</section>
+
 <section id="trash" class="section container" style="padding-top:10px">
 <h2 class="section-title">💸 Дорогие и плохие <span style="font-size:14px;background:var(--orange);color:#fff;padding:4px 8px;border:2px solid var(--ink);vertical-align:middle">ОВЕРПРАЙС</span></h2>
 <p class="section-sub">Переработано: у каждой переплаты теперь есть <b>дешевая замена</b>. Платишь в 10x больше — получаешь +5% качества.</p>
 <div class="grid4">
-<div class="card" style="background:#FFF0F0">
+<div class="card" style="background:var(--warn)">
 <div class="card-top"><span class="tag tag-red">💰💰💰💰💰</span><span class="price">$30 / $180</span></div>
 <h3>GPT-5.5 Pro</h3>
 <p>По качеству почти топ, но цена х15 к GPT 6 Sol за +2% качества. Дорого ≠ плохо — просто неразумно.</p>
@@ -788,7 +861,7 @@ html{scroll-behavior:auto}
 </ul>
 <div class="card-foot"><span class="stars">★★★☆☆ 7.0/10</span><span class="verdict">В АРХИВ</span></div>
 </div>
-<div class="card" style="background:#FFF0F0">
+<div class="card" style="background:var(--warn)">
 <div class="card-top"><span class="tag tag-red">⚠️ ЗАКАТ</span><span class="price">$0.85</span></div>
 <h3>Sora 2</h3>
 <p>Физика и камеры были топ, но API гаснет 24.09.26. Успей переехать.</p>
@@ -799,7 +872,7 @@ html{scroll-behavior:auto}
 </ul>
 <div class="card-foot"><span class="stars">★★★☆☆ 7.5/10</span><span class="verdict" style="color:var(--orange)">ЗАКАТ</span></div>
 </div>
-<div class="card" style="background:#FFF0F0">
+<div class="card" style="background:var(--warn)">
 <div class="card-top"><span class="tag tag-red">⚠️ ЗАКАТ</span><span class="price">$0.85</span></div>
 <h3>Sora 1</h3>
 <p>Первая Sora: короче, слабее двойки, те же проблемы с доступом.</p>
@@ -884,16 +957,16 @@ html{scroll-behavior:auto}
 <h3>🏆 Топ-10 по качеству (0-10)</h3>
 <p>Независимый композит: код + reasoning + агенты. Без анимаций — не лагает</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Opus 5.5</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#6C5CFF"></div></div><b>10</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GPT 6 Sol</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#FF3D00"></div></div><b>10</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Fable 5.1</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:99%;height:100%;background:#0F0F0F"></div></div><b>9.9</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GPT 6 Luna</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:98%;height:100%;background:#FF9900"></div></div><b>9.8</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">DeepSeek 4.1</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:98%;height:100%;background:#0F0F0F"></div></div><b>9.8</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Muse Spark 1.3</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:97%;height:100%;background:#2563EB"></div></div><b>9.7</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Gemini 3.8</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:96%;height:100%;background:#00C950"></div></div><b>9.6</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Kimi K3</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:95%;height:100%;background:#000"></div></div><b>9.5</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Gemini 3.7</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:94%;height:100%;background:#4285F4"></div></div><b>9.4</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GLM-5.3</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:93%;height:100%;background:#7C3AED"></div></div><b>9.3</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Opus 5.5</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:100%;height:100%;background:#6C5CFF"></div></div><b>10</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GPT 6 Sol</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:100%;height:100%;background:#FF3D00"></div></div><b>10</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Fable 5.1</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:99%;height:100%;background:var(--darkbar)"></div></div><b>9.9</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GPT 6 Luna</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:98%;height:100%;background:#FF9900"></div></div><b>9.8</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">DeepSeek 4.1</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:98%;height:100%;background:var(--darkbar)"></div></div><b>9.8</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Muse Spark 1.3</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:97%;height:100%;background:#2563EB"></div></div><b>9.7</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Gemini 3.8</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:96%;height:100%;background:#00C950"></div></div><b>9.6</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Kimi K3</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:95%;height:100%;background:var(--darkbar)"></div></div><b>9.5</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">Gemini 3.7</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:94%;height:100%;background:#4285F4"></div></div><b>9.4</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:130px">GLM-5.3</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:93%;height:100%;background:#7C3AED"></div></div><b>9.3</b></div>
 </div>
 </div>
 <div class="chart-box">
@@ -1318,13 +1391,13 @@ html{scroll-behavior:auto}
 <h3>📊 Примерное сравнение текстов (прогноз, не замеры)</h3>
 <p>Ориентир по анонсам и утечкам: кто кого должен обогнать. Точные цифры будут после релиза</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Opus 6 ~10</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#6C5CFF"></div></div><b>флагман</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">GPT 6.5 Sol ~10</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:100%;height:100%;background:#FF3D00"></div></div><b>флагман</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Fable 5.5 ~9.9</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:99%;height:100%;background:#0F0F0F"></div></div><b>код</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Gemini 4 Pro ~9.9</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:99%;height:100%;background:#4285F4"></div></div><b>слухи</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">GPT 6.5 Luna ~9.7</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:97%;height:100%;background:#FF9900"></div></div><b>прод</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Gemini 3.5 Pro ~9.6</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:96%;height:100%;background:#00C950"></div></div><b>баланс</b></div>
-<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">DeepSeek 4.1 Pro ~9.6</span><div style="flex:1;background:#eee;border:2px solid #0F0F0F;height:18px"><div style="width:96%;height:100%;background:#000"></div></div><b>дешево</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Opus 6 ~10</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:100%;height:100%;background:#6C5CFF"></div></div><b>флагман</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">GPT 6.5 Sol ~10</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:100%;height:100%;background:#FF3D00"></div></div><b>флагман</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Fable 5.5 ~9.9</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:99%;height:100%;background:var(--darkbar)"></div></div><b>код</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Gemini 4 Pro ~9.9</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:99%;height:100%;background:#4285F4"></div></div><b>слухи</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">GPT 6.5 Luna ~9.7</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:97%;height:100%;background:#FF9900"></div></div><b>прод</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">Gemini 3.5 Pro ~9.6</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:96%;height:100%;background:#00C950"></div></div><b>баланс</b></div>
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800"><span style="width:140px">DeepSeek 4.1 Pro ~9.6</span><div style="flex:1;background:var(--track);border:2px solid var(--ink);height:18px"><div style="width:96%;height:100%;background:var(--darkbar)"></div></div><b>дешево</b></div>
 </div>
 </div>
 <div class="table-wrap">
@@ -1365,49 +1438,49 @@ html{scroll-behavior:auto}
 <div class="card">
 <div class="card-top"><span class="tag tag-green">№1 УНИВЕРСАЛ</span><span class="price">GPT/Claude/Gemini</span></div>
 <h3>Улучшатель любого ответа</h3>
-<pre id="pr1" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Ты — эксперт [область]. Задача: [что сделать]. Контекст: [для кого, зачем]. Формат: [список/таблица/по шагам]. Ограничения: [объем, тон]. Если не хватает данных — задай 3 уточняющих вопроса, потом отвечай.</pre>
+<pre id="pr1" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Ты — эксперт [область]. Задача: [что сделать]. Контекст: [для кого, зачем]. Формат: [список/таблица/по шагам]. Ограничения: [объем, тон]. Если не хватает данных — задай 3 уточняющих вопроса, потом отвечай.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr1">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-violet">КОД</span><span class="price">Claude топ</span></div>
 <h3>Код-ревью</h3>
-<pre id="pr2" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Проверь код: 1) баги и уязвимости со строками, 2) узкие места — циклы, N+1, блокировки, 3) нейминг и читаемость, 4) перепиши самый критичный кусок. Оценка /10. Код: [вставь]</pre>
+<pre id="pr2" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Проверь код: 1) баги и уязвимости со строками, 2) узкие места — циклы, N+1, блокировки, 3) нейминг и читаемость, 4) перепиши самый критичный кусок. Оценка /10. Код: [вставь]</pre>
 <div class="card-foot"><button class="tab" data-copy="pr2">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-violet">КОД</span><span class="price">любая</span></div>
 <h3>Дебаг за 2 шага</h3>
-<pre id="pr3" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Ошибка: [текст ошибки]. Код: [вставь]. Объясни причину простыми словами и дай 2 фикса: быстрый и правильный.</pre>
+<pre id="pr3" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Ошибка: [текст ошибки]. Код: [вставь]. Объясни причину простыми словами и дай 2 фикса: быстрый и правильный.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr3">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-green">ТЕКСТЫ</span><span class="price">GPT топ</span></div>
 <h3>SEO-статья без воды</h3>
-<pre id="pr4" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">План статьи [тема] для [аудитория]: заголовки H2 без слов «Введение/Заключение», по 3 тезиса на раздел, 1 факт со статистикой на раздел, CTA в конце.</pre>
+<pre id="pr4" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">План статьи [тема] для [аудитория]: заголовки H2 без слов «Введение/Заключение», по 3 тезиса на раздел, 1 факт со статистикой на раздел, CTA в конце.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr4">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-green">УЧЕБА</span><span class="price">Gemini топ</span></div>
 <h3>Объясни + проверь</h3>
-<pre id="pr5" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Объясни [тема] как для 12-летнего. Потом задай 5 вопросов с нарастающей сложностью и проверь мои ответы.</pre>
+<pre id="pr5" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Объясни [тема] как для 12-летнего. Потом задай 5 вопросов с нарастающей сложностью и проверь мои ответы.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr5">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-black">БИЗНЕС</span><span class="price">любая</span></div>
 <h3>Холодное письмо</h3>
-<pre id="pr6" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Холодное письмо [кому], до 150 слов, живым тоном без шаблонов: боль → решение → 1 призыв к действию.</pre>
+<pre id="pr6" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Холодное письмо [кому], до 150 слов, живым тоном без шаблонов: боль → решение → 1 призыв к действию.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr6">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-violet">CLAUDE XML</span><span class="price">Claude</span></div>
 <h3>Разбор документа</h3>
-<pre id="pr7" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">&lt;документ&gt;[вставь текст]&lt;/документ&gt; Выдели: 3 главных тезиса, все цифры, что автор умалчивает. Формат — bullets, без предисловий.</pre>
+<pre id="pr7" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">&lt;документ&gt;[вставь текст]&lt;/документ&gt; Выдели: 3 главных тезиса, все цифры, что автор умалчивает. Формат — bullets, без предисловий.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr7">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-black">АНАЛИТИКА</span><span class="price">любая</span></div>
 <h3>Сравнение в таблицу</h3>
-<pre id="pr8" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Сравни [A] vs [B] по критериям [перечисли]: таблица + вердикт кому что брать. Без общих фраз.</pre>
+<pre id="pr8" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Сравни [A] vs [B] по критериям [перечисли]: таблица + вердикт кому что брать. Без общих фраз.</pre>
 <div class="card-foot"><button class="tab" data-copy="pr8">📋 Копировать</button></div>
 </div>
 </div>
@@ -1420,32 +1493,32 @@ html{scroll-behavior:auto}
 <div class="chart-box" style="margin-bottom:16px">
 <h3>📐 Формула фото-промта (40–80 слов)</h3>
 <p>Субъект → камера и объектив → свет → стиль/сцена → детали и запреты. Недобор (&lt;15 слов) дает generic, стена 100+ слов размывает фокус</p>
-<pre id="prf0" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">[субъект + действие], [камера: напр. 85mm f/1.8], [свет: soft window light], [стиль: photorealistic / watercolor / 3D render], [сцена и настроение], [no text / детали]</pre>
+<pre id="prf0" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">[субъект + действие], [камера: напр. 85mm f/1.8], [свет: soft window light], [стиль: photorealistic / watercolor / 3D render], [сцена и настроение], [no text / детали]</pre>
 <div style="margin-top:8px"><button class="tab" data-copy="prf0">📋 Копировать формулу</button></div>
 </div>
 <div class="grid4">
 <div class="card">
 <div class="card-top"><span class="tag tag-violet">ПОРТРЕТ</span><span class="price">Nano Banana</span></div>
 <h3>Живое фото лица</h3>
-<pre id="prf1" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">photorealistic portrait, soft window light, 85mm f/1.8, natural skin texture with freckles, neutral background, shallow depth of field</pre>
+<pre id="prf1" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">photorealistic portrait, soft window light, 85mm f/1.8, natural skin texture with freckles, neutral background, shallow depth of field</pre>
 <div class="card-foot"><button class="tab" data-copy="prf1">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-violet">ТОВАРКА</span><span class="price">любая</span></div>
 <h3>Продуктовое фото</h3>
-<pre id="prf2" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">studio product photo of matte ceramic mug on polished concrete, three-point soft lighting, macro texture, minimalist, centered, no text</pre>
+<pre id="prf2" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">studio product photo of matte ceramic mug on polished concrete, three-point soft lighting, macro texture, minimalist, centered, no text</pre>
 <div class="card-foot"><button class="tab" data-copy="prf2">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-red">ТЕКСТ НА КАРТИНКЕ</span><span class="price">GPT Image</span></div>
 <h3>Постер с надписью</h3>
-<pre id="prf3" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Poster 4:5, headline «ЗАПУСК ЛЕТА» in large readable letters on top, minimal product scene below, soft yellow background, modern style</pre>
+<pre id="prf3" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Poster 4:5, headline «ЗАПУСК ЛЕТА» in large readable letters on top, minimal product scene below, soft yellow background, modern style</pre>
 <div class="card-foot"><button class="tab" data-copy="prf3">📋 Копировать</button></div>
 </div>
 <div class="card">
 <div class="card-top"><span class="tag tag-green">ПРАВКА</span><span class="price">GPT/Banana</span></div>
 <h3>Точечная правка фото</h3>
-<pre id="prf4" style="white-space:pre-wrap;font-size:11.5px;background:var(--bg);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Keep everything the same, change only [что] to [на что], match light and shadows. What must stay: [перечисли].</pre>
+<pre id="prf4" style="white-space:pre-wrap;font-size:11.5px;background:var(--shade);border:2px solid var(--ink);padding:10px;font-family:'JetBrains Mono',monospace">Keep everything the same, change only [что] to [на что], match light and shadows. What must stay: [перечисли].</pre>
 <div class="card-foot"><button class="tab" data-copy="prf4">📋 Копировать</button></div>
 </div>
 </div>
@@ -1486,7 +1559,7 @@ html{scroll-behavior:auto}
 <div class="chart-box">
 <h3>🔎 Найди модель</h3>
 <p>Пиши по-русски или по-английски: luna, opus, kimi, veo, banana…</p>
-<input id="findInput" placeholder="Например: luna" style="width:100%;padding:14px;border:2.5px solid var(--ink);font-weight:700;font-size:15px;background:var(--bg);font-family:'Manrope',sans-serif" autocomplete="off">
+<input id="findInput" placeholder="Например: luna" style="width:100%;padding:14px;border:2.5px solid var(--ink);font-weight:700;font-size:15px;background:var(--shade);font-family:'Manrope',sans-serif" autocomplete="off">
 <div id="findMatches" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
 <div id="findCard" style="margin-top:14px"></div>
 </div>
@@ -1494,8 +1567,8 @@ html{scroll-behavior:auto}
 <h3>⚔️ Сравнение лоб в лоб</h3>
 <p>Выбери двух бойцов — подсветим победителя по качеству</p>
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-<select id="cmpA" style="flex:1;min-width:200px;padding:12px;border:2.5px solid var(--ink);font-weight:800;background:#fff"></select>
-<select id="cmpB" style="flex:1;min-width:200px;padding:12px;border:2.5px solid var(--ink);font-weight:800;background:#fff"></select>
+<select id="cmpA" style="flex:1;min-width:200px;padding:12px;border:2.5px solid var(--ink);font-weight:800;background:var(--paper)"></select>
+<select id="cmpB" style="flex:1;min-width:200px;padding:12px;border:2.5px solid var(--ink);font-weight:800;background:var(--paper)"></select>
 </div>
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
 <button class="tab" id="cmpGo">⚔️ Сравнить</button>
@@ -1526,7 +1599,7 @@ html{scroll-behavior:auto}
 <div class="vpn-box">⚠️ <b>Gemini — специальный VPN:</b> только чистый IP США / ЕС / Сингапур (не РФ, не shared-прокси), Google-аккаунт с регионом НЕ Россия, отдельный Chrome-профиль без RU-номера. AI Studio и приложение Gemini банят за RU IP и +7 номер. Обход без танцев: бери Gemini через <b>OpenRouter / ProxyAPI.ru / API-ключ</b> — там VPN вообще не нужен.</div>
 </div>
 </div>
-<div class="alert" style="background:#E9FFD8">
+<div class="alert" style="background:var(--alert2)">
 <span style="font-size:22px">🎁</span>
 <div><b>Халява: топовый ИИ бесплатно, без карт:</b><br>🧠 <b>GLM 5.3 Flash</b> — 5 млн токенов каждый день бесплатно в приложении Z.Code<br>✨ <b>Muse Spark 1.3</b> — бесплатно в OpenCode<br>🎬 <b>Google Flow</b> — Omni Flash + Nano Banana 2: 4 видео в день + безлимит картинок в Nano Banana 2<br><a href="https://t.me/ProAIHere" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Забрать халяву — t.me/ProAIHere</a></div>
 </div>
@@ -1551,15 +1624,34 @@ html{scroll-behavior:auto}
 </footer>
 
 <script>
-// smooth cursor - как было
+// smooth cursor - только transform в одном rAF (не лагает)
 const dot=document.getElementById('cursorDot'), ring=document.getElementById('cursorRing');
-let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
-document.addEventListener('mousemove',e=>{mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'});
-function loop(){rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop)} loop();
-document.querySelectorAll('a,button,.card,.tab,.btn-primary,.btn-secondary').forEach(el=>{
-el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
-el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my, hoverOn=false;
+document.addEventListener('mousemove',e=>{mx=e.clientX; my=e.clientY;},{passive:true});
+function loop(){
+dot.style.transform='translate3d('+mx+'px,'+my+'px,0) translate(-50%,-50%)';
+rx+=(mx-rx)*0.16; ry+=(my-ry)*0.16;
+ring.style.transform='translate3d('+rx+'px,'+ry+'px,0) translate(-50%,-50%)';
+requestAnimationFrame(loop)
+}
+requestAnimationFrame(loop);
+// делегирование вместо сотен слушателей
+document.addEventListener('mouseover',e=>{
+const on=!!(e.target.closest&&e.target.closest('a,button,.card,.tab,.btn-primary,.btn-secondary,.mcard'));
+if(on!==hoverOn){hoverOn=on;ring.classList.toggle('hover',on);}
+},{passive:true});
+
+// смена темы: тёмная (дефолт) <-> классический белый
+(function(){
+const root=document.documentElement, btn=document.getElementById('themeBtn');
+function label(){const d=root.classList.contains('dark');btn.textContent=d?'🌙 Тёмная':'☀️ Белая';document.querySelector('meta[name=theme-color]').setAttribute('content',d?'#0C0B10':'#FFFFFF');}
+label();
+btn.addEventListener('click',()=>{
+root.classList.toggle('dark');
+try{localStorage.setItem('proai-theme',root.classList.contains('dark')?'dark':'light');}catch(e){}
+label();restyleCharts();
 });
+})();
 // FIX: открытый select роняет кастомный курсор — прячем его, возвращаем системный
 document.querySelectorAll('select').forEach(s=>{
 s.addEventListener('pointerdown',()=>document.documentElement.classList.add('select-open'));
@@ -1569,6 +1661,11 @@ s.addEventListener('blur',()=>document.documentElement.classList.remove('select-
 });
 
 // charts - только 2 легких, без анимаций чтобы не лагало
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+window.__charts=[];
+function chartCols(){
+return {ink:cssv('--ink'),grid:cssv('--grid'),darkbar:cssv('--darkbar'),violet:cssv('--violet'),orange:cssv('--orange')};
+}
 function initCharts(){
 if(window.__chartsDone) return;
 if(typeof Chart==='undefined'){setTimeout(initCharts,300);return;}
@@ -1576,16 +1673,17 @@ window.__chartsDone=true;
 Chart.defaults.animation = false;
 Chart.defaults.responsive = true;
 Chart.defaults.devicePixelRatio = 1;
+const C=chartCols();
 const barCtx=document.getElementById('barChart');
-if(barCtx) new Chart(barCtx,{
+if(barCtx) window.__charts.push(new Chart(barCtx,{
 type:'bar',
 data:{
 labels:['Qwen3-235B','DeepSeek V4.1 Flash','GLM-5.3 Flash','GPT-5 mini','Kimi K3','MiMo V2.6','Gemini 3.7 Flash','Muse Spark 1.3','GPT 6 Luna','GPT 6 Sol / Opus 5.5','GPT-5.5 Pro'],
 datasets:[{
 label:'Цена $ / 1M input',
 data:[0.09,0.10,0.12,0.125,0.35,0.45,0.75,1.2,2,7,30],
-backgroundColor:['#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#6C5CFF','#FF3D00','#FF3D00','#0F0F0F'],
-borderColor:'#0F0F0F',
+backgroundColor:['#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00','#E6FF00',C.violet,C.orange,C.orange,C.darkbar],
+borderColor:C.ink,
 borderWidth:2,
 borderRadius:6,
 barThickness:18
@@ -1595,30 +1693,43 @@ options:{
 indexAxis:'y',
 plugins:{legend:{display:false}},
 scales:{
-x:{type:'logarithmic',grid:{color:'rgba(15,15,15,0.08)'},ticks:{color:'#0F0F0F',callback:v=>[0.09,0.1,0.35,0.45,0.75,1.2,2,7,30].includes(v)?'$'+v:''}},
-y:{grid:{display:false},ticks:{color:'#0F0F0F',font:{weight:700,size:11}}}
+x:{type:'logarithmic',grid:{color:C.grid},ticks:{color:C.ink,callback:v=>[0.09,0.1,0.35,0.45,0.75,1.2,2,7,30].includes(v)?'$'+v:''}},
+y:{grid:{display:false},ticks:{color:C.ink,font:{weight:700,size:11}}}
 }
 }
-});
+}));
 const radarCtx=document.getElementById('radarChart');
-new Chart(radarCtx,{
+if(radarCtx) window.__charts.push(new Chart(radarCtx,{
 type:'radar',
 data:{
 labels:['Код','Рассуждения','Агенты','Мультимодал','Скорость'],
 datasets:[
-{label:'Claude Opus 5.5',data:[10,10,9,8,7],borderColor:'#6C5CFF',backgroundColor:'rgba(108,92,255,0.18)',pointBackgroundColor:'#6C5CFF',borderWidth:2},
-{label:'GPT 6 Sol',data:[10,9,10,9,8],borderColor:'#FF3D00',backgroundColor:'rgba(255,61,0,0.14)',pointBackgroundColor:'#FF3D00',borderWidth:2},
-{label:'Claude Fable 5.1',data:[10,9,9,8,8],borderColor:'#0F0F0F',backgroundColor:'rgba(15,15,15,0.08)',pointBackgroundColor:'#0F0F0F',borderWidth:2},
+{label:'Claude Opus 5.5',data:[10,10,9,8,7],borderColor:C.violet,backgroundColor:'rgba(108,92,255,0.18)',pointBackgroundColor:C.violet,borderWidth:2},
+{label:'GPT 6 Sol',data:[10,9,10,9,8],borderColor:C.orange,backgroundColor:'rgba(255,61,0,0.14)',pointBackgroundColor:C.orange,borderWidth:2},
+{label:'Claude Fable 5.1',data:[10,9,9,8,8],borderColor:C.ink,backgroundColor:'rgba(128,128,148,0.14)',pointBackgroundColor:C.ink,borderWidth:2},
 {label:'Muse Spark 1.3',data:[9,8,9,10,9],borderColor:'#2563EB',backgroundColor:'rgba(37,99,235,0.14)',pointBackgroundColor:'#2563EB',borderWidth:2},
 {label:'Gemini 3.8 Flash',data:[8,8,8,10,10],borderColor:'#00C950',backgroundColor:'rgba(0,201,80,0.14)',pointBackgroundColor:'#00C950',borderWidth:2}
 ]
 },
 options:{
-scales:{r:{min:0,max:10,ticks:{display:false,stepSize:2},grid:{color:'rgba(15,15,15,0.12)'},angleLines:{color:'rgba(15,15,15,0.12)'},pointLabels:{color:'#0F0F0F',font:{size:11,weight:700}}}},
-plugins:{legend:{labels:{color:'#0F0F0F',boxWidth:12,font:{weight:700}}}}
+scales:{r:{min:0,max:10,ticks:{display:false,stepSize:2},grid:{color:C.grid},angleLines:{color:C.grid},pointLabels:{color:C.ink,font:{size:11,weight:700}}}},
+plugins:{legend:{labels:{color:C.ink,boxWidth:12,font:{weight:700}}}}
 }
-});
+}));
 // топ-10 и выгода теперь статика в HTML - Chart.js не трогаем, лагов нет
+}
+function restyleCharts(){
+if(!window.__chartsDone) return;
+const C=chartCols();
+window.__charts.forEach(ch=>{
+const d=ch.data.datasets||[];
+if(ch.config.type==='bar'&&d[0]){d[0].backgroundColor=d[0].backgroundColor.map((c,i)=>i===10?C.darkbar:(i===7?C.violet:(i===8||i===9?C.orange:c)));d[0].borderColor=C.ink;}
+if(ch.config.type==='radar'){d.forEach((ds,i)=>{if(i===2){ds.borderColor=C.ink;ds.pointBackgroundColor=C.ink;}});}
+const s=ch.options.scales||{};
+Object.keys(s).forEach(k=>{const sc=s[k];if(sc.grid&&sc.grid.color)sc.grid.color=C.grid;if(sc.ticks&&sc.ticks.color)sc.ticks.color=C.ink;if(sc.angleLines&&sc.angleLines.color)sc.angleLines.color=C.grid;if(sc.pointLabels&&sc.pointLabels.color)sc.pointLabels.color=C.ink;});
+if(ch.options.plugins&&ch.options.plugins.legend&&ch.options.plugins.legend.labels)ch.options.plugins.legend.labels.color=C.ink;
+ch.update('none');
+});
 }
 // медиа-вкладки фото/видео
 document.querySelectorAll('[data-mtab]').forEach(btn=>{
@@ -1747,14 +1858,14 @@ function ffind(n){return fdata().find(m=>m.n===n);}
 const PIN={'GPT 6 Luna':2,'DeepSeek V4.1 Flash':0.10,'Kimi K3':0.35,'GLM-5.3 Flash':0.12,'MiMo V2.6':0.45,'GPT 6 Sol':6,'Claude Opus 5.5':8,'Claude Fable 5.1':10,'Muse Spark 1.3':1.2,'DeepSeek V4 Flash':0.14,'Gemini 3.7 Flash':0.75,'GPT-5 mini':0.125,'Qwen3-235B-A22B':0.09,'Claude Fable 5':10,'GPT-6 Astra':11.9,'Claude Opus 5':5,'Gemini 3.8 Flash':2,'Claude Opus 4.8':5,'Claude Opus 4.7':5,'GPT-5.5':5,'GPT-5.5 Pro':30,'GPT-5.2':5,'Claude Sonnet 4.6':3,'DeepSeek V3.1':0.55,'GPT-4o':2.5,'Claude 3.5 Sonnet':3,'DeepSeek V3':0.32,'Omni Flash 1.1':null,'Seedance 2.5':0.51,'Seedance 2.0':1.1,'Kling 1.0':0.3,'Runway Gen-2':null,'Pika 1.0':null,'Luma Dream Machine':null,'Stable Video Diffusion':0,'Wan 3 / 2.7':0.2,'Wan 2.2':0,'Kling 3 / 2.5':0.3,'Veo 3.1 (Standart)':0.4,'Veo 3.1 Lite / Fast':0.35,'Veo 3':0.85,'Hailuo 02 / MiniMax H3':0.64,'Collart 2':null,'Collart 1':null,'Sora 2':0.85,'Sora 1':0.85,'GPT Image 2.5 Sunburst':0.22,'GPT Image 2.5 Flare':0.085,'GPT Image 2':0.1,'Nano Banana Pro':0.15,'Nano Banana 2':0.067,'Nano Banana 2 Lite':0.034,'Flux 2 / Ideogram 3':0.035,'Midjourney V7':null,'DALL-E 3':0.04,'Midjourney V6':null,'Stable Diffusion XL':0,'Nano Banana 1':0.067,'DALL-E 2':0.02,'Midjourney V5':null,'Stable Diffusion 1.5':0};
 function fpin(n){return (n in PIN)?PIN[n]:null;}
 function fsame(m){const p=fpin(m.n);if(p===null)return [];const arr=fdata().filter(x=>x.n!==m.n&&fpin(x.n)!==null&&fpin(x.n)>=p*0.33&&fpin(x.n)<=p*3);arr.sort((a,b)=>b.q-a.q);return arr.slice(0,3);}
-function fbar(q){return '<div style="background:#eee;border:2px solid #0F0F0F;height:16px;margin:8px 0"><div style="width:'+(q*10)+'%;height:100%;background:'+(q>=9.5?'#6C5CFF':(q>=9?'#00C950':'#FF3D00'))+'"></div></div>';}
-function fcard(m){const sm=fsame(m);const srow=sm.length?sm.map(x=>'<button class="tab" style="margin:2px;padding:6px 10px;font-size:11px" data-same="'+x.n+'">'+x.n+' ★'+x.q+'</button>').join(' '):'—';return '<div style="border:2.5px solid #0F0F0F;background:#fff;padding:14px;box-shadow:4px 4px 0 #0F0F0F"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-size:16px">'+m.n+'</b><span class="stars">★ '+m.q+'/10</span></div>'+fbar(m.q)+'<div style="font-size:13px;font-weight:600">💰 Цена: '+m.price+'<br>📦 '+m.exl+': '+m.ex+'<br>🏁 '+m.v+'</div><div style="margin-top:8px;font-size:13px;font-weight:600">💵 За те же деньги:<br>'+srow+'</div><div style="margin-top:10px"><button class="tab" data-pop="'+m.n+'">⭐ Сравнить с популярной: '+m.pop+'</button></div></div>';}
+function fbar(q){return '<div style="background:var(--track);border:2px solid var(--ink);height:16px;margin:8px 0"><div style="width:'+(q*10)+'%;height:100%;background:'+(q>=9.5?'var(--violet)':(q>=9?'#00C950':'var(--orange)'))+'"></div></div>';}
+function fcard(m){const sm=fsame(m);const srow=sm.length?sm.map(x=>'<button class="tab" style="margin:2px;padding:6px 10px;font-size:11px" data-same="'+x.n+'">'+x.n+' ★'+x.q+'</button>').join(' '):'—';return '<div style="border:2.5px solid var(--ink);background:var(--paper);padding:14px;box-shadow:4px 4px 0 var(--ink)"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-size:16px">'+m.n+'</b><span class="stars">★ '+m.q+'/10</span></div>'+fbar(m.q)+'<div style="font-size:13px;font-weight:600">💰 Цена: '+m.price+'<br>📦 '+m.exl+': '+m.ex+'<br>🏁 '+m.v+'</div><div style="margin-top:8px;font-size:13px;font-weight:600">💵 За те же деньги:<br>'+srow+'</div><div style="margin-top:10px"><button class="tab" data-pop="'+m.n+'">⭐ Сравнить с популярной: '+m.pop+'</button></div></div>';}
 function fshow(name){const m=ffind(name);if(m){$id('findCard').innerHTML=fcard(m);$id('cmpA').value=name;fbindPop();}}
 function fbindPop(){document.querySelectorAll('[data-pop]').forEach(b=>{b.onclick=()=>{const m=ffind(b.getAttribute('data-pop'));if(m){$id('cmpB').value=m.pop;fcompare();}};});document.querySelectorAll('[data-same]').forEach(b=>{b.onclick=()=>{const n=b.getAttribute('data-same');$id('findInput').value=n;frenderMatches();fshow(n);};});}
 function fmatches(q){q=(q||'').trim().toLowerCase();if(!q)return fdata().slice(0,6);return fdata().filter(m=>(m.n+' '+m.a).toLowerCase().includes(q)).slice(0,6);}
 function fmeta(m,act){return '<button class="tab'+(act?' active':'')+'" data-m="'+m.n+'">'+m.n+'</button>';}
 function frenderMatches(){const ms=fmatches($id('findInput').value);$id('findMatches').innerHTML=ms.length?ms.map((m,i)=>fmeta(m,i===0)).join(''):'<small>Ничего не найдено — попробуй короче: luna, veo, banana</small>';document.querySelectorAll('#findMatches [data-m]').forEach(b=>{b.onclick=()=>{fshow(b.getAttribute('data-m'));document.querySelectorAll('#findMatches .tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');};});}
-function frow(l,a,b,win){return '<tr><td><b>'+l+'</b></td><td'+(win===0?' style="background:#E9FFD8;font-weight:800"':'')+'>'+a+'</td><td'+(win===1?' style="background:#E9FFD8;font-weight:800"':'')+'>'+b+'</td></tr>';}
+function frow(l,a,b,win){return '<tr><td><b>'+l+'</b></td><td'+(win===0?' style="background:var(--win);font-weight:800"':'')+'>'+a+'</td><td'+(win===1?' style="background:var(--win);font-weight:800"':'')+'>'+b+'</td></tr>';}
 function fcompare(){const A=ffind($id('cmpA').value),B=ffind($id('cmpB').value);if(!A||!B)return;let w=-1,txt='';if(A.q>B.q){w=0;txt='🏆 Побеждает <b>'+A.n+'</b> — качество выше ('+A.q+' vs '+B.q+')';}else if(B.q>A.q){w=1;txt='🏆 Побеждает <b>'+B.n+'</b> — качество выше ('+B.q+' vs '+A.q+')';}else{txt='🤝 Ничья по качеству — бери дешевле: <b>'+A.n+'</b> ('+A.price+') vs <b>'+B.n+'</b> ('+B.price+')';}$id('cmpOut').innerHTML='<div class="alert" style="margin:0 0 12px"><span style="font-size:20px">⚔️</span><div>'+txt+'</div></div><div class="table-wrap" style="margin-top:0"><table style="min-width:0"><thead><tr><th>ПАРАМЕТР</th><th>'+A.n+'</th><th>'+B.n+'</th></tr></thead><tbody>'+frow('💰 Цена',A.price,B.price,-1)+frow('⭐ Качество',A.q+'/10',B.q+'/10',w)+frow('📦 '+A.exl,A.ex,B.ex,-1)+frow('🏁 Вердикт',A.v,B.v,-1)+'</tbody></table></div>';}
 function ffill(){const o=fdata().map(m=>'<option>'+m.n+'</option>').join('');$id('cmpA').innerHTML=o;$id('cmpB').innerHTML=o;}
 document.querySelectorAll('[data-ftab]').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('[data-ftab]').forEach(x=>x.classList.remove('active'));b.classList.add('active');ftab=b.getAttribute('data-ftab');$id('findInput').value='';ffill();$id('cmpA').value=DEF[ftab][0];$id('cmpB').value=DEF[ftab][1];frenderMatches();fshow(DEF[ftab][0]);fcompare();});});
