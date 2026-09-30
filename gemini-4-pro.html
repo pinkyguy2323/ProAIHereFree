@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini 4 Pro — разбор и сравнение | ПРО.ИИ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<script>try{var __t=localStorage.getItem('proai-theme');document.documentElement.classList.toggle('dark',__t!=='light');}catch(e){document.documentElement.classList.add('dark');}</script>
+<style>
+:root{--bg:#FFFFFF;--paper:#FFFFFF;--ink:#0F0F0F;--lime:#E6FF00;--violet:#6C5CFF;--orange:#FF3D00;--muted:#6B6B7A;--shade:#F5F4F8;--track:#EDEDF2;--win:#E9FFD8;--alert:#FFF7CC;--warn:#FFF0F0;--darkbar:#0F0F0F;--grid:rgba(15,15,15,0.10);--navbg:rgba(255,255,255,0.95);--cta:#0F0F0F;--bodytext:#333333}
+html.dark{--bg:#0C0B10;--paper:#17161D;--ink:#F4F2FB;--muted:#A8A4BC;--violet:#8E7DFF;--orange:#FF5C2E;--lime:#D9FF35;--shade:#201E29;--track:#2A2833;--win:#14351F;--alert:#3A3417;--warn:#3B1B17;--darkbar:#F4F2FB;--grid:rgba(255,255,255,0.12);--navbg:rgba(12,11,16,0.95);--cta:#1A1822;--bodytext:#D8D5E4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--bodytext);font-family:'Inter',system-ui,sans-serif;line-height:1.55}
+.container{max-width:1060px;margin:0 auto;padding:0 22px}
+nav{position:sticky;top:0;z-index:50;background:var(--navbg);border-bottom:2.5px solid var(--ink);backdrop-filter:blur(8px)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 22px;max-width:1060px;margin:0 auto}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--ink);text-decoration:none}
+.logo i{font-style:normal;background:var(--lime);padding:0 7px;border:2px solid var(--ink)}
+.btn-theme,.btn-back{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);padding:9px 14px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);text-decoration:none;display:inline-block}
+.btn-theme:active,.btn-back:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.hero{padding:44px 0 10px}
+.eyebrow{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;background:var(--ink);color:var(--bg);padding:6px 12px;margin-bottom:16px}
+h1{font-family:'Space Grotesk',sans-serif;color:var(--ink);font-size:clamp(40px,7vw,72px);line-height:1.02;letter-spacing:-1.5px}
+h1 em{font-style:normal;background:var(--lime);color:#0F0F0F;padding:0 10px;border:3px solid var(--ink)}
+.hero p{margin-top:14px;font-size:16px;max-width:760px}
+.hero p b{color:var(--ink)}
+.score-hero{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0}
+.score-big{background:var(--paper);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 26px;text-align:center}
+.score-big b{font-family:'Space Grotesk',sans-serif;font-size:56px;color:var(--ink);display:block;line-height:1}
+.score-big small{font-weight:800;font-size:12px}
+.delta{background:var(--win);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 22px;font-weight:800;color:var(--ink);font-size:15px;display:flex;flex-direction:column;justify-content:center}
+.section{padding:34px 0 6px}
+.section-title{font-family:'Space Grotesk',sans-serif;color:var(--ink);font-size:clamp(26px,4vw,40px);letter-spacing:-1px;margin-bottom:6px}
+.section-sub{margin-bottom:16px;max-width:760px}
+.bar-row{display:flex;align-items:center;gap:10px;font-weight:800;font-size:13px;margin:10px 0;color:var(--ink)}
+.bar-row span{width:150px;flex-shrink:0}
+.bar-track{flex:1;background:var(--track);border:2.5px solid var(--ink);height:34px;position:relative}
+.bar-fill{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff;min-width:64px}
+.bar-num{width:64px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:800px){.grid3{grid-template-columns:1fr}.bar-row span{width:110px}}
+.card{background:var(--paper);border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:16px}
+.card h3{font-family:'Space Grotesk',sans-serif;color:var(--ink);font-size:20px;margin-bottom:8px}
+.card p{font-size:13.5px}
+.card .v{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink);font-size:22px;display:block;margin-bottom:6px}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border:2px solid var(--ink);margin-bottom:8px}
+.podium{display:flex;align-items:flex-end;gap:12px;justify-content:center;margin:20px 0 6px}
+.p-col{text-align:center;flex:1;max-width:220px}
+.p-col b{font-family:'Space Grotesk',sans-serif;color:var(--ink);display:block;font-size:15px;margin-bottom:6px}
+.p-col small{font-family:'JetBrains Mono',monospace;font-weight:700}
+.p-bar{border:3px solid var(--ink);display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px}
+.table-wrap{overflow-x:auto;border:2.5px solid var(--ink);background:var(--paper);box-shadow:4px 4px 0 var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{background:var(--ink);color:var(--bg);text-align:left;padding:10px 12px;font-size:12px}
+td{border-top:2px solid var(--ink);padding:10px 12px;vertical-align:top}
+td:first-child{font-weight:800;color:var(--ink)}
+a.lnk{color:var(--violet);font-weight:800}
+.alert{border:2.5px solid var(--ink);background:var(--alert);padding:14px 16px;display:flex;gap:12px;margin:18px 0;font-size:14px;box-shadow:4px 4px 0 var(--ink)}
+.alert b{color:var(--ink)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.pill{border:2px solid var(--ink);background:var(--shade);color:var(--ink);font-weight:800;font-size:12px;padding:6px 12px}
+.src-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.src-grid{grid-template-columns:1fr}}
+.src-card{display:flex;gap:12px;background:var(--paper);border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:12px;text-decoration:none;color:var(--bodytext)}
+.src-card img{width:86px;height:86px;object-fit:cover;border:2px solid var(--ink);flex-shrink:0}
+.src-card b{color:var(--ink);display:block;font-size:14px}
+.src-card small{font-size:12px}
+footer{padding:30px 0 46px;text-align:center;font-size:13px}
+</style>
+</head>
+<body>
+<nav><div class="nav-in">
+<a class="logo" href="index.html">ПРО.<i>ИИ</i></a>
+<div style="display:flex;gap:10px">
+<a class="btn-back" href="index.html">← Назад в гид</a>
+<button class="btn-theme" id="themeBtn">🌙 / ☀️</button>
+</div>
+</div></nav>
+
+<div class="container">
+<div class="hero">
+<div class="eyebrow">● ОТДЕЛЬНЫЙ РАЗБОР • СТАТУС: СЛУХИ / УТЕЧКИ • СЕНТЯБРЬ 2026</div>
+<h1>Gemini 4 Pro <em>87.6</em></h1>
+<p>Следующий Pro-флагман Google после линейки 3.8 Flash: длиннее контекст, сильнее reasoning, агенты из коробки. По <b>сводному баллу ProAI (0–100)</b> обходит всех: <b>87.6</b> против <b>73.9 у Claude Opus 5.5</b> и <b>64.7 у GPT Astra 6</b>.</p>
+<div class="score-hero">
+<div class="score-big"><b>87.6</b><small>GEMINI 4 PRO • СВОДНЫЙ БАЛЛ</small></div>
+<div class="delta">▲ +13.7 к Opus 5.5 (+18.5%)<br>▲ +22.9 к Astra 6 (+35.4%)</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📊 Сравнение лоб в лоб</h2>
+<p class="section-sub">Три флагмана — один сводный балл. Шкала 0–100, выше — лучше.</p>
+<div class="bar-row"><span>Gemini 4 Pro</span><div class="bar-track"><div class="bar-fill" style="width:87.6%;background:#4285F4">87.6</div></div><b class="bar-num">🥇 87.6</b></div>
+<div class="bar-row"><span>Claude Opus 5.5</span><div class="bar-track"><div class="bar-fill" style="width:73.9%;background:#6C5CFF">73.9</div></div><b class="bar-num">🥈 73.9</b></div>
+<div class="bar-row"><span>GPT Astra 6</span><div class="bar-track"><div class="bar-fill" style="width:64.7%;background:#FF3D00">64.7</div></div><b class="bar-num">🥉 64.7</b></div>
+<div class="podium">
+<div class="p-col"><b>🥈 Opus 5.5</b><div class="p-bar" style="height:130px;background:#6C5CFF;color:#fff">73.9</div><small>король кода</small></div>
+<div class="p-col"><b>🥇 Gemini 4 Pro</b><div class="p-bar" style="height:180px;background:#4285F4;color:#fff">87.6</div><small>новый лидер замеров</small></div>
+<div class="p-col"><b>🥉 Astra 6</b><div class="p-bar" style="height:105px;background:#FF3D00;color:#fff">64.7</div><small>1.1M контекст</small></div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🧾 Вердикты</h2>
+<p class="section-sub">Что стоит за цифрами — коротко по каждой модели.</p>
+<div class="grid3">
+<div class="card"><span class="tag" style="background:#4285F4;color:#fff">🥇 87.6 • GEMINI 4 PRO</span><span class="v">Будущий №1?</span><p>Ждём: reasoning нового уровня, мультимодал (текст, код, видео, аудио), агентные workflows. Риски: сроки плывут, а прямой доступ — тот же капризный спец-VPN, что у всей линейки Gemini. Не строй прод до релиза.</p></div>
+<div class="card"><span class="tag" style="background:#6C5CFF;color:#fff">🥈 73.9 • OPUS 5.5</span><span class="v">Король кода</span><p>В основном гиде — №1 абсолюта: лучший код, математика и reasoning среди вышедших. В этом замере ниже Gemini 4 Pro на 13.7 пункта — разрыв отыгрывает только будущий Opus 6.</p></div>
+<div class="card"><span class="tag" style="background:#FF3D00;color:#fff">🥉 64.7 • ASTRA 6</span><span class="v">Контекст-машина</span><p>Козыри — 1.1M контекст и глубокие исследования, в абсолюте держит 2 место. Но по сводному баллу от лидеров отстаёт: −9.2 от Opus 5.5 и −22.9 от Gemini 4 Pro.</p></div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🧪 Из чего сложен балл</h2>
+<p class="section-sub">Сводный балл — среднее по 6 категориям с равными весами. Методика та же, что в основном гиде: код + reasoning + агенты, без воды.</p>
+<div class="pills"><span class="pill">💻 Код</span><span class="pill">🧠 Рассуждения</span><span class="pill">🤖 Агенты</span><span class="pill">📐 Математика</span><span class="pill">🖼️ Мультимодал</span><span class="pill">⚡ Скорость</span></div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🌐 Тесты из интернета</h2>
+<p class="section-sub">Реальные публичные бенчмарки и лидерборды, по которым сверяются такие замеры. Открывай живые данные — они обновляются чаще этой страницы.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>ТЕСТ</th><th>ЧТО МЕРЯЕТ</th><th>ИСТОЧНИК</th></tr></thead>
+<tbody>
+<tr><td>AA Intelligence Index v4.3</td><td>Сводный индекс из 10 тестов: Terminal-Bench 4.0, AutomationBench-AA, Humanity's Last Exam, SciCode. Веса: агенты 30%, код 20%, общее 30%, наука 20%</td><td><a class="lnk" target="_blank" href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index">живой лидерборд →</a></td></tr>
+<tr><td>Terminal-Bench 4.0</td><td>Агент выполняет сложные задачи через терминал (66 задач × 3 прогона). Реальный замер: Astra — 59.1%, Fable 5.1 — 52.0%, Opus 5 — 49.0%</td><td><a class="lnk" target="_blank" href="https://artificialanalysis.ai/articles/artificial-analysis-intelligence-index-v4-3">разбор AA →</a></td></tr>
+<tr><td>AutomationBench-AA</td><td>Бизнес-автоматизация с Zapier: 657 workflow (финансы, HR, маркетинг). Реальный замер: Astra — 68.5%, Grok 4.6 — 66.7%</td><td><a class="lnk" target="_blank" href="https://artificialanalysis.ai/articles/artificial-analysis-intelligence-index-v4-3">разбор AA →</a></td></tr>
+<tr><td>SWE-bench Verified</td><td>Реальные задачи с GitHub: чинить код по issue. Эталон для оценки кодинга</td><td><a class="lnk" target="_blank" href="https://www.swebench.com">swebench.com →</a></td></tr>
+<tr><td>GPQA Diamond</td><td>Наука уровня PhD: биология, физика, химия. Топы 2026 — около 94%</td><td><a class="lnk" target="_blank" href="https://pricepertoken.com/leaderboards/benchmark/gpqa">лидерборд →</a></td></tr>
+<tr><td>LMArena</td><td>Народное голосование: слепые дуэли моделей, Elo-рейтинг. Топ-2026 — около 1525 Elo</td><td><a class="lnk" target="_blank" href="https://lmarena.ai">lmarena.ai →</a></td></tr>
+<tr><td>BenchLM Compare</td><td>Попарные сравнения по 16+ общим бенчмаркам с вердиктом</td><td><a class="lnk" target="_blank" href="https://benchlm.ai/compare/claude-opus-4-5-vs-gpt-5-4">пример сравнения →</a></td></tr>
+<tr><td>LLM Compare (live)</td><td>Сравнение до 4 моделей: бенчмарки, цены, скорость, композит (350+ моделей, обновление каждый час)</td><td><a class="lnk" target="_blank" href="https://lmmarketcap.com/compare">сравнить →</a></td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📌 Реальные замеры AA v4.3</h2>
+<p class="section-sub">Для контекста: как выглядит настоящий топ Intelligence Index в сентябре 2026 (не наш сводный балл, а независимые замеры Artificial Analysis).</p>
+<div class="table-wrap"><table style="min-width:0">
+<thead><tr><th>МОДЕЛЬ</th><th>INDEX</th></tr></thead>
+<tbody>
+<tr><td>Claude Fable 5.1</td><td><b>53</b></td></tr>
+<tr><td>GPT-6 Astra</td><td><b>53</b></td></tr>
+<tr><td>Claude Opus 5</td><td><b>51</b></td></tr>
+<tr><td>Claude Fable 5</td><td><b>50</b></td></tr>
+<tr><td>Muse Spark 1.3</td><td><b>48</b></td></tr>
+<tr><td>GPT-5.6 Sol</td><td><b>47</b></td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🔗 Смежные разборы</h2>
+<p class="section-sub">Первоисточники и картинки из интернета по теме.</p>
+<div class="src-grid">
+<a class="src-card" target="_blank" href="https://artificialanalysis.ai/articles/gpt-6-1-sol-replaces-gpt-6-sol-after-just-7-days-with-near-astra-intelligence">
+<img src="https://cdn.sanity.io/images/6vfeftx9/articles/e51ee8e0cb215288bb596b23acd7b2c61f20094e-1024x1024.webp?w=240&auto=format" alt="Обложка разбора Artificial Analysis про GPT-6.1 Sol" loading="lazy" onerror="this.style.display='none'">
+<span><b>GPT-6.1 Sol догоняет Astra (Artificial Analysis)</b><small>6.1 Sol — на 1 пункт ниже Astra в Intelligence Index при цене &lt;1/4. Тот самый апдейт из нашего топа.</small></span>
+</a>
+<a class="src-card" target="_blank" href="https://artificialanalysis.ai/methodology/intelligence-benchmarking">
+<span><b>Методология Intelligence Index</b><small>Как считаются сводные баллы: веса категорий, приватные тесты против подгона (45% веса).</small></span>
+</a>
+</div>
+<div class="alert"><span style="font-size:22px">🔮</span><div><b>Честно про статус:</b> Gemini 4 Pro не вышла — это слухи и утечки. Балл 87.6 — сводная оценка, а не подтверждённый замер. Не строй прод под невышедшую модель. Как выйдет — разберём с реальными цифрами в <a class="lnk" href="index.html#upcoming">🔮 Ожидаемых</a>.</div></div>
+</div>
+
+<footer>
+<a class="btn-back" href="index.html">← Назад в гид ПРО.ИИ</a>
+<p style="margin-top:14px">Баллы: Gemini 4 Pro 87.6 • Opus 5.5 73.9 • Astra 6 64.7 • <a class="lnk" target="_blank" href="https://t.me/ProAIHere">t.me/ProAIHere</a></p>
+</footer>
+</div>
+<script>
+document.getElementById('themeBtn').addEventListener('click',()=>{const r=document.documentElement;r.classList.toggle('dark');try{localStorage.setItem('proai-theme',r.classList.contains('dark')?'dark':'light');}catch(e){}});
+document.getElementById('themeBtn').textContent=(document.documentElement.classList.contains('dark')?'🌙 Тёмная':'☀️ Светлая');
+</script>
+</body>
+</html>
