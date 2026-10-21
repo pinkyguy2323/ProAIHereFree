@@ -202,9 +202,9 @@ body{background-image:radial-gradient(var(--dot) 1.2px,transparent 1.2px);backgr
 .btn-primary::after,.btn-tg::after,.btn-big-tg::after{content:"";position:absolute;top:0;left:0;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.45),transparent);transform:skewX(-20deg) translateX(-180%);transition:transform .5s ease}
 .btn-primary:hover::after,.btn-tg:hover::after,.btn-big-tg:hover::after{transform:skewX(-20deg) translateX(340%)}
 }
-.logo-mark{animation:floaty 3.2s ease-in-out infinite}
+.logo-mark{animation:floaty 3.2s ease-in-out 10}
 @keyframes floaty{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-4px)}}
-.hero h1 i{background:linear-gradient(110deg,var(--violet) 20%,#9D8FFF 40%,var(--violet) 60%);background-size:220% 100%;animation:sheen 4s ease infinite}
+.hero h1 i{background:linear-gradient(110deg,var(--violet) 20%,#9D8FFF 40%,var(--violet) 60%);background-size:220% 100%;animation:sheen 4s ease 3}
 @keyframes sheen{0%{background-position:0% 0}50%{background-position:100% 0}100%{background-position:0% 0}}
 .section-title{position:relative;display:inline-block}
 .section-title::after{content:"";position:absolute;left:0;bottom:-6px;height:4px;width:100%;background:var(--lime);border:2px solid var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .6s ease}
@@ -220,26 +220,42 @@ body{background-image:radial-gradient(var(--dot) 1.2px,transparent 1.2px);backgr
 ::-webkit-scrollbar-thumb{background:var(--ink);border:2px solid var(--bg);border-radius:8px}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(600px 300px at 8% 10%,rgba(108,92,255,0.10),transparent 60%),radial-gradient(700px 340px at 93% 18%,rgba(255,61,0,0.08),transparent 60%),radial-gradient(560px 320px at 50% 102%,rgba(230,255,0,0.14),transparent 60%)}
 .hero h1 em{background:linear-gradient(92deg,var(--orange),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
-.eyebrow{animation:pop 2.8s ease-in-out infinite}
+.eyebrow{animation:pop 2.8s ease-in-out 4}
 @keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
-.mini:nth-child(1){animation:floaty2 4.2s ease-in-out infinite}
-.mini:nth-child(2){animation:floaty2 4.2s ease-in-out .4s infinite}
-.mini:nth-child(3){animation:floaty2 4.2s ease-in-out .8s infinite}
-.mini:nth-child(4){animation:floaty2 4.2s ease-in-out 1.2s infinite}
+.mini:nth-child(1){animation:floaty2 4.2s ease-in-out 8}
+.mini:nth-child(2){animation:floaty2 4.2s ease-in-out .4s 8}
+.mini:nth-child(3){animation:floaty2 4.2s ease-in-out .8s 8}
+.mini:nth-child(4){animation:floaty2 4.2s ease-in-out 1.2s 8}
 @keyframes floaty2{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .tag{transition:transform .18s ease}
 .card:hover .tag{transform:scale(1.07) rotate(-1deg)}
 tbody tr{transition:background .2s ease}
 tbody tr:hover{background:var(--alert)}
 .tg-banner{position:relative;overflow:hidden}
-.tg-banner::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.5),transparent);transform:skewX(-20deg) translateX(-180%);animation:bannershine 3.5s ease infinite}
+.tg-banner::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,0.5),transparent);transform:skewX(-20deg) translateX(-180%);animation:bannershine 3.5s ease 6}
 @keyframes bannershine{0%{transform:skewX(-20deg) translateX(-180%)}60%,100%{transform:skewX(-20deg) translateX(340%)}}
 @media(prefers-reduced-motion:reduce){
 html{scroll-behavior:auto}
 *,*::before,*::after{animation:none !important;transition:none !important}
 .reveal{opacity:1;transform:none}
 .ticker-track{animation:none}
+.cursor-dot,.cursor-ring{display:none !important}
 }
+/* ===== PERF: эко-режим (0 анимаций) + пауза анимаций в фоновой вкладке ===== */
+html.eco *,html.eco *::before,html.eco *::after{animation:none !important;transition:none !important}
+html.eco .cursor-dot,html.eco .cursor-ring{display:none !important}
+html.eco .ticker-track{animation:none}
+html.tab-hidden *{animation-play-state:paused !important}
+.btn-eco{background:var(--paper);color:var(--ink);border:2.5px solid var(--ink);padding:11px 14px;font-weight:800;font-size:12px;box-shadow:4px 4px 0 var(--lime);transition:.15s;white-space:nowrap;letter-spacing:0.4px}
+.btn-eco.on{background:var(--lime);color:var(--limeink);box-shadow:4px 4px 0 var(--ink)}
+/* ===== BEAUTY: якоря под липкий навбар, фокус, акценты, зебра в таблицах ===== */
+section[id]{scroll-margin-top:96px}
+h1,h2,h3{text-wrap:balance}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:2px}
+.card:hover{box-shadow:7px 7px 0 var(--ink),0 0 0 3px var(--violet)}
+.mcard:hover{box-shadow:5px 5px 0 var(--ink),0 0 0 3px var(--lime)}
+tbody tr:nth-child(even){background:var(--shade)}
+tbody tr:hover{background:var(--alert)}
 </style>
 <script>
 try{var __t=localStorage.getItem('proai-theme');document.documentElement.classList.toggle('dark',__t!=='light');}catch(e){document.documentElement.classList.add('dark');}
@@ -257,6 +273,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <a href="#absolute">Абсолютный топ</a>
 <a href="#new">Новинки 2026</a>
 <a href="#details">Разбор</a>
+<a href="#argon">📊 Argon</a>
 <a href="#cheatsheet">🧠 Справка</a>
 <a href="#ru">🇷🇺 Россия</a>
 <a href="#trash">Оверпрайс</a>
@@ -268,6 +285,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <a href="#prompts">💡 Промты</a>
 <a href="#guide">Гайд РФ</a>
 </div>
+<button class="btn-eco" id="ecoBtn" title="Эко-режим: отключить все анимации — чтобы не грузить компьютер">⚡ Эко</button>
 <button class="btn-theme" id="themeBtn" title="Сменить тему">🌙 Тёмная</button>
 <a href="https://t.me/ProAIHere" target="_blank" class="btn-tg">✈️ БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ</a>
 </div>
@@ -287,7 +305,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="hero-card">
 <div class="mini-grid">
 <div class="mini"><span>🥇 Цена/качество</span><b>GPT 6 Luna</b><small style="color:var(--violet)">$2 / 1M input — лучшая дешевая</small></div>
-<div class="mini"><span>👑 Абсолютный топ</span><b>Gemini 4 Argon</b><small>Новый №1, кодинг — Opus</small></div>
+<div class="mini"><span>👑 Абсолютный топ</span><b>Gemini 4 Argon</b><small>14 из 18 тестов, код — Opus</small></div>
 <div class="mini"><span>⚡ Новинка OpenAI</span><b>GPT 6.1 Sol</b><small style="color:var(--orange)">Чуть лучше Sol</small></div>
 <div class="mini"><span>💎 Дешевый open</span><b>Kimi K3 + GLM 5.3</b><small>~$0.12-0.35 / 1M</small></div>
 </div>
@@ -369,25 +387,25 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 
 <section id="absolute" class="section container" style="padding-top:10px">
 <h2 class="section-title">👑 Топ ИИ без учета цены</h2>
-<p class="section-sub">Пересобрано: трон у <b>Gemini 4 Argon</b>, дальше <b>Opus 5.5</b> (король кодинга: 76.3 vs 71.7), <b>Astra</b>, <b>GPT 6.1 Sol</b>, <b>GPT 6 Sol</b> и <b>Fable 5.1</b>. Деньги не важны — только максимум.</p>
+<p class="section-sub">Пересобрано: трон у <b>Gemini 4 Argon</b> (14 из 18 тестов), дальше <b>Opus 5.5</b> (король кодинга), <b>Astra</b>, <b>GPT 6.1 Sol</b>, <b>GPT 6 Sol</b> и <b>Fable 5.1</b>. Деньги не важны — только максимум.</p>
 <div class="grid4">
 <div class="card" style="border-color:var(--violet)">
-<div class="card-top"><span class="tag tag-violet">🥇 НОВЫЙ №1</span><span class="price">ФЛАГМАН</span></div>
+<div class="card-top"><span class="tag tag-violet">🥇 НОВЫЙ №1</span><span class="price">$2 / $10</span></div>
 <h3>Gemini 4 Argon</h3>
-<p>Новый король: почти во всём лучше остальных. Единственное пятно — кодинг, где правит Opus 5.5 (76.3 vs 71.7).</p>
+<p>Новый король: почти во всём лучше остальных. Единственное пятно — терминальный кодинг, где правит Opus 5.5 (66.4% против 57.4%).</p>
 <ul>
-<li><span class="dot" style="color:var(--violet)"></span> Лучше всех, кроме кода</li>
-<li><span class="dot" style="color:var(--violet)"></span> 2M контекст</li>
-<li><span class="dot" style="color:var(--violet)"></span> Скорость Google</li>
+<li><span class="dot" style="color:var(--violet)"></span> 14 из 18 тестов у Opus</li>
+<li><span class="dot" style="color:var(--violet)"></span> 1M выходных токенов</li>
+<li><span class="dot" style="color:var(--violet)"></span> Вдвое дешевле Opus</li>
 </ul>
 <div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--violet)">КОРОЛЬ 2026</span></div>
 </div>
 <div class="card" style="border-color:var(--violet)">
 <div class="card-top"><span class="tag tag-violet">👑 КОД №1</span><span class="price">ФЛАГМАН</span></div>
 <h3>Claude Opus 5.5</h3>
-<p>Король кодинга: лучший код 2026 — 76.3 против 71.7 у Argon. В остальном трон теперь у Gemini 4 Argon.</p>
+<p>Король кодинга: Terminal-Bench 4.0 — 66.4% против 57.4% у Argon. В остальном трон теперь у Gemini 4 Argon.</p>
 <ul>
-<li><span class="dot" style="color:var(--violet)"></span> №1 по коду: 76.3</li>
+<li><span class="dot" style="color:var(--violet)"></span> №1 по коду: 66.4% (TB 4.0)</li>
 <li><span class="dot" style="color:var(--violet)"></span> 500K контекст</li>
 <li><span class="dot" style="color:var(--violet)"></span> Математика и reasoning</li>
 </ul>
@@ -456,13 +474,13 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <p class="section-sub">10 свежих моделей, которые все меняют. Gemini 4 Argon, GPT 6.1 Sol, GPT 6 Luna / Sol, Fable 5.1, Opus 5.5, DeepSeek 4.1 Flash, Muse Spark 1.3, GLM 5.3 Flash, Kimi K3. Только вышли — уже рвут чарты.</p>
 <div class="grid4">
 <div class="card" style="border-color:var(--orange)">
-<div class="card-top"><span class="tag tag-red">🥇 NEW • GOOGLE</span><span class="price">Флагман</span></div>
+<div class="card-top"><span class="tag tag-red">🥇 NEW • GOOGLE</span><span class="price">$2 / $10</span></div>
 <h3>Gemini 4 Argon</h3>
-<p>Новый король 2026: почти во всём лучше остальных моделей. Слабее Opus 5.5 только в кодинге (71.7 vs 76.3).</p>
+<p>Новый король 2026: почти во всём лучше остальных моделей. Слабее Opus 5.5 только в терминальном кодинге (57.4% против 66.4%).</p>
 <ul>
-<li><span class="dot" style="color:var(--orange)"></span> №1 почти везде</li>
-<li><span class="dot" style="color:var(--orange)"></span> Код 71.7 vs 76.3</li>
-<li><span class="dot" style="color:var(--orange)"></span> 2M контекст</li>
+<li><span class="dot" style="color:var(--orange)"></span> 14 из 18 тестов у Opus</li>
+<li><span class="dot" style="color:var(--orange)"></span> Код 57.4% vs 66.4%</li>
+<li><span class="dot" style="color:var(--orange)"></span> 1M выходных токенов</li>
 </ul>
 <div class="card-foot"><span class="stars">★★★★★ 10/10</span><span class="verdict" style="color:var(--orange)">НОВЫЙ КОРОЛЬ</span></div>
 </div>
@@ -575,11 +593,11 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <details class="detail" open>
 <summary>🥇 Gemini 4 Argon — новый король <span class="open-btn">+</span></summary>
 <div class="detail-body">
-<div class="spec-row"><span class="spec">Флагман (цена TBA)</span><span class="spec">2M контекст</span><span class="spec">10/10 почти везде</span><span class="spec">VPN: СПЕЦИАЛЬНЫЙ!</span></div>
-<p><b>Что это:</b> новый флагман Google. Почти во всём лучше остальных моделей — reasoning, агенты, мультимодал, скорость. Единственное исключение — кодинг: тут король Opus 5.5 (76.3 против 71.7 у Argon). <b>Бенчмарки:</b> кодинг 71.7 (Opus 5.5 — 76.3), всё остальное — топ.</p>
+<div class="spec-row"><span class="spec">$2 / $10 (потом $4/$20)</span><span class="spec">1M выходных токенов</span><span class="spec">14 из 18 тестов у Opus</span><span class="spec">VPN: СПЕЦИАЛЬНЫЙ!</span></div>
+<p><b>Что это:</b> флагман Google, показали 30.09.2026 (Fairwind), для всех с 13.10.2026. Почти во всём лучше остальных — reasoning, агенты, мультимодал, финансы, право, наука. <b>Реальные цифры:</b> в таблице Google выигрывает 14 из 18 общих бенчмарков у Opus 5.5 (DeepSWE 77.9% против 74.2%, Vals Index 68.9% против 67.0%, LABBench 2 88.8% против 73.1%, OSWorld 69.2% против 48.7%). <b>Где проигрывает:</b> терминальный агентный код — Terminal-Bench 4.0 57.4% против 66.4% у Opus, FrontierSWE v2 55.0% против 62.3%, и независимый AA Intelligence Index 53 против 58. <a href="#argon" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Полная таблица замеров</a></p>
 <div class="vpn-box">⚠️ Тот же <b>спец-VPN для Gemini</b>: чистый US/EU IP + не-РФ Google-аккаунт. Или бери через OpenRouter без VPN.</div>
-<div class="pros-cons"><div class="pros">✅ Плюсы: лучший почти везде, 2M контекст, скорость Google, мультимодал</div><div class="cons">❌ Минусы: в кодинге слабее Opus 5.5 (71.7 vs 76.3), цена TBA, спец-VPN напрямую</div></div>
-<p><b>Кому брать:</b> всем, кому нужен максимум кроме чистого кода. <b>Не брать:</b> для кодинга — там Opus 5.5.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: 14 из 18 тестов, 1M выходных токенов (×16 к Gemini), вдвое дешевле Opus, кибер-разведка 85.8%, ERQA 87%</div><div class="cons">❌ Минусы: в терминальном коде слабее Opus 5.5 (57.4% vs 66.4%), медленнее всех (19.3 мин/сессия), спец-VPN напрямую</div></div>
+<p><b>Кому брать:</b> всем, кому нужен максимум кроме чистого кода. <b>Не брать:</b> для агентного кода в терминале и IDE — там Opus 5.5.</p>
 </div>
 </details>
 <details class="detail" open>
@@ -703,8 +721,145 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 </details>
 <div class="detail">
 <div class="detail-body" style="border:none;padding-top:16px">
-<b>Итог 2026:</b> хочешь максимум — бери Gemini 4 Argon (для чистого кода — Opus 5.5: 76.3 против 71.7). Хочешь дешево и почти так же — DeepSeek 4.1 Flash + Kimi K3. Сидишь в Google — помни про спец-VPN для Gemini, проще через OpenRouter.<br><a href="https://t.me/ProAIHere" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Все ключи и гайды — t.me/ProAIHere</a>
+<b>Итог 2026:</b> хочешь максимум — бери Gemini 4 Argon (14 из 18 тестов; но для кода в терминале — Opus 5.5: 66.4% против 57.4%). Хочешь дешево и почти так же — DeepSeek 4.1 Flash + Kimi K3. Сидишь в Google — помни про спец-VPN для Gemini, проще через OpenRouter.<br><a href="https://t.me/ProAIHere" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Все ключи и гайды — t.me/ProAIHere</a>
 </div>
+</div>
+</div>
+</section>
+
+<section id="argon" class="section container" style="padding-top:10px">
+<div class="section-head reveal">
+<h2 class="section-title">📊 Gemini 4 Argon — реальные цифры</h2>
+<p class="section-sub">Не наши оценки, а публичные замеры из интернета. В таблице Google <b>Argon выигрывает 14 из 18</b> общих бенчмарков у Opus 5.5. Но ровно там, где Opus силён — терминальный агентный код, — <b>Opus 5.5 впереди</b>. Модель показали 30.09.2026 (Fairwind, киберзащитникам), для всех доступна с 13.10.2026.</p>
+</div>
+
+<div class="grid3">
+<div class="card" style="border-color:#4285F4">
+<div class="card-top"><span class="tag tag-green">🏆 ПОБЕДА</span><span class="price">14 из 18</span></div>
+<h3>Где Argon сильнее</h3>
+<p>Долгий софт-инжиниринг, финансы, право, наука, автоматизация, длинный контекст, работа за компьютером.</p>
+<ul>
+<li><span class="dot" style="color:#4285F4"></span> DeepSWE v1.1 — <b>77.9%</b> (Opus 74.2%)</li>
+<li><span class="dot" style="color:#4285F4"></span> Vals Index — <b>68.9%</b> (Opus 67.0%)</li>
+<li><span class="dot" style="color:#4285F4"></span> Finance Agent v2 — <b>65.4%</b> (Opus 58.6%)</li>
+<li><span class="dot" style="color:#4285F4"></span> AutomationBench — <b>51.3%</b> (Opus 42.5%)</li>
+<li><span class="dot" style="color:#4285F4"></span> LABBench 2 — <b>88.8%</b> (Opus 73.1%)</li>
+<li><span class="dot" style="color:#4285F4"></span> OSWorld 2.0 — <b>69.2%</b> (Opus 48.7%)</li>
+</ul>
+<div class="card-foot"><span class="stars">14 / 18</span><span class="verdict" style="color:#4285F4">ПОБЕДА</span></div>
+</div>
+<div class="card" style="border-color:#6C5CFF">
+<div class="card-top"><span class="tag tag-violet">👑 OPUS ВПЕРЕДИ</span><span class="price">4 теста</span></div>
+<h3>Где Opus 5.5 сильнее</h3>
+<p>Терминальный агентный код, работа в IDE, реализация и ревью, общий индекс интеллекта.</p>
+<ul>
+<li><span class="dot" style="color:#6C5CFF"></span> Terminal-Bench 4.0 — <b>66.4%</b> vs 57.4%</li>
+<li><span class="dot" style="color:#6C5CFF"></span> FrontierSWE v2 — <b>62.3%</b> vs 55.0%</li>
+<li><span class="dot" style="color:#6C5CFF"></span> PostTrainBench — <b>49.3%</b> vs 45.3%</li>
+<li><span class="dot" style="color:#6C5CFF"></span> AA Intelligence Index — <b>58</b> vs 53</li>
+<li><span class="dot" style="color:#6C5CFF"></span> FrontierCode — <b>54.4%</b>, CursorBench — <b>57.8%</b></li>
+</ul>
+<div class="card-foot"><span class="stars">4 / 18</span><span class="verdict" style="color:#6C5CFF">OPUS</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">💰 ЦЕНА</span><span class="price">$2 / $10</span></div>
+<h3>Сколько стоит</h3>
+<p>Интро-цена вдвое ниже Opus 5.5. С 30.11.2026 — $4/$20, как у Opus.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> Сейчас <b>$2</b> input / <b>$10</b> output за 1M</li>
+<li><span class="dot" style="color:var(--orange)"></span> Кэш входа <b>−95%</b></li>
+<li><span class="dot" style="color:var(--orange)"></span> С 30.11.2026 — <b>$4 / $20</b></li>
+<li><span class="dot" style="color:var(--orange)"></span> Opus 5.5 — <b>$4/$20</b>, fast $8/$40</li>
+</ul>
+<div class="card-foot"><span class="stars">Вдвое дешевле</span><span class="verdict" style="color:var(--orange)">ВЫГОДНО</span></div>
+</div>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>БЕНЧМАРК</th><th>ARGON</th><th>OPUS 5.5</th><th>ПОБЕДИТЕЛЬ</th><th>ЧТО МЕРЯЕТ</th></tr></thead>
+<tbody>
+<tr><td>DeepSWE v1.1</td><td style="font-weight:800">77.9%</td><td>74.2%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Долгий софт-инжиниринг на реальном репозитории</td></tr>
+<tr><td>Vals Index</td><td style="font-weight:800">68.9%</td><td>67.0%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Бизнес-работы: финансы, код, право, налоги</td></tr>
+<tr><td>Vals Finance Agent v2</td><td style="font-weight:800">65.4%</td><td>58.6%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Многошаговый финансовый ресёрч</td></tr>
+<tr><td>AutomationBench (Zapier)</td><td style="font-weight:800">51.3%</td><td>42.5%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Автоматизация бизнес-процессов</td></tr>
+<tr><td>AutomationBench-AA</td><td style="font-weight:800">77.5%</td><td>71.3% (Sonnet 5.5)</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Независимый замер, #1 всех моделей</td></tr>
+<tr><td>LABBench 2</td><td style="font-weight:800">88.8%</td><td>73.1%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Наука: протоколы и литература</td></tr>
+<tr><td>RiemannBench</td><td style="font-weight:800">76.0%</td><td>69.6%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Математика</td></tr>
+<tr><td>Vibe Code Bench</td><td style="font-weight:800">91.9%</td><td>90.3%</td><td style="color:#4285F4;font-weight:800">≈ Вничью</td><td>Генерация кода по описанию</td></tr>
+<tr><td>ARC-AGI-1</td><td style="font-weight:800">98.5%</td><td>97.5%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Абстрактное мышление</td></tr>
+<tr><td>OSWorld 2.0</td><td style="font-weight:800">69.2%</td><td>48.7%</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Работа за компьютером (мышь, окна)</td></tr>
+<tr><td>ERQA</td><td style="font-weight:800">87%</td><td>—</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Пространственное мышление в 3D</td></tr>
+<tr><td>LVBench</td><td style="font-weight:800">91.7%</td><td>—</td><td style="color:#4285F4;font-weight:800">🏆 Argon</td><td>Понимание длинного видео</td></tr>
+<tr><td>CWE-bench v1</td><td style="font-weight:800">68.0%</td><td>67.0%</td><td style="font-weight:800">≈ Вничью</td><td>Починка уязвимостей</td></tr>
+<tr><td>Terminal-Bench 4.0</td><td>57.4%</td><td style="font-weight:800">66.4%</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>Агент в командной строке</td></tr>
+<tr><td>FrontierSWE v2</td><td>55.0%</td><td style="font-weight:800">62.3%</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>Фронтир-софт-инжиниринг</td></tr>
+<tr><td>PostTrainBench</td><td>45.3%</td><td style="font-weight:800">49.3%</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>ML-инжиниринг</td></tr>
+<tr><td>AA Intelligence Index</td><td>53</td><td style="font-weight:800">58</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>Независимый сводный индекс (10 тестов)</td></tr>
+<tr><td>ARC-AGI-2</td><td>91.3%</td><td style="font-weight:800">91.7%</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>Сложная абстракция</td></tr>
+<tr><td>FrontierCode 1.1</td><td>—</td><td style="font-weight:800">54.4%</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>Кодинг-агент, много файлов</td></tr>
+<tr><td>CursorBench 4.0</td><td>—</td><td style="font-weight:800">57.8%</td><td style="color:#6C5CFF;font-weight:800">👑 Opus</td><td>Работа прямо в IDE</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="grid3" style="margin-top:18px">
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">🧪 НЕЗАВИСИМЫЙ ЗАМЕР</span><span class="price">bito.ai</span></div>
+<h3>Код вживую: 76% против 87%</h3>
+<p>Сторонний тест на реальных задачах, а не вендорская таблица.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> Opus 5.5 — <b>87%</b>, Argon — <b>76%</b>, Sonnet 5.5 — 75%</li>
+<li><span class="dot" style="color:var(--violet)"></span> Короткие вопросы: Argon <b>86%</b> (Opus 90%)</li>
+<li><span class="dot" style="color:var(--violet)"></span> Длинные сессии: Argon <b>73%</b> vs Opus 87%</li>
+<li><span class="dot" style="color:var(--violet)"></span> Реализация: <b>63%</b> vs 85% у Opus</li>
+<li><span class="dot" style="color:var(--violet)"></span> Ревью кода: <b>63%</b> vs 82% у Opus</li>
+<li><span class="dot" style="color:var(--violet)"></span> Медленнее всех: 19.3 мин на сессию</li>
+</ul>
+<div class="card-foot"><span class="stars">$1.87 / сессия</span><span class="verdict" style="color:var(--violet)">ДЕШЕВЕ</span></div>
+</div>
+<div class="card" style="border-color:#00C950">
+<div class="card-top"><span class="tag tag-green">🛡 КИБЕР</span><span class="price">лидер</span></div>
+<h3>Argon ищет уязвимости сам</h3>
+<p>Google отдала Argon киберзащитникам без ограничений — и вот что вышло.</p>
+<ul>
+<li><span class="dot" style="color:#00C950"></span> Внутренний тест Google: <b>85.8%</b> (3.8 Flash Cyber — 71.0%)</li>
+<li><span class="dot" style="color:#00C950"></span> Пентест Wiz: <b>70.9%</b> (против 58.2%)</li>
+<li><span class="dot" style="color:#00C950"></span> Нашёл критическую дыру в медсофте, которую пропустили другие</li>
+<li><span class="dot" style="color:#00C950"></span> Shortcut attempts на коде — <b>2%</b>, лучший результат у Gemini</li>
+</ul>
+<div class="card-foot"><span class="stars">Fairwind</span><span class="verdict" style="color:#00C950">ТОП</span></div>
+</div>
+<div class="card" style="border-color:#4285F4">
+<div class="card-top"><span class="tag tag-green">🧠 КОНТЕКСТ</span><span class="price">1M выхода</span></div>
+<h3>Миллион токенов ответа</h3>
+<p>Главная техническая фишка Argon — и то, чего не умеет ни один конкурент.</p>
+<ul>
+<li><span class="dot" style="color:#4285F4"></span> До <b>1 048 576</b> токенов в одном ответе</li>
+<li><span class="dot" style="color:#4285F4"></span> Было у Gemini — всего 64K</li>
+<li><span class="dot" style="color:#4285F4"></span> Opus 5.5 — 128K выхода (по третьим данным)</li>
+<li><span class="dot" style="color:#4285F4"></span> Знания до марта 2026</li>
+</ul>
+<div class="card-foot"><span class="stars">×16 к Gemini</span><span class="verdict" style="color:#4285F4">МОЩНО</span></div>
+</div>
+</div>
+
+<div class="alert">
+<span style="font-size:22px">🧭</span>
+<div><b>Итог по Argon:</b> это <b>король всего, кроме терминального кода</b>. Долгие рабочие цепочки, финансы, право, наука, автоматизация, огромный контекст — тут он объективно первый (14 из 18). А вот агент в терминале, работа в IDE, написание и ревью кода — тут Opus 5.5 (Terminal-Bench 66.4 против 57.4). Практический вывод: <b>Argon — флагман по умолчанию, Opus 5.5 — когда вы пишете код</b>. И пока у Argon цена вдвое ниже, брать его почти нет смысла.</div>
+</div>
+
+<div class="alert" style="background:var(--shade)">
+<span style="font-size:22px">🔗</span>
+<div><b>Источники (открывай живое):</b>
+<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">анонс Google 30.09.2026 →</a> •
+<a href="https://blog.google/intl/en-in/products/introducing-gemini-4-argon/" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">запуск для всех 13.10.2026 + цены →</a> •
+<a href="https://deepmind.google/models/model-cards/gemini-4-argon/" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">модель-карта DeepMind →</a> •
+<a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">AA Intelligence Index →</a> •
+<a href="https://www.datacamp.com/blog/gemini-4-argon-vs-claude-opus-5-5" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">разбор 14 из 18 (DataCamp) →</a> •
+<a href="https://benchlm.ai/compare/claude-opus-5-5-vs-gemini-4-argon" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">попарные замеры (BenchLM) →</a> •
+<a href="https://bito.ai/blog/gemini-4-argon-vs-claude-opus-sonnet/" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">свой кодинг-замер (bito.ai) →</a> •
+<a href="https://www.vals.ai/models/anthropic_claude-opus-5" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">Vals AI (финансы/право) →</a>
 </div>
 </div>
 </section>
@@ -714,7 +869,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <p class="section-sub">Короткий досье на ВСЕ действующие ИИ: <b>сильное</b>, <b>слабое</b>, <b>кому брать</b> и <b>доступ из РФ</b>. Устаревшие не убраны — они лежат в 🗑️ Архиве с заменами. Цены — за 1M input, сентябрь 2026.</p>
 <h3 class="cs-sub">💬 Текстовые модели</h3>
 <div class="grid-cs">
-<div class="mcard"><b class="mc-n">Gemini 4 Argon</b><span class="mc-plus">+ новый №1 почти везде: reasoning, агенты, мультимодал, 2M, скорость Google</span><span class="mc-minus">− в кодинге слабее Opus 5.5 (71.7 vs 76.3); спец-VPN напрямую</span><span class="mc-who">→ Максимум для всего, кроме чистого кода</span><span class="mc-acc">🔐 СПЕЦ-VPN или через OpenRouter</span></div>
+<div class="mcard"><b class="mc-n">Gemini 4 Argon</b><span class="mc-plus">+ №1 почти везде: 14 из 18 тестов у Opus, 1M выходных токенов, $2/$10, финансы/право/наука, кибер 85.8%</span><span class="mc-minus">− в терминальном коде слабее Opus 5.5 (57.4% против 66.4%); медленнее всех; спец-VPN напрямую</span><span class="mc-who">→ Максимум для всего, кроме агентного кода в терминале</span><span class="mc-acc">🔐 СПЕЦ-VPN или через OpenRouter</span></div>
 <div class="mcard"><b class="mc-n">GPT 6.1 Sol</b><span class="mc-plus">+ апдейт Sol: чуть лучше reasoning и стабильность агентов, те же 1M и $6/$30</span><span class="mc-minus">− прирост небольшой; до уровня Astra не дотягивает</span><span class="mc-who">→ Бери с нуля вместо Sol; владельцам Sol апгрейд необязателен</span><span class="mc-acc">🔐 VPN обычный</span></div>
 <div class="mcard"><b class="mc-n">GPT 6 Sol</b><span class="mc-plus">+ агенты до 5 часов, computer use 2.0, deep research, 1M контекст</span><span class="mc-minus">− $6/$30, в max-режиме медленный; 6.1 Sol чуть лучше за те же деньги</span><span class="mc-who">→ Автономные агенты, исследования, автоматизация</span><span class="mc-acc">🔐 VPN обычный</span></div>
 <div class="mcard"><b class="mc-n">GPT 6 Luna</b><span class="mc-plus">+ в 3 раза дешевле Sol, 3x быстрее, 512K, тянет 95% задач флагмана</span><span class="mc-minus">− в сверхсложном reasoning чуть ниже Sol</span><span class="mc-who">→ Универсальный рабочий конь: чат, код, боты, прод</span><span class="mc-acc">🔐 VPN обычный</span></div>
@@ -1178,8 +1333,8 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <tr><td><div class="model"><i style="background:#FF5500">61</i> GPT 6.1 Sol</div></td><td style="font-weight:800">$6</td><td>$30</td><td><span class="tag tag-red">НОВИНКА 2026</span></td><td>🆕 Чуть лучше Sol</td></tr>
 <tr><td><div class="model"><i style="background:#FF9900">LU</i> GPT 6 Luna</div></td><td style="font-weight:800">$2</td><td>$8</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥇 Лучший дешевый</td></tr>
 <tr><td><div class="model"><i style="background:#FF6B00">M2</i> MiMo V2.6</div></td><td style="color:var(--violet);font-weight:800">~$0.45</td><td>~$0.90</td><td><span class="tag tag-green">ДЕШЕВЫЕ И ТОП</span></td><td>🥈 Как Luna</td></tr>
-<tr><td><div class="model"><i style="background:#4285F4">A4</i> Gemini 4 Argon</div></td><td>Флагман</td><td>Флагман</td><td><span class="tag tag-red">НОВИНКА 2026</span></td><td>🥇 Новый №1</td></tr>
-<tr><td><div class="model"><i style="background:#D97706">O5</i> Claude Opus 5.5</div></td><td style="font-weight:800">$8</td><td>$35</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>👑 Код 76.3</td></tr>
+<tr><td><div class="model"><i style="background:#4285F4">A4</i> Gemini 4 Argon</div></td><td style="font-weight:800">$2</td><td>$10</td><td><span class="tag tag-red">НОВИНКА 2026</span></td><td>🥇 14 из 18 тестов</td></tr>
+<tr><td><div class="model"><i style="background:#D97706">O5</i> Claude Opus 5.5</div></td><td style="font-weight:800">$4</td><td>$20</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>👑 Код 66.4%</td></tr>
 <tr><td><div class="model"><i style="background:#8B5CF6">F1</i> Claude Fable 5.1</div></td><td style="font-weight:800">$4</td><td>$20</td><td><span class="tag tag-violet">НОВИНКА 2026</span></td><td>✨ +15% к коду</td></tr>
 <tr><td><div class="model"><i style="background:#0F0F0F">D4</i> DeepSeek V4.1 Flash</div></td><td style="color:var(--violet);font-weight:800">~$0.10</td><td>~$0.25</td><td><span class="tag tag-green">НОВИНКА 2026</span></td><td>🥇 Новый имба-король</td></tr>
 <tr><td><div class="model"><i style="background:#2563EB">MS</i> Muse Spark 1.3</div></td><td style="font-weight:800">$1.2</td><td>$3.5</td><td><span class="tag tag-black">НОВИНКА 2026</span></td><td>✨ Темная лошадка</td></tr>
@@ -1449,7 +1604,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="card" style="border-color:var(--violet)">
 <div class="card-top"><span class="tag tag-violet">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA</span></div>
 <h3>Claude Fable 5.5</h3>
-<p>Следующий шаг после Fable 5.1: ждем еще живее код и стиль, лучше агенты и инструменты. Главный кандидат в любимцы кодеров.<br><a href="fable-5-5.html" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Отдельный разбор: Fable 5.5 vs Gemini 4 Argon vs Opus 5.5 (кодинг ≈71.7 / 71.7 / 76.3)</a></p>
+<p>Следующий шаг после Fable 5.1: ждем еще живее код и стиль, лучше агенты и инструменты. Главный кандидат в любимцы кодеров.<br><a href="fable-5-5.html" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Отдельный разбор: Fable 5.5 vs Gemini 4 Argon vs Opus 5.5 (кодинг)</a></p>
 <ul>
 <li><span class="dot" style="color:var(--violet)"></span> Статус: ожидается</li>
 <li><span class="dot" style="color:var(--violet)"></span> Для: код каждый день</li>
@@ -1504,7 +1659,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="card" style="border-color:var(--orange)">
 <div class="card-top"><span class="tag tag-red">🔮 СКОРО • ТЕКСТ</span><span class="price">TBA дорогой</span></div>
 <h3>GPT 6.1 Astra</h3>
-<p>Старший флагман 6.1: ступень выше 6.1 Sol — максимум контекста и глубоких исследований. Ответ топам Anthropic.<br><a href="fable-5-5.html" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Разбор кодинга: 6.1 Astra целится в уровень Opus 5.5 (~76.3)</a></p>
+<p>Старший флагман 6.1: ступень выше 6.1 Sol — максимум контекста и глубоких исследований. Ответ топам Anthropic.<br><a href="fable-5-5.html" style="color:var(--violet);font-weight:800;text-decoration:underline">→ Разбор кодинга: 6.1 Astra целится в уровень Opus 5.5 (66.4% на TB 4.0)</a></p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> Статус: ожидается</li>
 <li><span class="dot" style="color:var(--orange)"></span> Для: агенты, research</li>
@@ -1818,21 +1973,42 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 </footer>
 
 <script>
-// smooth cursor - только transform в одном rAF (не лагает)
+// smooth cursor - rAF крутится ТОЛЬКО пока курсор догоняет мышь. В простое: 0% CPU
+(function(){
 const dot=document.getElementById('cursorDot'), ring=document.getElementById('cursorRing');
-let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my, hoverOn=false;
-document.addEventListener('mousemove',e=>{mx=e.clientX; my=e.clientY;},{passive:true});
-function loop(){
+if(!dot||!ring) return;
+if(!window.matchMedia('(pointer:fine)').matches) return;
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+let mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my, hoverOn=false, raf=0;
+function frame(){
 dot.style.transform='translate3d('+mx+'px,'+my+'px,0) translate(-50%,-50%)';
 rx+=(mx-rx)*0.16; ry+=(my-ry)*0.16;
 ring.style.transform='translate3d('+rx+'px,'+ry+'px,0) translate(-50%,-50%)';
-requestAnimationFrame(loop)
+if(Math.abs(mx-rx)>0.15||Math.abs(my-ry)>0.15){raf=requestAnimationFrame(frame);}
+else{raf=0;}
 }
-requestAnimationFrame(loop);
+function kick(){if(!raf&&!document.hidden&&!document.documentElement.classList.contains('eco')) raf=requestAnimationFrame(frame);}
+document.addEventListener('mousemove',e=>{mx=e.clientX; my=e.clientY; kick();},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0;}});
 // делегирование вместо сотен слушателей
 document.addEventListener('mouseover',e=>{
 const on=!!(e.target.closest&&e.target.closest('a,button,.card,.tab,.btn-primary,.btn-secondary,.mcard'));
 if(on!==hoverOn){hoverOn=on;ring.classList.toggle('hover',on);}
+},{passive:true});
+})();
+// PERF: эко-режим — ноль анимаций, ноль нагрузки на GPU
+(function(){
+const root=document.documentElement, btn=document.getElementById('ecoBtn');
+if(!btn) return;
+let on=false;
+try{on=localStorage.getItem('proai-eco')==='1';}catch(e){}
+function apply(){root.classList.toggle('eco',on);btn.classList.toggle('on',on);btn.textContent=on?'⚡ ЭКО ВКЛ':'⚡ Эко';}
+apply();
+btn.addEventListener('click',()=>{on=!on;try{localStorage.setItem('proai-eco',on?'1':'0');}catch(e){}apply();});
+})();
+// PERF: пауза всех анимаций, когда вкладка в фоне
+document.addEventListener('visibilitychange',()=>{
+document.documentElement.classList.toggle('tab-hidden',document.hidden);
 },{passive:true});
 
 // смена темы: тёмная (дефолт) <-> классический белый
@@ -1980,7 +2156,7 @@ els.forEach(el=>io.observe(el));
 (function(){
 const DB={
 text:[
-{n:'Gemini 4 Argon',a:'gemini argon google 4 новый король',price:'Флагман',q:10,exl:'Контекст',ex:'2M',v:'🥇 Новый №1',pop:'Claude Opus 5.5'},
+{n:'Gemini 4 Argon',a:'gemini argon google 4 новый король',price:'$2 / $10',q:10,exl:'Выход',ex:'1M',v:'🥇 14 из 18 тестов',pop:'Claude Opus 5.5'},
 {n:'GPT 6 Luna',a:'luna луна gpt openai дешевая быстрая',price:'$2 / $8',q:9.9,exl:'Контекст',ex:'512K',v:'🥇 Лучший дешевый',pop:'GPT 6 Sol'},
 {n:'MiMo V2.6',a:'mimo мимо xiaomi open тесты luna',price:'~$0.45 / ~$0.90',q:9.8,exl:'Контекст',ex:'1M',v:'🥈 Как Luna',pop:'GPT 6 Luna'},
 {n:'DeepSeek V4.1 Flash',a:'deepseek дипсик flash 4.1 имба копейки',price:'~$0.10 / ~$0.25',q:9.8,exl:'Контекст',ex:'256K',v:'🥇 Новый имба-король',pop:'GPT 6 Luna'},
@@ -1988,7 +2164,7 @@ text:[
 {n:'GLM-5.3 Flash',a:'glm глм zhipu open русский',price:'~$0.12 / ~$0.35',q:9.3,exl:'Контекст',ex:'200K',v:'Дешевый open',pop:'DeepSeek V4.1 Flash'},
 {n:'GPT 6 Sol',a:'sol gpt openai флагман агент',price:'$6 / $30',q:10,exl:'Контекст',ex:'1M',v:'🔥 Агент №1',pop:'Claude Opus 5.5'},
 {n:'GPT 6.1 Sol',a:'sol 6.1 gpt openai флагман апдейт агент',price:'$6 / $30',q:10,exl:'Контекст',ex:'1M',v:'🆕 Чуть лучше Sol',pop:'GPT-6 Astra'},
-{n:'Claude Opus 5.5',a:'opus опус anthropic claude король',price:'$8 / $35',q:10,exl:'Контекст',ex:'500K',v:'👑 Код 76.3',pop:'Gemini 4 Argon'},
+{n:'Claude Opus 5.5',a:'opus опус anthropic claude король',price:'$4 / $20',q:10,exl:'Контекст',ex:'500K',v:'👑 Код 66.4%',pop:'Gemini 4 Argon'},
 {n:'Claude Fable 5.1',a:'fable anthropic claude код',price:'$4 / $20',q:9.9,exl:'Контекст',ex:'300K',v:'✨ +15% к коду',pop:'Claude Opus 5.5'},
 {n:'Muse Spark 1.3',a:'muse spark meta спарк лошадка',price:'$1.2 / $3.5',q:9.7,exl:'Мультимодал',ex:'512K + голос',v:'✨ Темная лошадка',pop:'GPT 6 Sol'},
 {n:'DeepSeek V4 Flash',a:'deepseek дипсик v4 старый',price:'~$0.14 / ~$0.28',q:9.7,exl:'Контекст',ex:'128K',v:'🥇 Имба',pop:'DeepSeek V4.1 Flash'},
