@@ -61,7 +61,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--navbg);border-bottom:2.5p
 .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--orange)}
 .btn-secondary{background:var(--paper);border:2.5px solid var(--ink);color:var(--ink);padding:16px 20px;font-weight:800;box-shadow:4px 4px 0 var(--ink)}
 .hero-card{background:var(--paper);border:2.5px solid var(--ink);padding:22px;box-shadow:6px 6px 0 var(--ink);position:relative}
-.hero-card::before{content:"СВОДКА • СЕНТЯБРЬ 2026";position:absolute;top:-12px;left:18px;background:var(--lime);color:var(--limeink);font-size:10px;font-weight:800;letter-spacing:1px;padding:5px 10px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
+.hero-card::before{content:"СВОДКА • ОКТЯБРЬ 2026";position:absolute;top:-12px;left:18px;background:var(--lime);color:var(--limeink);font-size:10px;font-weight:800;letter-spacing:1px;padding:5px 10px;border:2px solid var(--ink);font-family:'JetBrains Mono',monospace}
 .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
 .mini{background:var(--shade);border:2px solid var(--ink);padding:12px}
 .mini span{font-size:10px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;color:var(--muted)}
@@ -269,6 +269,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="container nav-inner">
 <div class="logo"><div class="logo-mark">П</div> ПРО<span>.ИИ</span></div>
 <div class="nav-links">
+<a href="#october">📅 Октябрь</a>
 <a href="#cheap">Цена/качество</a>
 <a href="#absolute">Абсолютный топ</a>
 <a href="#new">Новинки 2026</a>
@@ -294,7 +295,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <section class="hero container">
 <div class="hero-grid">
 <div>
-<div class="eyebrow">● ТОЧНЫЙ РЕЙТИНГ • ОБНОВЛЕНО СЕНТЯБРЬ 2026 • 45 МОДЕЛЬ + 13 ОЖИДАЕМЫХ + АРХИВ</div>
+<div class="eyebrow">● ТОЧНЫЙ РЕЙТИНГ • ОБНОВЛЕНО ОКТЯБРЬ 2026 • 45 МОДЕЛЬ + 13 ОЖИДАЕМЫХ + АРХИВ</div>
 <h1>Честный гид<br>по <i>нейросетям</i><br><em>без воды</em></h1>
 <p>Разложили все по полочкам: какие ИИ — <b>имба за копейки</b>, какие — <b>дорогие но идеальные</b>, а за какие ты просто переплачиваешь. <b>Claude Sonnet 5.5</b> — новый король кода (70.6% на Terminal-Bench) за вдвое меньшие деньги, чем Opus. Добавили <b>13 горячих новинок 2026</b> + отдельную вкладку <b>📸 Фото+Видео</b>: GPT Image 2.5 / 2, Nano Banana Pro / 2 / 2 Lite, Veo 3.1, Seedance, Kling, Wan, Sora, Omni Flash. С цифрами, графиками и гайдом для России.</p>
 <div class="hero-actions">
@@ -321,6 +322,151 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 </section>
 
 <div class="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<section id="october" class="section container">
+<div class="section-head">
+<div>
+<h2 class="section-title">📅 Сводка: октябрь 2026</h2>
+<p class="section-sub">За 31 день месяца в крупных лидербордах появилось <b>19 новых моделей</b> — плюс Gemini 4 Argon стал доступен всем 13 октября. Вот что реально изменилось и что теперь брать. Цифры — публичные замеры, не наши оценки.</p>
+</div>
+</div>
+
+<div class="grid4">
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">👑 13.10</span><span class="price">$2 / $10</span></div>
+<h3>Argon — GA для всех</h3>
+<p>13 октября Gemini 4 Argon стал доступен всем: API, AI Studio, приложение, AI Mode. До 30.11 — интро-цена вдвое ниже Opus.</p>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> 14 из 18 тестов у Opus</li>
+<li><span class="dot" style="color:var(--violet)"></span> 1M выходных токенов</li>
+<li><span class="dot" style="color:var(--violet)"></span> С 30.11 — $4/$20</li>
+</ul>
+<div class="card-foot"><span class="stars">№1 гида</span><span class="verdict" style="color:var(--violet)">НОВЫЙ КОРОЛЬ</span></div>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">⚡ 07.10</span><span class="price">$0.10 / $0.50</span></div>
+<h3>Claude Haiku 5.5</h3>
+<p>Самый быстрый тир Anthropic: 239 токенов в секунду. И код выше, чем у GPT-6 Luna.</p>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> TB 4.0: 39.2% (Luna — 16.4%)</li>
+<li><span class="dot" style="color:var(--orange)"></span> OSWorld 2.1: 72.4%</li>
+<li><span class="dot" style="color:var(--orange)"></span> 1M контекст</li>
+</ul>
+<div class="card-foot"><span class="stars">9.4/10</span><span class="verdict" style="color:var(--orange)">УБИЙЦА БЮДЖЕТА</span></div>
+</div>
+<div class="card" style="border-color:#FF6B00">
+<div class="card-top"><span class="tag tag-green">🆕 20.10</span><span class="price">$0.15 / $0.60</span></div>
+<h3>MiniMax M3.1 Flash</h3>
+<p>Open-weight, 1M контекста и 524K выхода за копейки. Вендор обещал уровень Sol — независимые замеры скромнее.</p>
+<ul>
+<li><span class="dot" style="color:#FF6B00"></span> Vals Index 53.78% (#15 из 24)</li>
+<li><span class="dot" style="color:#FF6B00"></span> TB 4.0: 25.25% (#22 из 52)</li>
+<li><span class="dot" style="color:#FF6B00"></span> Vibe Code 73.9% (у M3 было 47.6%)</li>
+</ul>
+<div class="card-foot"><span class="stars">9.5/10</span><span class="verdict" style="color:#FF6B00">OPEN-WEIGHT</span></div>
+</div>
+<div class="card" style="border-color:#2563EB">
+<div class="card-top"><span class="tag tag-black">🆕 15.10</span><span class="price">open-weight</span></div>
+<h3>Meta Muse Spark Open</h3>
+<p>Meta выкатила open-версию Muse Spark 1.3 — мультимодал с кодом, голосом и видео теперь можно хостить самому.</p>
+<ul>
+<li><span class="dot" style="color:var(--ink)"></span> Open-weight от Meta</li>
+<li><span class="dot" style="color:var(--ink)"></span> Код + голос + видео</li>
+<li><span class="dot" style="color:var(--ink)"></span> Дешевле $1.2 за 1M</li>
+</ul>
+<div class="card-foot"><span class="stars">9.7/10</span><span class="verdict">ВЫГРАЛ OPEN</span></div>
+</div>
+</div>
+
+<h3 class="cs-sub">🔀 Что изменилось в топе за месяц</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>МЕСТО</th><th>СЕНТЯБРЬ 2026</th><th>ОКТЯБРЬ 2026</th><th>ЧТО ПРОИЗОШЛО</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:800">№1</td><td>Claude Opus 5.5</td><td style="font-weight:800">Gemini 4 Argon</td><td>Argon выиграл 14 из 18 общих тестов и 13.10 ушёл в общий доступ</td></tr>
+<tr><td style="font-weight:800">№2</td><td>GPT-6 Astra</td><td style="font-weight:800">Claude Sonnet 5.5</td><td>Sonnet обошёл Opus в коде: 70.6% против 66.4% на Terminal-Bench 4.0</td></tr>
+<tr><td style="font-weight:800">№3</td><td>GPT 6.1 Sol</td><td style="font-weight:800">Claude Opus 5.5</td><td>Opus остался #1 на Vals Index (69.69%) — теперь король суждений, не кода</td></tr>
+<tr><td style="font-weight:800">№4</td><td>GPT 6 Sol</td><td style="font-weight:800">GPT-6 Astra</td><td>Без изменений, но дешевле не стал — только API</td></tr>
+<tr><td style="font-weight:800">НОВЫЕ</td><td>—</td><td style="font-weight:800">Haiku 5.5, Terra, MiniMax M3.1</td><td>Три новых тира: быстрый дешёвый, средний универсальный и open-weight</td></tr>
+<tr><td style="font-weight:800">ДЕШЁВЫЙ ТОП</td><td>GPT 6 Luna ($2)</td><td style="font-weight:800">Haiku 5.5 ($0.10)</td><td>Haiku кодит лучше Luna (39.2% против 16.4%) и стоит в 20 раз дешевле</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 class="cs-sub">📋 Все релизы октября — 19 моделей + Argon GA</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>ДАТА</th><th>МОДЕЛЬ</th><th>ВЕНДОР</th><th>ЦЕНА ЗА 1M</th><th>КОНТЕКСТ</th><th>КОММЕНТ</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:800">01.10</td><td>d1</td><td>Liquid AI 🇺🇸</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">06.10</td><td>Mistral Large 4</td><td>Mistral 🇫🇷</td><td>—</td><td>—</td><td>Европейская, свой регион</td></tr>
+<tr><td style="font-weight:800">07.10</td><td>Claude Haiku 5.5</td><td>Anthropic 🇺🇸</td><td style="font-weight:800">$0.10 / $0.50</td><td>1M</td><td style="color:var(--orange);font-weight:800">✅ В гиде</td></tr>
+<tr><td style="font-weight:800">07.10</td><td>Decider V1.1 27B</td><td>Perplexity 🇺🇸</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">09.10</td><td>Clef Omni</td><td>Cloudflare 🇺🇸</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">09.10</td><td>Decision-1</td><td>Microsoft</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">09.10</td><td>Drex v1.5</td><td>Nace.AI</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">12.10</td><td>Wonder / Wonder Full</td><td>Meta 🇺🇸</td><td>—</td><td>—</td><td>Две новые от Meta</td></tr>
+<tr><td style="font-weight:800">12.10</td><td>GLM Legal</td><td>zAI 🇨🇳</td><td>—</td><td>—</td><td>Специализация на праве</td></tr>
+<tr><td style="font-weight:800">12.10</td><td>Drex v2.0</td><td>Nace.AI</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">13.10</td><td>Gemini 4 Argon — GA</td><td>Google 🇺🇸</td><td style="font-weight:800">$2 / $10</td><td>1M выхода</td><td style="color:var(--violet);font-weight:800">✅ В гиде — №1</td></tr>
+<tr><td style="font-weight:800">13.10</td><td>Classify-1</td><td>ScaleDown</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">14.10</td><td>Jev 1.14</td><td>TypeSafe</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">15.10</td><td>Muse Spark Open</td><td>Meta 🇺🇸</td><td>open-weight</td><td>—</td><td>Open-версия Spark 1.3</td></tr>
+<tr><td style="font-weight:800">16.10</td><td>Beam 1.0</td><td>Reflection 🇺🇸</td><td>—</td><td>—</td><td>Новая</td></tr>
+<tr><td style="font-weight:800">16.10</td><td>Decider V1.2 / Flash V1.2</td><td>Perplexity 🇺🇸</td><td>—</td><td>—</td><td>Апдейты</td></tr>
+<tr><td style="font-weight:800">17.10</td><td>DeepSeek V4.1 Flash 1017</td><td>DeepSeek 🇨🇳</td><td style="font-weight:800">~$0.10</td><td>256K</td><td>Апдейт дешёвого топа</td></tr>
+<tr><td style="font-weight:800">20.10</td><td>MiniMax M3.1 Flash</td><td>MiniMax 🇨🇳</td><td style="font-weight:800">$0.15 / $0.60</td><td>1M / 524K</td><td style="color:var(--violet);font-weight:800">✅ В гиде</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 class="cs-sub">💸 Прайс-чек месяца</h3>
+<div class="grid3">
+<div class="card" style="border-color:var(--orange)">
+<div class="card-top"><span class="tag tag-red">📈 ПОДОРОЖАЕТ</span></div>
+<h3>Следи за датами</h3>
+<ul>
+<li><span class="dot" style="color:var(--orange)"></span> <b>30.11.2026</b> — Argon $2/$10 → <b>$4/$20</b></li>
+<li><span class="dot" style="color:var(--orange)"></span> <b>2027</b> — Gemini 3.8 Flash цена удвоится</li>
+<li><span class="dot" style="color:var(--orange)"></span> Haiku 5.5: до 100K $0.10/$0.50, дальше $0.50/$2.50</li>
+<li><span class="dot" style="color:var(--orange)"></span> Argon: кэш входа −95%, но цена растёт с 30.11</li>
+</ul>
+<div class="card-foot"><span class="stars">2 дедлайна</span><span class="verdict" style="color:var(--orange)">ПОМНИТЬ</span></div>
+</div>
+<div class="card" style="border-color:#00C950">
+<div class="card-top"><span class="tag tag-green">📉 ПОДЕШЕВЕЛО</span></div>
+<h3>Куда упали цены</h3>
+<ul>
+<li><span class="dot" style="color:#00C950"></span> Sonnet 5.5 — <b>$2/$10</b> и на 30% быстрее Sonnet 5</li>
+<li><span class="dot" style="color:#00C950"></span> Haiku 5.5 — <b>$0.10/$0.50</b>, в 5 раз дешевле Haiku 4.5</li>
+<li><span class="dot" style="color:#00C950"></span> Opus 5.5 — <b>$4/$20</b> (в гиде раньше было $8/$35)</li>
+<li><span class="dot" style="color:#00C950"></span> Anthropic Batch API — вдвое дешевле обычного</li>
+</ul>
+<div class="card-foot"><span class="stars">-50% и больше</span><span class="verdict" style="color:#00C950">ВЫГОДА</span></div>
+</div>
+<div class="card" style="border-color:var(--violet)">
+<div class="card-top"><span class="tag tag-violet">⏳ СЛЕДИТЬ</span></div>
+<h3>Что не подтвердилось</h3>
+<ul>
+<li><span class="dot" style="color:var(--violet)"></span> MiniMax M3.1: вендер обещал уровень Sol, а Vals Index дал <b>53.78%</b> (#15 из 24)</li>
+<li><span class="dot" style="color:var(--violet)"></span> Argon отстаёт в терминальном коде: 57.4% против 70.6% у Sonnet</li>
+<li><span class="dot" style="color:var(--violet)"></span> Argon медленнее всех: 19.3 мин на сессию</li>
+<li><span class="dot" style="color:var(--violet)"></span> Gemini 4 Carbon — всё ещё слухи, не модель</li>
+</ul>
+<div class="card-foot"><span class="stars">Честно</span><span class="verdict" style="color:var(--violet)">БЕЗ ПРИУКРАШЕНИЙ</span></div>
+</div>
+</div>
+
+<div class="alert">
+<span style="font-size:22px">🧭</span>
+<div><b>Итог месяца одним абзацем:</b> октябрь 2026 разделил рынок на три тира. <b>Максимум</b> — Gemini 4 Argon (13.10, 14 из 18 тестов, но $4/$20 с 30 ноября). <b>Код</b> — Claude Sonnet 5.5: 70.6% на Terminal-Bench, обошёл Opus и вдвое дешевле него. <b>Бюджет</b> — Claude Haiku 5.5: $0.10 за 1M, 239 токенов в секунду и код лучше, чем у GPT-6 Luna. <b>Свой хостинг</b> — MiniMax M3.1 Flash и Meta Muse Spark Open. А GPT-5.6 Terra закрывает середину. Если выбираешь одну модель на месяц — <b>Sonnet 5.5 за $2/$10</b>: лучший баланс цены и качества сейчас.</div>
+</div>
+
+<div class="alert" style="background:var(--shade)">
+<span style="font-size:22px">🔗</span>
+<div><b>Источники сводки:</b> <a href="https://www.vals.ai/models" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">календарь релизов Vals AI →</a> • <a href="https://www.vals.ai/models/minimax_MiniMax-M3.1-flash" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">независимые замеры MiniMax M3.1 →</a> • <a href="https://www.anthropic.com/claude-sonnet-5-5" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">анонс Sonnet 5.5 →</a> • <a href="https://blog.google/intl/en-in/products/introducing-gemini-4-argon/" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">GA Argon + цены →</a> • <a href="https://developer.puter.com/ai/anthropic/claude-haiku-5-5/" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">Haiku 5.5 →</a> • <a href="https://www.vals.ai/models/anthropic_claude-sonnet-5-5" target="_blank" style="color:var(--violet);font-weight:800;text-decoration:underline">Vals: Sonnet 5.5 →</a></div>
+</div>
+</section>
 
 <section id="cheap" class="section container">
 <div class="section-head">
@@ -399,13 +545,13 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="card" style="border-color:var(--orange)">
 <div class="card-top"><span class="tag tag-red">🆕 OPEN-WEIGHT</span><span class="price">$0.15 / 1M</span></div>
 <h3>MiniMax M3.1</h3>
-<p>Новинка MiniMax (19.10.2026): 1M контекста и 524K выхода, мультимодал. Возможно на уровне Sol / Sonnet 5.5 — ждём замеров.</p>
+<p>Новинка MiniMax (20.10.2026): 1M контекста и 524K выхода, мультимодал. Вендер обещал уровень Sol / Sonnet 5.5 — независимые замеры дают меньше.</p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> 1M контекст, 524K выхода</li>
-<li><span class="dot" style="color:var(--orange)"></span> $0.15 / $0.60 за 1M</li>
-<li><span class="dot" style="color:var(--orange)"></span> Open-weight</li>
+<li><span class="dot" style="color:var(--orange)"></span> Vals Index 53.78% (#15 из 24)</li>
+<li><span class="dot" style="color:var(--orange)"></span> Open-weight, $0.15</li>
 </ul>
-<div class="card-foot"><span class="stars">★★★★☆ 9.5/10</span><span class="verdict" style="color:var(--orange)">ЖДЁМ ЗАМЕРОВ</span></div>
+<div class="card-foot"><span class="stars">★★★★☆ 9.5/10</span><span class="verdict" style="color:var(--orange)">OPEN-WEIGHT</span></div>
 </div>
 </div>
 </section>
@@ -556,13 +702,13 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="card" style="border-color:var(--orange)">
 <div class="card-top"><span class="tag tag-red">🆕 NEW • MINIMAX</span><span class="price">$0.15 / $0.60</span></div>
 <h3>MiniMax M3.1</h3>
-<p>19.10.2026: 1M контекста, 524K выхода, мультимодал. Вендор заявляет уровень Sol / Sonnet 5.5 — независимых замеров пока мало.</p>
+<p>20.10.2026: 1M контекста, 524K выхода, мультимодал, open-weight. Вендер заявляет уровень Sol — но независимый Vals Index дал 53.78% (#15 из 24).</p>
 <ul>
 <li><span class="dot" style="color:var(--orange)"></span> 1M контекст</li>
 <li><span class="dot" style="color:var(--orange)"></span> 524K выходных токенов</li>
-<li><span class="dot" style="color:var(--orange)"></span> Open-weight, $0.15</li>
+<li><span class="dot" style="color:var(--orange)"></span> TB 4.0: 25.25% (#22 из 52)</li>
 </ul>
-<div class="card-foot"><span class="stars">★★★★☆ 9.5/10</span><span class="verdict" style="color:var(--orange)">ЖДЁМ ЗАМЕРОВ</span></div>
+<div class="card-foot"><span class="stars">★★★★☆ 9.5/10</span><span class="verdict" style="color:var(--orange)">OPEN-WEIGHT</span></div>
 </div>
 <div class="card" style="border-color:var(--orange)">
 <div class="card-top"><span class="tag tag-red">🆕 NEW • OPENAI</span><span class="price">$6 / $30</span></div>
@@ -720,8 +866,8 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <summary>🆕 MiniMax M3.1 — open-weights на миллион контекста <span class="open-btn">+</span></summary>
 <div class="detail-body">
 <div class="spec-row"><span class="spec">$0.15 / $0.60 за 1M</span><span class="spec">1M контекст / 524K выхода</span><span class="spec">Open-weight</span><span class="spec">Без VPN</span></div>
-<p><b>Что это:</b> 19.10.2026, MiniMax M3.1 Flash — мультимодал (текст, картинка, видео), 1M контекста и до 524K выходных токенов. <b>По тестам возможно на уровне GPT-6 Sol / Sonnet 5.5</b> — вендор заявляет заметный прирост в агентных задачах, кодинге и кибербезе, но независимых замеров пока мало. Предшественник M3 (31.05.2026) — <b>#1 среди open-weight</b> на Vals Index (58.94%) и на мультимодальном индексе (59.97%): SWE-bench 75.0%, GPQA Diamond 92.68%, LiveCodeBench 82.15%, MMLU Pro 84.22%, LegalBench 85.42%. 428B параметров, 23B активных, веса на Hugging Face.</p>
-<div class="pros-cons"><div class="pros">✅ Плюсы: $0.15 за 1M, 524K выхода, мультимодал, open-weight (хости сам), №1 open-weight на Vals</div><div class="cons">❌ Минусы: независимых замеров M3.1 пока мало, экосистема и доки тоньше, серверы иногда лагают</div></div>
+<p><b>Что это:</b> 20.10.2026, MiniMax M3.1 Flash — мультимодал (текст, картинка, видео), 1M контекста и до 524K выходных токенов. <b>Честно про уровень:</b> вендер обещал, что будет на уровне GPT-6 Sol / Sonnet 5.5, но независимые замеры Vals Index дали <b>53.78% — #15 из 24</b> (Sonnet 5.5 — 69.22%), Terminal-Bench 4.0 — 25.25% (#22 из 52). Зато в коде-генерации огромный шаг: Vibe Code Bench 73.94% против 47.57% у M3. Предшественник M3 (31.05.2026) — <b>#1 среди open-weight</b> на Vals Index (58.94%): SWE-bench 75.0%, GPQA Diamond 92.68%, LiveCodeBench 82.15%, MMLU Pro 84.22%, LegalBench 85.42%. 428B параметров, 23B активных, веса на Hugging Face.</p>
+<div class="pros-cons"><div class="pros">✅ Плюсы: $0.15 за 1M, 524K выхода, мультимодал, open-weight (хости сам), #1 open-weight на Vals у M3</div><div class="cons">❌ Минусы: до Sol/Sonnet 5.5 не дотягивает (Vals 53.78%), в терминальном коде слаб (25.25%), экосистема тоньше</div></div>
 <p><b>Кому брать:</b> тем, кому нужен огромный контекст и мультимодал за копейки, и кто умеет хостить сам. <b>Не брать:</b> если нужен стабильный API без заморочек.</p>
 </div>
 </details>
@@ -988,7 +1134,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 <div class="mcard"><b class="mc-n">Claude Sonnet 5.5</b><span class="mc-plus">+ король кода: Terminal-Bench 70.6% (выше Opus 5.5), Vals Index 69.22% вровень с Opus, вдвое дешевле, 30%+ быстрее Sonnet 5</span><span class="mc-minus">− чуть слабее Opus в суждениях; кибер-бенчмарки слабые (59.6%)</span><span class="mc-who">→ Рабочая лошадка для кода, агентов и багов</span><span class="mc-acc">🔐 VPN обычный</span></div>
 <div class="mcard"><b class="mc-n">Claude Haiku 5.5</b><span class="mc-plus">+ быстрее всех: 239 ток/сек, код 39.2% выше GPT-6 Luna (16.4%), OSWorld 72.4%, $0.10 за 1M, 1M контекст</span><span class="mc-minus">− в 1.8 раза слабее Sonnet 5.5 в коде, знания до июня 2026</span><span class="mc-who">→ Классификация, извлечение, роутинг, подзадачи агентов</span><span class="mc-acc">🔐 VPN обычный</span></div>
 <div class="mcard"><b class="mc-n">GPT-5.6 Terra</b><span class="mc-plus">+ умнее GPT-5.5 при вдвое меньшей цене, 1.05M контекста, Terminal-Bench 2.1 77.5%, ARC-AGI-1 96.5%</span><span class="mc-minus">− не дотягивает до Sol в длинных задачах, цена растёт за 272K</span><span class="mc-who">→ Продакшен, агенты, извлечение данных</span><span class="mc-acc">🔐 VPN обычный</span></div>
-<div class="mcard"><b class="mc-n">MiniMax M3.1</b><span class="mc-plus">+ 1M контекст и 524K выхода за $0.15, мультимодал, open-weight (M3 — №1 open на Vals Index 58.94%)</span><span class="mc-minus">− независимых замеров M3.1 пока мало, экосистема тоньше</span><span class="mc-who">→ Огромные контексты и мультимодал за копейки, self-host</span><span class="mc-acc">🔐 Без VPN</span></div>
+<div class="mcard"><b class="mc-n">MiniMax M3.1</b><span class="mc-plus">+ 1M контекст и 524K выхода за $0.15, мультимодал, open-weight, Vibe Code 73.9% (у M3 было 47.6%)</span><span class="mc-minus">− до Sol/Sonnet 5.5 не дотягивает: Vals Index 53.78% (#15 из 24), TB 4.0 всего 25.25%</span><span class="mc-who">→ Огромные контексты и мультимодал за копейки, self-host</span><span class="mc-acc">🔐 Без VPN</span></div>
 <div class="mcard"><b class="mc-n">Gemini 4 Argon</b><span class="mc-plus">+ №1 почти везде: 14 из 18 тестов у Opus, 1M выходных токенов, $2/$10, финансы/право/наука, кибер 85.8%</span><span class="mc-minus">− в терминальном коде слабее Opus 5.5 (57.4% против 66.4%); медленнее всех; спец-VPN напрямую</span><span class="mc-who">→ Максимум для всего, кроме агентного кода в терминале</span><span class="mc-acc">🔐 СПЕЦ-VPN или через OpenRouter</span></div>
 <div class="mcard"><b class="mc-n">GPT 6.1 Sol</b><span class="mc-plus">+ апдейт Sol: чуть лучше reasoning и стабильность агентов, те же 1M и $6/$30</span><span class="mc-minus">− прирост небольшой; до уровня Astra не дотягивает</span><span class="mc-who">→ Бери с нуля вместо Sol; владельцам Sol апгрейд необязателен</span><span class="mc-acc">🔐 VPN обычный</span></div>
 <div class="mcard"><b class="mc-n">GPT 6 Sol</b><span class="mc-plus">+ агенты до 5 часов, computer use 2.0, deep research, 1M контекст</span><span class="mc-minus">− $6/$30, в max-режиме медленный; 6.1 Sol чуть лучше за те же деньги</span><span class="mc-who">→ Автономные агенты, исследования, автоматизация</span><span class="mc-acc">🔐 VPN обычный</span></div>
@@ -2095,7 +2241,7 @@ try{var __t=localStorage.getItem('proai-theme');document.documentElement.classLi
 
 <footer>
 <div class="container">
-<p>© 2026 ПРО.ИИ — независимый проект. Не связаны с OpenAI, Anthropic, Google, Meta. Цены актуальны на сентябрь 2026.</p>
+<p>© 2026 ПРО.ИИ — независимый проект. Не связаны с OpenAI, Anthropic, Google, Meta. Цены актуальны на октябрь 2026.</p>
 <p style="margin-top:6px">Сделано с ❤️ для тех, кто не хочет переплачивать. <a href="https://t.me/ProAIHere" target="_blank" style="color:var(--orange);font-weight:800">Подпишись: t.me/ProAIHere — БЕСПЛАТНЫЕ ИИ ЗАБИРАЙ ТУТ</a></p>
 </div>
 </footer>
